@@ -61,5 +61,4 @@ jobs:
           fi
 
       - name: 发送邮件
-        run: |
-          python scripts/cloud_a_share_radar_email.py
+        run: python scripts/cloud_a_share_radar_email.py --mode premarket --send
