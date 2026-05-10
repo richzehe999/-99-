@@ -1,0 +1,75 @@
+name: A-share radar email
+
+on:
+  schedule:
+    # China Standard Time = UTC+8
+    # Weekdays 08:30 CST
+    - cron: "30 0 * * 1-5"
+    # Weekdays 16:30 CST
+    - cron: "30 8 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Report mode"
+        required: true
+        default: "premarket"
+        type: choice
+        options:
+          - premarket
+          - aftermarket
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SMTP_USER: ${{ secrets.SMTP_USER }}
+      SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+      A_SHARE_REPORT_TO: ${{ secrets.A_SHARE_REPORT_TO }}
+      SMTP_HOST: smtp.gmail.com
+      SMTP_PORTS: "465,587"
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Resolve report mode
+        id: mode
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "mode=${{ inputs.mode }}" >> "$GITHUB_OUTPUT"
+          else
+            hour="$(TZ=Asia/Shanghai date +%H)"
+            if [[ "$hour" -lt 12 ]]; then
+              echo "mode=premarket" >> "$GITHUB_OUTPUT"
+            else
+              echo "mode=aftermarket" >> "$GITHUB_OUTPUT"
+            fi
+          fi
+
+      - name: Check SMTP secrets
+        shell: bash
+        run: |
+          test -n "$SMTP_USER" || { echo "Missing SMTP_USER secret"; exit 1; }
+          test -n "$SMTP_PASSWORD" || { echo "Missing SMTP_PASSWORD secret"; exit 1; }
+          test -n "$A_SHARE_REPORT_TO" || { echo "Missing A_SHARE_REPORT_TO secret"; exit 1; }
+
+      - name: Generate and send HTML email
+        run: |
+          python3 scripts/cloud_a_share_radar_email.py \
+            --mode "${{ steps.mode.outputs.mode }}" \
+            --output-html "radar-email-preview.html" \
+            --send
+
+      - name: Upload generated preview
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: radar-email-preview
+          path: radar-email-preview.html
+          if-no-files-found: ignore

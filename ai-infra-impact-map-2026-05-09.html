@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI 基建消息传导图</title>
+  <style>
+    :root {
+      --ink: #17212f;
+      --muted: #5f6d7e;
+      --line: #d9e2ec;
+      --paper: #edf2f6;
+      --panel: #ffffff;
+      --blue: #2563eb;
+      --cyan: #0e7490;
+      --green: #15803d;
+      --amber: #a16207;
+      --red: #b42318;
+      --dark: #182433;
+      --soft-blue: #eaf1ff;
+      --soft-cyan: #e6f7fb;
+      --soft-green: #e9f8ef;
+      --soft-amber: #fff5db;
+      --soft-red: #fff0ee;
+      --shadow: 0 22px 60px rgba(23, 33, 47, 0.12);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(135deg, rgba(37, 99, 235, 0.08), transparent 34%),
+        linear-gradient(315deg, rgba(21, 128, 61, 0.08), transparent 38%),
+        var(--paper);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif;
+      line-height: 1.45;
+    }
+
+    .wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 28px;
+    }
+
+    .poster {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 310px;
+      gap: 28px;
+      padding: 30px 34px 24px;
+      color: #fff;
+      background:
+        linear-gradient(135deg, rgba(56, 189, 248, 0.18), transparent 34%),
+        linear-gradient(315deg, rgba(34, 197, 94, 0.16), transparent 42%),
+        var(--dark);
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: #9bd8ee;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 0;
+      font-size: clamp(32px, 4vw, 52px);
+      line-height: 1.06;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      max-width: 750px;
+      margin: 14px 0 0;
+      color: #c8d5e2;
+      font-size: 16px;
+    }
+
+    .verdict {
+      align-self: stretch;
+      display: grid;
+      align-content: center;
+      gap: 8px;
+      padding: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .verdict span {
+      width: max-content;
+      padding: 5px 10px;
+      border-radius: 999px;
+      color: #17212f;
+      background: #a7f3d0;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .verdict strong {
+      font-size: 22px;
+      line-height: 1.2;
+    }
+
+    .content {
+      padding: 26px 34px 32px;
+    }
+
+    .message-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .message {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fbfdff;
+    }
+
+    .message-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .message h2 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1.2;
+    }
+
+    .pill {
+      flex: 0 0 auto;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: var(--soft-cyan);
+      color: var(--cyan);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .chain {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .node {
+      min-height: 112px;
+      padding: 13px;
+      border-radius: 14px;
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+
+    .node b {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 15px;
+    }
+
+    .node small {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .impact {
+      margin-top: 22px;
+      padding: 22px;
+      border-radius: 18px;
+      color: #fff;
+      background: var(--dark);
+    }
+
+    .impact h2 {
+      margin: 0 0 18px;
+      font-size: 24px;
+    }
+
+    .impact-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 22px;
+      align-items: center;
+    }
+
+    .bars {
+      display: grid;
+      gap: 13px;
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: 168px 1fr 86px;
+      gap: 12px;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    .track {
+      height: 18px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.13);
+    }
+
+    .fill {
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #22c55e, #38bdf8);
+    }
+
+    .grade {
+      color: #cbd5e1;
+      text-align: right;
+      font-size: 12px;
+    }
+
+    .signal-card {
+      padding: 18px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+    }
+
+    .signal-card h3 {
+      margin: 0 0 10px;
+      font-size: 19px;
+    }
+
+    .signal-card p {
+      margin: 0 0 12px;
+      color: #d6e0ea;
+      font-size: 14px;
+    }
+
+    .signal-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .signal {
+      display: flex;
+      gap: 9px;
+      align-items: flex-start;
+      color: #edf6ff;
+      font-size: 13px;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      margin-top: 5px;
+      border-radius: 50%;
+      background: #38bdf8;
+      flex: 0 0 auto;
+    }
+
+    .dot.green { background: #22c55e; }
+    .dot.amber { background: #f59e0b; }
+    .dot.red { background: #fb7185; }
+
+    .stock-map {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .stock-card {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fff;
+    }
+
+    .stock-card strong {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 19px;
+    }
+
+    .stock-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .level {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .level.high { color: var(--green); background: var(--soft-green); }
+    .level.mid { color: var(--amber); background: var(--soft-amber); }
+    .level.low { color: var(--red); background: var(--soft-red); }
+
+    .bottom-line {
+      margin-top: 22px;
+      padding: 18px 20px;
+      border-radius: 16px;
+      background: linear-gradient(90deg, var(--soft-blue), var(--soft-green));
+      border: 1px solid #cfe1f3;
+    }
+
+    .bottom-line b {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 20px;
+    }
+
+    .bottom-line span {
+      color: #405064;
+      font-size: 14px;
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 900px) {
+      .wrap { padding: 14px; }
+      .hero,
+      .message-grid,
+      .impact-grid,
+      .stock-map {
+        grid-template-columns: 1fr;
+      }
+
+      .content,
+      .hero {
+        padding: 22px;
+      }
+
+      .chain {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .bar-row {
+        grid-template-columns: 128px 1fr;
+      }
+
+      .grade {
+        grid-column: 2;
+        text-align: left;
+      }
+
+      footer {
+        display: grid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <article class="poster">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">AI INFRA TRANSMISSION MAP</p>
+          <h1>两条海外消息，怎么传导到电力 / AIDC / 算电协同？</h1>
+          <p>英伟达“铜转光”和英特尔大涨，都不是直接利好电力股。它们先抬升算力硬件与 AIDC 承载，再向储能、电源、液冷和绿电直供扩散。</p>
+        </div>
+        <aside class="verdict">
+          <span>核心结论</span>
+          <strong>先看算力硬件和 AIDC，电力链等第二层确认。</strong>
+        </aside>
+      </header>
+
+      <div class="content">
+        <section class="message-grid" aria-label="两条消息传导路径">
+          <div class="message">
+            <div class="message-top">
+              <h2>英伟达：铜转光</h2>
+              <span class="pill">硬件链优先</span>
+            </div>
+            <div class="chain">
+              <div class="node"><b>GPU 集群扩大</b><small>训练和推理集群继续放大，节点间通信压力上升。</small></div>
+              <div class="node"><b>铜缆遇瓶颈</b><small>距离、功耗、信号衰减成为约束。</small></div>
+              <div class="node"><b>光互联 / CPO</b><small>光模块、交换机、PCB 是第一受益层。</small></div>
+              <div class="node"><b>AIDC 和电力</b><small>高密度机房继续推升电源、液冷、配电需求。</small></div>
+            </div>
+          </div>
+
+          <div class="message">
+            <div class="message-top">
+              <h2>英特尔：盘后大涨</h2>
+              <span class="pill">代工重估</span>
+            </div>
+            <div class="chain">
+              <div class="node"><b>Apple 代工预期</b><small>市场交易 Intel Foundry 客户突破。</small></div>
+              <div class="node"><b>美国制造溢价</b><small>政策支持与本土先进制造被重估。</small></div>
+              <div class="node"><b>半导体情绪</b><small>先进制造、封装、设备链风险偏好提高。</small></div>
+              <div class="node"><b>国产芯片映射</b><small>中芯国际偏情绪跟随，不是直接订单利好。</small></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="impact" aria-label="影响排序">
+          <h2>影响强弱排序</h2>
+          <div class="impact-grid">
+            <div class="bars">
+              <div class="bar-row"><b>光模块 / CPO / PCB / 交换机</b><div class="track"><div class="fill" style="width: 96%;"></div></div><span class="grade">第一受益层</span></div>
+              <div class="bar-row"><b>AIDC 承载</b><div class="track"><div class="fill" style="width: 78%;"></div></div><span class="grade">润泽 / 光环</span></div>
+              <div class="bar-row"><b>液冷 / 电源 / 储能</b><div class="track"><div class="fill" style="width: 62%;"></div></div><span class="grade">阳光电源</span></div>
+              <div class="bar-row"><b>国产芯片</b><div class="track"><div class="fill" style="width: 55%;"></div></div><span class="grade">中芯情绪</span></div>
+              <div class="bar-row"><b>电力资源 / 数字电网</b><div class="track"><div class="fill" style="width: 38%;"></div></div><span class="grade">第二层传导</span></div>
+              <div class="bar-row"><b>纯电力运营</b><div class="track"><div class="fill" style="width: 28%;"></div></div><span class="grade">需事件确认</span></div>
+            </div>
+            <div class="signal-card">
+              <h3>判断标准</h3>
+              <p>不要把“海外 AI 消息”直接等同于“电力股强利好”。要看 A 股盘面有没有资金确认。</p>
+              <div class="signal-list">
+                <div class="signal"><span class="dot green"></span><span>强确认：AIDC、光互联、液冷电源同步放量。</span></div>
+                <div class="signal"><span class="dot amber"></span><span>中确认：阳光电源、中芯国际情绪修复但持续性待看。</span></div>
+                <div class="signal"><span class="dot red"></span><span>弱确认：协鑫、南网、大唐没有订单/资金验证，只按观察处理。</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="stock-map" aria-label="看板个股映射">
+          <div class="stock-card">
+            <span class="level high">优先盯</span>
+            <strong>润泽科技 / 光环新网</strong>
+            <p>AIDC 承载层。看资金是否回流、上架率和客户包销是否有新证据。</p>
+          </div>
+          <div class="stock-card">
+            <span class="level mid">中等传导</span>
+            <strong>阳光电源 / 中芯国际</strong>
+            <p>阳光看储能、电源、AIDC 产品订单；中芯看半导体情绪修复，不按电力逻辑重仓解释。</p>
+          </div>
+          <div class="stock-card">
+            <span class="level low">等待确认</span>
+            <strong>协鑫能科 / 南网数字 / 大唐发电</strong>
+            <p>电力链需要绿电直供、长协电价、算电协同项目或龙虎榜资金连续性确认。</p>
+          </div>
+        </section>
+
+        <section class="bottom-line">
+          <b>一句话结论</b>
+          <span>这两条消息短线更偏“算力硬件/AIDC 承载”逻辑；电力资源股是后排传导，不能直接当强利好处理。</span>
+        </section>
+
+        <footer>
+          <span>生成时间：2026-05-09 · 本地研究图表</span>
+          <span>用途：消息传导梳理，不构成投资建议</span>
+        </footer>
+      </div>
+    </article>
+  </div>
+</body>
+</html>

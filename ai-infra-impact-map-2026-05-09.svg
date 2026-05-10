@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1100" viewBox="0 0 1400 1100">
+  <defs>
+    <linearGradient id="hero" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#182433"/>
+      <stop offset="1" stop-color="#253247"/>
+    </linearGradient>
+    <linearGradient id="bar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22c55e"/>
+      <stop offset="1" stop-color="#38bdf8"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="24" stdDeviation="26" flood-color="#17212f" flood-opacity="0.14"/>
+    </filter>
+    <style>
+      .bg { fill: #edf2f6; }
+      .poster { fill: #ffffff; stroke: #d9e2ec; stroke-width: 1.4; filter: url(#shadow); }
+      .ink { fill: #17212f; }
+      .muted { fill: #5f6d7e; }
+      .white { fill: #ffffff; }
+      .small { font: 400 22px -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif; }
+      .tiny { font: 400 18px -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif; }
+      .body { font: 400 24px -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif; }
+      .bodyb { font: 700 24px -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif; }
+      .h1 { font: 800 58px -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif; }
+      .h2 { font: 800 34px -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif; }
+      .h3 { font: 800 28px -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif; }
+      .label { font: 800 18px -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif; }
+      .box { fill: #fbfdff; stroke: #d9e2ec; stroke-width: 1.4; }
+      .node { fill: #ffffff; stroke: #d9e2ec; stroke-width: 1.4; }
+      .pill { fill: #e6f7fb; }
+      .pillText { fill: #0e7490; font: 800 18px -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Arial, sans-serif; }
+      .greenText { fill: #15803d; }
+      .amberText { fill: #a16207; }
+      .redText { fill: #b42318; }
+      .track { fill: rgba(255,255,255,0.15); }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1400" height="1100"/>
+  <rect class="poster" x="70" y="54" width="1260" height="992" rx="28"/>
+
+  <rect x="70" y="54" width="1260" height="284" rx="28" fill="url(#hero)"/>
+  <text x="118" y="118" fill="#9bd8ee" class="label" letter-spacing="2">AI INFRA TRANSMISSION MAP</text>
+  <text x="118" y="190" class="h1 white">两条海外消息，怎么传导到</text>
+  <text x="118" y="258" class="h1 white">电力 / AIDC / 算电协同？</text>
+  <text x="118" y="306" fill="#c8d5e2" class="body">先抬升算力硬件与 AIDC 承载，再向储能、电源、液冷和绿电直供扩散。</text>
+
+  <rect x="1018" y="104" width="250" height="168" rx="22" fill="rgba(255,255,255,0.09)" stroke="rgba(255,255,255,0.22)"/>
+  <rect x="1042" y="128" width="92" height="34" rx="17" fill="#a7f3d0"/>
+  <text x="1064" y="151" class="label" fill="#17212f">结论</text>
+  <text x="1042" y="202" class="bodyb white">先看算力硬件</text>
+  <text x="1042" y="236" class="bodyb white">和 AIDC</text>
+
+  <rect class="box" x="118" y="386" width="566" height="230" rx="24"/>
+  <rect class="box" x="716" y="386" width="566" height="230" rx="24"/>
+  <rect class="pill" x="146" y="420" width="92" height="36" rx="18"/>
+  <text x="166" y="444" class="pillText">消息 1</text>
+  <text x="260" y="448" class="h2 ink">英伟达：铜转光</text>
+  <rect class="pill" x="744" y="420" width="92" height="36" rx="18"/>
+  <text x="764" y="444" class="pillText">消息 2</text>
+  <text x="858" y="448" class="h2 ink">英特尔：盘后大涨</text>
+
+  <g transform="translate(146 482)">
+    <rect class="node" width="118" height="100" rx="16"/>
+    <text x="18" y="34" class="bodyb ink">GPU</text><text x="18" y="66" class="tiny muted">集群扩大</text>
+    <rect class="node" x="132" width="118" height="100" rx="16"/>
+    <text x="150" y="34" class="bodyb ink">铜缆</text><text x="150" y="66" class="tiny muted">功耗瓶颈</text>
+    <rect class="node" x="264" width="118" height="100" rx="16"/>
+    <text x="282" y="34" class="bodyb ink">光互联</text><text x="282" y="66" class="tiny muted">CPO/PCB</text>
+    <rect class="node" x="396" width="118" height="100" rx="16"/>
+    <text x="414" y="34" class="bodyb ink">AIDC</text><text x="414" y="66" class="tiny muted">机房承载</text>
+    <path d="M120 50 L130 50 M252 50 L262 50 M384 50 L394 50" stroke="#94a3b8" stroke-width="3"/>
+  </g>
+
+  <g transform="translate(744 482)">
+    <rect class="node" width="118" height="100" rx="16"/>
+    <text x="18" y="34" class="bodyb ink">Apple</text><text x="18" y="66" class="tiny muted">代工预期</text>
+    <rect class="node" x="132" width="118" height="100" rx="16"/>
+    <text x="150" y="34" class="bodyb ink">政策</text><text x="150" y="66" class="tiny muted">制造溢价</text>
+    <rect class="node" x="264" width="118" height="100" rx="16"/>
+    <text x="282" y="34" class="bodyb ink">代工链</text><text x="282" y="66" class="tiny muted">先进制造</text>
+    <rect class="node" x="396" width="118" height="100" rx="16"/>
+    <text x="414" y="34" class="bodyb ink">国产芯片</text><text x="414" y="66" class="tiny muted">情绪映射</text>
+    <path d="M120 50 L130 50 M252 50 L262 50 M384 50 L394 50" stroke="#94a3b8" stroke-width="3"/>
+  </g>
+
+  <rect x="118" y="660" width="1164" height="244" rx="26" fill="#182433"/>
+  <text x="154" y="716" class="h2 white">影响强弱排序</text>
+  <g transform="translate(154 750)">
+    <text y="0" class="bodyb white">光模块 / CPO / PCB / 交换机</text>
+    <rect x="360" y="-18" width="560" height="20" rx="10" fill="#334155"/>
+    <rect x="360" y="-18" width="538" height="20" rx="10" fill="url(#bar)"/>
+    <text x="950" y="0" fill="#cbd5e1" class="tiny">第一受益层</text>
+
+    <text y="38" class="bodyb white">AIDC 承载</text>
+    <rect x="360" y="20" width="560" height="20" rx="10" fill="#334155"/>
+    <rect x="360" y="20" width="437" height="20" rx="10" fill="url(#bar)"/>
+    <text x="950" y="38" fill="#cbd5e1" class="tiny">润泽 / 光环</text>
+
+    <text y="76" class="bodyb white">液冷 / 电源 / 储能</text>
+    <rect x="360" y="58" width="560" height="20" rx="10" fill="#334155"/>
+    <rect x="360" y="58" width="347" height="20" rx="10" fill="url(#bar)"/>
+    <text x="950" y="76" fill="#cbd5e1" class="tiny">阳光电源</text>
+
+    <text y="114" class="bodyb white">国产芯片</text>
+    <rect x="360" y="96" width="560" height="20" rx="10" fill="#334155"/>
+    <rect x="360" y="96" width="308" height="20" rx="10" fill="url(#bar)"/>
+    <text x="950" y="114" fill="#cbd5e1" class="tiny">中芯情绪</text>
+
+    <text y="152" class="bodyb white">电力资源 / 数字电网</text>
+    <rect x="360" y="134" width="560" height="20" rx="10" fill="#334155"/>
+    <rect x="360" y="134" width="213" height="20" rx="10" fill="url(#bar)"/>
+    <text x="950" y="152" fill="#cbd5e1" class="tiny">第二层传导</text>
+  </g>
+
+  <g transform="translate(118 936)">
+    <rect class="node" width="360" height="76" rx="20"/>
+    <text x="28" y="34" class="bodyb greenText">优先盯：润泽 / 光环</text>
+    <text x="28" y="61" class="tiny muted">看资金回流、上架率、客户包销。</text>
+    <rect class="node" x="402" width="360" height="76" rx="20"/>
+    <text x="430" y="34" class="bodyb amberText">中等传导：阳光 / 中芯</text>
+    <text x="430" y="61" class="tiny muted">看订单落地和半导体情绪持续性。</text>
+    <rect class="node" x="804" width="360" height="76" rx="20"/>
+    <text x="832" y="34" class="bodyb redText">等待确认：协鑫 / 南网 / 大唐</text>
+    <text x="832" y="61" class="tiny muted">需要绿电直供、长协电价、资金验证。</text>
+  </g>
+
+  <text x="118" y="1038" class="small muted">一句话：这两条消息短线更偏“算力硬件 / AIDC 承载”，电力资源股是后排传导，不能直接当强利好处理。</text>
+</svg>
