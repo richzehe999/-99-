@@ -1,0 +1,28 @@
+===== 2026-05-09 22:30:50 =====
+入口版本: command-v6-2026-05-09
+工作目录: /Users/wuzehe/Documents/New project
+Node 路径: /Users/wuzehe/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node
+v24.14.0
+更新脚本: /Users/wuzehe/Documents/New project/update-power-aidc-data.js
+更新脚本时间: May  9 22:09:39 2026
+
+正在检查更新脚本...
+
+正在更新电力 / AIDC 看板...
+脚本版本: quotes-eastmoney-v6-2026-05-09
+Updated /Users/wuzehe/Documents/New project/power-aidc-dashboard.html
+Snapshot /Users/wuzehe/Documents/New project/data/quotes.json
+Log /Users/wuzehe/Documents/New project/logs/update.log
+行情源: 东方财富
+大盘指数: 未更新；node: getaddrinfo ENOTFOUND push2.eastmoney.com; curl: curl: (6) Could not resolve host: push2.eastmoney.com
+协鑫能科 002015: price=20.38 pct=-1.02% amount=30.12 亿元 main=-2.00 亿元
+阳光电源 300274: price=139.85 pct=+0.25% amount=86.80 亿元 main=+9770.81 万元
+南网数字 301638: price=30.09 pct=-1.44% amount=11.14 亿元 main=-1.01 亿元
+润泽科技 300442: price=98.08 pct=+0.65% amount=65.11 亿元 main=+1.65 亿元
+中芯国际 688981: price=120.31 pct=-4.01% amount=85.96 亿元 main=-12.21 亿元
+光环新网 300383: price=17.22 pct=-1.82% amount=17.21 亿元 main=-1.43 亿元
+
+更新完成，正在打开看板。
+No application knows how to open URL file:///Users/wuzehe/Documents/New%20project/power-aidc-dashboard.html (Error Domain=NSOSStatusErrorDomain Code=-10661 "kLSExecutableIncorrectFormat: No compatible executable was found" UserInfo={_LSLine=1970, _LSFunction=runEvaluator, _LSFile=LSBindingEvaluator.mm, _LSErrorMessage=kLSExecutableIncorrectFormat}).
+
+退出码: 0

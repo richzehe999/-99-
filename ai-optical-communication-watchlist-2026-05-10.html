@@ -1,0 +1,820 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI算力硬件｜光通信潜力观察池</title>
+  <style>
+    :root {
+      --ink: #17202a;
+      --muted: #64748b;
+      --line: #d8e1eb;
+      --paper: #f5f7fa;
+      --panel: #ffffff;
+      --nav: #1c2733;
+      --blue: #2563eb;
+      --cyan: #0891b2;
+      --green: #168056;
+      --amber: #b7791f;
+      --red: #c4493d;
+      --violet: #7c3aed;
+      --soft-blue: #e9f1ff;
+      --soft-cyan: #e6f7fb;
+      --soft-green: #e7f4ee;
+      --soft-amber: #fff5df;
+      --soft-red: #fff0ee;
+      --soft-violet: #f0eaff;
+      --shadow: 0 18px 45px rgba(23, 32, 42, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      line-height: 1.55;
+    }
+
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .layout {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 268px minmax(0, 1fr);
+    }
+
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 24px 18px;
+      color: #eef5fb;
+      background: var(--nav);
+      overflow-y: auto;
+    }
+
+    .brand {
+      display: flex;
+      gap: 11px;
+      align-items: center;
+      margin-bottom: 26px;
+    }
+
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, #46c2d8 0 34%, transparent 34%),
+        linear-gradient(225deg, #7c3aed 0 42%, transparent 42%),
+        linear-gradient(315deg, #f4b63f 0 42%, #2563eb 42%);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.26);
+    }
+
+    .brand-title {
+      font-size: 15px;
+      font-weight: 780;
+      line-height: 1.25;
+    }
+
+    .brand-sub {
+      margin-top: 2px;
+      color: #aebdcc;
+      font-size: 12px;
+    }
+
+    nav {
+      display: grid;
+      gap: 4px;
+      margin-bottom: 24px;
+    }
+
+    nav a {
+      display: block;
+      padding: 8px 10px;
+      border-radius: 6px;
+      color: #dce6f0;
+      font-size: 13px;
+    }
+
+    nav a:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+      text-decoration: none;
+    }
+
+    .note {
+      padding: 13px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 8px;
+      color: #d6e1ec;
+      background: rgba(255, 255, 255, 0.05);
+      font-size: 12px;
+    }
+
+    main { min-width: 0; }
+
+    .hero {
+      color: #fff;
+      background:
+        linear-gradient(90deg, rgba(22, 37, 51, 0.98), rgba(16, 79, 91, 0.9)),
+        repeating-linear-gradient(120deg, rgba(255,255,255,0.13) 0 1px, transparent 1px 18px);
+      padding: 42px 38px 30px;
+    }
+
+    .hero-inner, .content {
+      max-width: 1220px;
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      margin-bottom: 12px;
+      color: #b8edf4;
+      font-size: 13px;
+      font-weight: 740;
+    }
+
+    h1 {
+      max-width: 900px;
+      margin: 0;
+      font-size: 38px;
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      max-width: 900px;
+      margin: 14px 0 22px;
+      color: #dce8ef;
+      font-size: 16px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 22px;
+    }
+
+    .metric {
+      min-height: 98px;
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .metric-label {
+      color: #bfd0dc;
+      font-size: 12px;
+    }
+
+    .metric-value {
+      margin-top: 6px;
+      font-size: 23px;
+      font-weight: 780;
+      line-height: 1.15;
+    }
+
+    .metric-note {
+      margin-top: 5px;
+      color: #dbe8ef;
+      font-size: 12px;
+    }
+
+    .content {
+      padding: 28px 38px 54px;
+    }
+
+    section { margin-bottom: 30px; }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 14px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    .section-note {
+      color: var(--muted);
+      font-size: 13px;
+      text-align: right;
+    }
+
+    .grid-2, .grid-3, .grid-4 {
+      display: grid;
+      gap: 14px;
+    }
+
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+    .card {
+      padding: 17px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .card.flat { box-shadow: none; }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 740;
+      white-space: nowrap;
+    }
+
+    .tag-blue { color: #1556ac; background: var(--soft-blue); }
+    .tag-cyan { color: #076579; background: var(--soft-cyan); }
+    .tag-green { color: #116843; background: var(--soft-green); }
+    .tag-amber { color: #825008; background: var(--soft-amber); }
+    .tag-red { color: #9e2e25; background: var(--soft-red); }
+    .tag-violet { color: #5b21b6; background: var(--soft-violet); }
+
+    .map {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr 1fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .map-col {
+      display: grid;
+      gap: 10px;
+    }
+
+    .map-node {
+      padding: 13px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .map-node strong {
+      display: block;
+      margin: 6px 0 4px;
+      font-size: 15px;
+    }
+
+    .map-node span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .center-node {
+      display: grid;
+      place-content: center;
+      min-height: 280px;
+      text-align: center;
+      border: 1px solid #a7dce4;
+      border-radius: 8px;
+      background:
+        radial-gradient(circle at 50% 38%, rgba(8, 145, 178, 0.16), transparent 48%),
+        #ffffff;
+      box-shadow: var(--shadow);
+    }
+
+    .center-node .big {
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    .center-node p {
+      max-width: 360px;
+      margin: 10px auto 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .watch-card {
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      min-height: 222px;
+      gap: 9px;
+    }
+
+    .watch-card h3 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.2;
+    }
+
+    .codes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .code-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 8px;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+      background: #f8fafc;
+      font-size: 12px;
+      font-weight: 720;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .watch-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .strength {
+      display: grid;
+      grid-template-columns: 76px 1fr 42px;
+      align-items: center;
+      gap: 9px;
+      margin-top: 4px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .bar {
+      height: 9px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      overflow: hidden;
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--cyan), var(--blue));
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    table {
+      width: 100%;
+      min-width: 980px;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th, td {
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: #334255;
+      background: #eef2f6;
+      font-size: 12px;
+      font-weight: 780;
+      white-space: nowrap;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+    .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+    .checklist {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .check {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .check-icon {
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      color: #fff;
+      background: var(--cyan);
+      font-weight: 800;
+    }
+
+    .check strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 14px;
+    }
+
+    .check span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .risk-row {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .risk {
+      min-height: 138px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .risk strong {
+      display: block;
+      margin: 8px 0 5px;
+    }
+
+    .risk span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .disclaimer {
+      padding: 14px 16px;
+      border: 1px solid #f1c9c3;
+      border-radius: 8px;
+      color: #71322d;
+      background: #fff6f4;
+      font-size: 13px;
+    }
+
+    @media (max-width: 1020px) {
+      .layout { display: block; }
+      aside { position: static; height: auto; }
+      nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .hero, .content { padding-left: 22px; padding-right: 22px; }
+      .hero-grid, .grid-4, .map, .risk-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .center-node { grid-column: 1 / -1; min-height: 210px; }
+    }
+
+    @media (max-width: 680px) {
+      h1 { font-size: 28px; }
+      .hero-grid, .grid-2, .grid-3, .grid-4, .map, .checklist, .risk-row, nav {
+        grid-template-columns: 1fr;
+      }
+      .section-head { display: block; }
+      .section-note { margin-top: 6px; text-align: left; }
+      .center-node { min-height: 190px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside>
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div>
+          <div class="brand-title">AI算力硬件</div>
+          <div class="brand-sub">光通信观察池</div>
+        </div>
+      </div>
+      <nav aria-label="页面目录">
+        <a href="#summary">核心结论</a>
+        <a href="#map">产业链地图</a>
+        <a href="#pool">分层观察池</a>
+        <a href="#table">个股矩阵</a>
+        <a href="#verify">盘面验证</a>
+        <a href="#risk">风险提示</a>
+      </nav>
+      <div class="note">
+        生成时间：2026-05-10。内容用于研究观察，不构成买卖、持有、仓位或目标价建议。
+      </div>
+    </aside>
+
+    <main>
+      <header class="hero" id="summary">
+        <div class="hero-inner">
+          <div class="eyebrow">CPO｜800G/1.6T｜光芯片｜空芯光纤｜AI数据中心</div>
+          <h1>光通信主线的核心不是概念多，而是订单、速率升级和供给瓶颈能否继续兑现</h1>
+          <p>
+            当前光通信可以拆成四层：最强确定性在光模块龙头，最高弹性在CPO扩散，最强预期差在上游瓶颈，底层增量在光纤光缆与空芯光纤。
+          </p>
+          <div class="hero-grid">
+            <div class="metric">
+              <div class="metric-label">主线优先级</div>
+              <div class="metric-value">第一梯队</div>
+              <div class="metric-note">AI算力硬件内最强分支之一</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">核心验证</div>
+              <div class="metric-value">量价齐升</div>
+              <div class="metric-note">800G放量，1.6T上量，CPO推进</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">主要风险</div>
+              <div class="metric-value">估值拥挤</div>
+              <div class="metric-note">高开兑现和订单低预期</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">观察方法</div>
+              <div class="metric-value">先龙头后扩散</div>
+              <div class="metric-note">不只看后排概念活跃</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="content">
+        <section id="map">
+          <div class="section-head">
+            <h2>产业链地图</h2>
+            <div class="section-note">从AI资本开支到A股光通信映射</div>
+          </div>
+          <div class="map">
+            <div class="map-col">
+              <div class="map-node">
+                <span class="tag tag-blue">需求端</span>
+                <strong>北美云厂商资本开支</strong>
+                <span>AI集群扩容带来高速光互连需求。</span>
+              </div>
+              <div class="map-node">
+                <span class="tag tag-cyan">技术端</span>
+                <strong>800G主导，1.6T上量</strong>
+                <span>速率升级决定龙头产品结构和毛利率。</span>
+              </div>
+              <div class="map-node">
+                <span class="tag tag-violet">架构端</span>
+                <strong>CPO / LPO / 硅光</strong>
+                <span>新架构推动光引擎、连接器和材料升级。</span>
+              </div>
+            </div>
+            <div class="center-node">
+              <div class="big">光通信主线</div>
+              <p>最强标的通常具备客户绑定、速率升级、产能交付、上游控制和海外制造能力。</p>
+            </div>
+            <div class="map-col">
+              <div class="map-node">
+                <span class="tag tag-green">成品端</span>
+                <strong>光模块 / CPO</strong>
+                <span>业绩弹性最直接，估值也最敏感。</span>
+              </div>
+              <div class="map-node">
+                <span class="tag tag-amber">上游端</span>
+                <strong>光芯片 / 激光器 / 器件</strong>
+                <span>供给瓶颈和国产替代是核心预期差。</span>
+              </div>
+              <div class="map-node">
+                <span class="tag tag-red">底层端</span>
+                <strong>光纤光缆 / 空芯光纤</strong>
+                <span>AI网络底座、海缆和长距离传输共同驱动。</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="pool">
+          <div class="section-head">
+            <h2>分层观察池</h2>
+            <div class="section-note">按确定性、弹性、瓶颈和底层资产分类</div>
+          </div>
+          <div class="grid-4">
+            <div class="card watch-card">
+              <span class="tag tag-blue">第一梯队</span>
+              <h3>光模块 / CPO核心龙头</h3>
+              <div class="codes">
+                <span class="code-pill">300308 中际旭创</span>
+                <span class="code-pill">300502 新易盛</span>
+                <span class="code-pill">300394 天孚通信</span>
+                <span class="code-pill">002281 光迅科技</span>
+              </div>
+              <p>主线最正，机构资金容易抱团。重点看1.6T上量、海外客户订单和毛利率。</p>
+              <div class="strength"><span>确定性</span><div class="bar"><span style="width:92%"></span></div><b>高</b></div>
+            </div>
+            <div class="card watch-card">
+              <span class="tag tag-violet">第二梯队</span>
+              <h3>弹性补涨 / CPO扩散</h3>
+              <div class="codes">
+                <span class="code-pill">301205 联特科技</span>
+                <span class="code-pill">300570 太辰光</span>
+                <span class="code-pill">603083 剑桥科技</span>
+                <span class="code-pill">300548 博创科技</span>
+                <span class="code-pill">688205 德科立</span>
+              </div>
+              <p>用于观察板块扩散强度。强势时弹性大，退潮时波动也更明显。</p>
+              <div class="strength"><span>弹性</span><div class="bar"><span style="width:88%"></span></div><b>高</b></div>
+            </div>
+            <div class="card watch-card">
+              <span class="tag tag-amber">第三梯队</span>
+              <h3>上游光芯片 / 器件瓶颈</h3>
+              <div class="codes">
+                <span class="code-pill">688498 源杰科技</span>
+                <span class="code-pill">688048 长光华芯</span>
+                <span class="code-pill">688313 仕佳光子</span>
+                <span class="code-pill">300620 光库科技</span>
+                <span class="code-pill">000988 华工科技</span>
+              </div>
+              <p>供给瓶颈、国产替代和关键器件涨价预期，是向上游扩散时的重点。</p>
+              <div class="strength"><span>预期差</span><div class="bar"><span style="width:78%"></span></div><b>中高</b></div>
+            </div>
+            <div class="card watch-card">
+              <span class="tag tag-green">第四梯队</span>
+              <h3>光纤光缆 / 空芯光纤</h3>
+              <div class="codes">
+                <span class="code-pill">600487 亨通光电</span>
+                <span class="code-pill">601869 长飞光纤</span>
+                <span class="code-pill">600522 中天科技</span>
+                <span class="code-pill">600498 烽火通信</span>
+              </div>
+              <p>看光纤涨价、空芯光纤、海缆和运营商链条，偏中期底层资产映射。</p>
+              <div class="strength"><span>中期度</span><div class="bar"><span style="width:74%"></span></div><b>中高</b></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="table">
+          <div class="section-head">
+            <h2>个股矩阵</h2>
+            <div class="section-note">用“逻辑强度 + 风险点”做观察，不输出交易指令</div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>层级</th>
+                  <th>标的</th>
+                  <th>细分定位</th>
+                  <th>核心看点</th>
+                  <th>主要风险</th>
+                  <th>盘面观察</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="tag tag-blue">核心龙头</span></td>
+                  <td class="num">300308 中际旭创</td>
+                  <td>全球高速光模块龙头</td>
+                  <td>800G和1.6T最直接，北美云厂商需求强。</td>
+                  <td>估值高，业绩容错率低。</td>
+                  <td>看是否能稳住板块中军位置。</td>
+                </tr>
+                <tr>
+                  <td><span class="tag tag-blue">核心龙头</span></td>
+                  <td class="num">300502 新易盛</td>
+                  <td>高弹性光模块</td>
+                  <td>LPO、1.6T、海外产能扩张。</td>
+                  <td>增收与增利匹配度需要验证。</td>
+                  <td>看是否与中际旭创同步放量。</td>
+                </tr>
+                <tr>
+                  <td><span class="tag tag-blue">核心龙头</span></td>
+                  <td class="num">300394 天孚通信</td>
+                  <td>光器件与光引擎平台</td>
+                  <td>CPO链条核心器件，客户质量高。</td>
+                  <td>涨幅和估值敏感。</td>
+                  <td>看器件端能否领先扩散。</td>
+                </tr>
+                <tr>
+                  <td><span class="tag tag-violet">弹性扩散</span></td>
+                  <td class="num">301205 联特科技</td>
+                  <td>小市值光模块弹性</td>
+                  <td>本地hotstock样例池进入核心池，主题弹性高。</td>
+                  <td>样例数据需人工核验，波动较大。</td>
+                  <td>看是否继续放量而非一日脉冲。</td>
+                </tr>
+                <tr>
+                  <td><span class="tag tag-violet">弹性扩散</span></td>
+                  <td class="num">300570 太辰光</td>
+                  <td>光连接器与CPO组件</td>
+                  <td>MPO/MTP、光纤连接组件受益CPO。</td>
+                  <td>题材波动大，兑现速度快。</td>
+                  <td>看是否承接龙头分歧资金。</td>
+                </tr>
+                <tr>
+                  <td><span class="tag tag-amber">上游瓶颈</span></td>
+                  <td class="num">688498 源杰科技</td>
+                  <td>高速激光器芯片</td>
+                  <td>国产替代和关键上游供给瓶颈。</td>
+                  <td>订单兑现节奏可能低于预期。</td>
+                  <td>看光模块强势后是否向上游轮动。</td>
+                </tr>
+                <tr>
+                  <td><span class="tag tag-amber">上游瓶颈</span></td>
+                  <td class="num">300620 光库科技</td>
+                  <td>铌酸锂与光纤器件</td>
+                  <td>高速调制器和光纤器件具备CPO预期。</td>
+                  <td>估值和订单均需验证。</td>
+                  <td>看是否跟随CPO细分走强。</td>
+                </tr>
+                <tr>
+                  <td><span class="tag tag-green">光纤光缆</span></td>
+                  <td class="num">600487 亨通光电</td>
+                  <td>光纤光缆、海缆、空芯光纤</td>
+                  <td>海缆订单、海外收入、AI网络底层传输。</td>
+                  <td>近期估值和涨幅不低。</td>
+                  <td>看光纤光缆能否从补涨变趋势。</td>
+                </tr>
+                <tr>
+                  <td><span class="tag tag-green">光纤光缆</span></td>
+                  <td class="num">601869 长飞光纤</td>
+                  <td>光棒光纤龙头</td>
+                  <td>光棒、光纤、空芯光纤与行业量价修复。</td>
+                  <td>流动性和估值波动。</td>
+                  <td>看是否与亨通、中天形成板块效应。</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="verify">
+          <div class="section-head">
+            <h2>周一盘面验证清单</h2>
+            <div class="section-note">强趋势需要龙头稳住，再看扩散质量</div>
+          </div>
+          <div class="checklist">
+            <div class="check">
+              <div class="check-icon">1</div>
+              <div><strong>龙头是否稳住</strong><span>中际旭创、新易盛、天孚通信不能集体高开低走，否则板块容易进入兑现。</span></div>
+            </div>
+            <div class="check">
+              <div class="check-icon">2</div>
+              <div><strong>扩散是否健康</strong><span>从光模块扩散到光芯片、连接器、光纤光缆，强度比单点连板更重要。</span></div>
+            </div>
+            <div class="check">
+              <div class="check-icon">3</div>
+              <div><strong>成交是否承接</strong><span>板块需要持续放量承接，高开缩量容易变成短线兑现。</span></div>
+            </div>
+            <div class="check">
+              <div class="check-icon">4</div>
+              <div><strong>是否被其他题材抽血</strong><span>商业航天、人形机器人若同步强，光通信后排可能分化。</span></div>
+            </div>
+            <div class="check">
+              <div class="check-icon">5</div>
+              <div><strong>上游是否接力</strong><span>源杰科技、光库科技、仕佳光子等若接力，说明资金在挖掘瓶颈环节。</span></div>
+            </div>
+            <div class="check">
+              <div class="check-icon">6</div>
+              <div><strong>光纤光缆是否成组表现</strong><span>亨通光电、长飞光纤、中天科技若同步走强，说明底层资产逻辑被认可。</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="risk">
+          <div class="section-head">
+            <h2>风险提示</h2>
+            <div class="section-note">强主线不等于低风险</div>
+          </div>
+          <div class="risk-row">
+            <div class="risk">
+              <span class="tag tag-red">估值</span>
+              <strong>高景气已被提前定价</strong>
+              <span>若业绩、订单或毛利率低于预期，估值压缩会很快。</span>
+            </div>
+            <div class="risk">
+              <span class="tag tag-amber">交易</span>
+              <strong>一致性高开容易兑现</strong>
+              <span>周一如果开盘太一致，重点看承接而不是只看涨幅。</span>
+            </div>
+            <div class="risk">
+              <span class="tag tag-violet">订单</span>
+              <strong>客户集中度与海外变量</strong>
+              <span>北美云厂商资本开支、供应链和贸易政策都会影响预期。</span>
+            </div>
+            <div class="risk">
+              <span class="tag tag-cyan">技术</span>
+              <strong>路线切换带来分化</strong>
+              <span>CPO、LPO、硅光、1.6T、3.2T推进节奏不同，个股分化会加大。</span>
+            </div>
+          </div>
+          <div class="disclaimer" style="margin-top:14px;">
+            本页是对光通信方向的研究可视化整理，仅用于复盘和观察清单管理，不构成任何证券买卖、持有、仓位、目标价或收益承诺建议。
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

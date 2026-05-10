@@ -1,0 +1,45 @@
+# Hotstock Quant Skill Configuration
+
+market:
+  default: "A-share"
+  timezone: "Asia/Shanghai"
+
+themes:
+  NVIDIA:
+    keywords: ["NVIDIA", "英伟达", "GPU", "AI服务器", "GB200", "NVLink", "CUDA", "算力"]
+  AMD:
+    keywords: ["AMD", "MI300", "MI350", "GPU", "AI芯片", "CPU", "数据中心"]
+  optical_modules:
+    keywords: ["光模块", "CPO", "硅光", "800G", "1.6T", "光通信"]
+  pcb:
+    keywords: ["PCB", "HDI", "载板", "AI服务器PCB", "高速板"]
+  copper_connection:
+    keywords: ["铜连接", "高速线缆", "DAC", "高速连接器", "液冷服务器"]
+
+screening:
+  market_cap_max_cny: 30000000000
+  turnover_min_cny: 300000000
+  price_change_min_pct: 3
+  exclude_st: true
+  exclude_new_stock_days: 60
+
+scoring:
+  theme_relevance_weight: 0.30
+  capital_strength_weight: 0.25
+  trend_strength_weight: 0.20
+  market_cap_elasticity_weight: 0.15
+  catalyst_quality_weight: 0.10
+
+pools:
+  core_threshold: 80
+  watch_threshold: 60
+
+backtest:
+  initial_cash: 100000
+  commission_rate: 0.0003
+  slippage_rate: 0.0005
+  benchmark: "沪深300"
+
+risk:
+  default_stop_loss_pct: 8
+  default_take_profit_pct: 20

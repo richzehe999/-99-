@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A股研究总入口</title>
+  <style>
+    :root {
+      --bg: #f6f4ef;
+      --panel: #ffffff;
+      --ink: #1d2228;
+      --muted: #65707a;
+      --line: #d9ddd8;
+      --green: #0f7b62;
+      --blue: #275f8f;
+      --red: #b64035;
+      --amber: #9b6a18;
+      --soft-green: #e6f3ee;
+      --soft-blue: #e9f0f7;
+      --soft-red: #f7e9e7;
+      --soft-amber: #f5eddc;
+      --shadow: 0 18px 45px rgba(39, 43, 48, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      line-height: 1.55;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 44px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 0 24px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand strong {
+      font-size: 19px;
+      letter-spacing: 0;
+    }
+
+    .brand span,
+    .updated {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .updated {
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.72);
+      border-radius: 8px;
+      white-space: nowrap;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+      gap: 22px;
+      align-items: stretch;
+      padding: 32px 0 26px;
+    }
+
+    .hero-main {
+      padding: 28px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 760px;
+      font-size: clamp(32px, 4.2vw, 56px);
+      line-height: 1.04;
+      letter-spacing: 0;
+    }
+
+    .hero-main p {
+      margin: 18px 0 0;
+      max-width: 760px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .decision-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .decision {
+      min-height: 92px;
+      padding: 13px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfbf8;
+    }
+
+    .decision b {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+
+    .decision span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .daily-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 22px;
+      background: #22272b;
+      color: #fff;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .daily-panel h2,
+    .section-head h2,
+    .card h3,
+    .workflow h3 {
+      margin: 0;
+      letter-spacing: 0;
+    }
+
+    .daily-panel p {
+      margin: 0;
+      color: #cad2d7;
+      font-size: 14px;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .metric {
+      padding: 12px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 8px;
+    }
+
+    .metric span {
+      display: block;
+      color: #aeb9c0;
+      font-size: 12px;
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 2px;
+      font-size: 18px;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: auto;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .button.dark {
+      border-color: rgba(255,255,255,0.22);
+      background: #fff;
+      color: #20262b;
+    }
+
+    .button.secondary {
+      background: transparent;
+      color: #fff;
+      border-color: rgba(255,255,255,0.3);
+    }
+
+    .section {
+      margin-top: 18px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: end;
+      margin: 0 0 12px;
+    }
+
+    .section-head p {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .grid.two {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card,
+    .workflow {
+      padding: 18px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: 0 10px 28px rgba(40, 45, 50, 0.05);
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      min-height: 265px;
+    }
+
+    .tag {
+      align-self: flex-start;
+      margin-bottom: 12px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .green { background: var(--soft-green); color: var(--green); }
+    .blue { background: var(--soft-blue); color: var(--blue); }
+    .red { background: var(--soft-red); color: var(--red); }
+    .amber { background: var(--soft-amber); color: var(--amber); }
+
+    .card h3 {
+      font-size: 20px;
+      line-height: 1.25;
+    }
+
+    .card p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .fields {
+      display: grid;
+      gap: 8px;
+      margin: 14px 0 18px;
+      padding: 0;
+      list-style: none;
+      color: var(--ink);
+      font-size: 13px;
+    }
+
+    .fields li {
+      display: grid;
+      grid-template-columns: 68px 1fr;
+      gap: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--line);
+    }
+
+    .fields b {
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .card .button-row {
+      margin-top: auto;
+    }
+
+    .data-list,
+    .commands {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .data-list li,
+    .commands li {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 14px;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .data-list li:last-child,
+    .commands li:last-child {
+      border-bottom: 0;
+    }
+
+    .data-list b,
+    .commands b {
+      display: block;
+      font-size: 15px;
+    }
+
+    .data-list span,
+    .commands span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 2px;
+    }
+
+    code {
+      padding: 3px 6px;
+      background: #eff1ee;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 12px;
+    }
+
+    .footer-note {
+      margin: 22px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    @media (max-width: 920px) {
+      .hero,
+      .grid,
+      .grid.two {
+        grid-template-columns: 1fr;
+      }
+
+      .decision-strip {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .shell {
+        width: min(100% - 20px, 1180px);
+        padding-top: 14px;
+      }
+
+      .topbar,
+      .section-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .updated {
+        white-space: normal;
+      }
+
+      .hero-main,
+      .daily-panel,
+      .card,
+      .workflow {
+        padding: 16px;
+      }
+
+      .metric-grid,
+      .data-list li,
+      .commands li {
+        grid-template-columns: 1fr;
+      }
+
+      .fields li {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <nav class="topbar" aria-label="研究入口">
+      <div class="brand">
+        <strong>A股研究总入口</strong>
+        <span>盘后雷达 · 龙虎榜 · 电力/AIDC · hotstock 数据优化</span>
+      </div>
+      <div class="updated">本地总入口 · 2026-05-10</div>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-main">
+        <p class="eyebrow">Research Hub</p>
+        <h1>先判断市场，再验证资金，最后回到主题资产池。</h1>
+        <p>这个页面负责把已有产出统一起来。它不是第四个看板，而是每天研究的起点：先打开盘后验证雷达，再看龙虎榜资金，最后用电力/AIDC 和 hotstock 结果做交叉验证。</p>
+        <div class="decision-strip" aria-label="研究顺序">
+          <div class="decision">
+            <b>1. 市场主线</b>
+            <span>A股盘后验证雷达判断今天哪些消息被盘面确认。</span>
+          </div>
+          <div class="decision">
+            <b>2. 短线资金</b>
+            <span>龙虎榜看板核对机构、游资和上榜股资金方向。</span>
+          </div>
+          <div class="decision">
+            <b>3. 主题资产池</b>
+            <span>电力/AIDC 与 hotstock 输出共同筛掉弱验证标的。</span>
+          </div>
+        </div>
+      </div>
+
+      <aside class="daily-panel" aria-label="hotstock 快速入口">
+        <h2>hotstock 今日数据优化</h2>
+        <p>当前已有 2026-05-10 热点催化与量化观察日报，可作为三个看板的信号补充，不直接当买卖结论。</p>
+        <div class="metric-grid">
+          <div class="metric">
+            <span>日报</span>
+            <strong>latest.html</strong>
+          </div>
+          <div class="metric">
+            <span>主题强度</span>
+            <strong>79.48</strong>
+          </div>
+          <div class="metric">
+            <span>回测</span>
+            <strong>batch xlsx</strong>
+          </div>
+          <div class="metric">
+            <span>参数优化</span>
+            <strong>optimizer</strong>
+          </div>
+        </div>
+        <div class="button-row">
+          <a class="button dark" href="hotstock_quant_skill/reports/daily/latest.html">打开 hotstock 日报</a>
+          <a class="button secondary" href="hotstock_quant_skill/reports/daily/daily_hot_pool_2026-05-10.xlsx">Excel 日报</a>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>三套主看板</h2>
+          <p>按问题分工，不互相替代。</p>
+        </div>
+      </div>
+
+      <div class="grid">
+        <article class="card">
+          <span class="tag green">市场主线</span>
+          <h3>A股盘后验证雷达</h3>
+          <p>用于判断消息、外部变量、板块资金和盘面确认之间是否闭环。</p>
+          <ul class="fields">
+            <li><b>回答</b><span>今天真正被市场确认的方向是什么？</span></li>
+            <li><b>时间</b><span>收盘后看，次日开盘前复核。</span></li>
+            <li><b>更新</b><span><code>更新A股盘后验证雷达</code></span></li>
+          </ul>
+          <div class="button-row">
+            <a class="button" href="a-share-report-site/index.html">打开当前雷达</a>
+            <a class="button" href="a-share-report-2026-05-08.html">历史版本</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <span class="tag red">短线资金</span>
+          <h3>龙虎榜游资匹配看板</h3>
+          <p>用于观察上榜股、席位、游资风格和资金回补，不替代基本面研究。</p>
+          <ul class="fields">
+            <li><b>回答</b><span>短线资金今天去了哪里？是否有机构/游资确认？</span></li>
+            <li><b>时间</b><span>交易所盘后披露后看。</span></li>
+            <li><b>更新</b><span><code>刷新龙虎榜</code></span></li>
+          </ul>
+          <div class="button-row">
+            <a class="button" href="a-share-lhb-dashboard.html">打开龙虎榜</a>
+            <a class="button" href="data/lhb-2026-05-08.json">查看数据</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <span class="tag blue">主题资产池</span>
+          <h3>电力 / AIDC / 算电协同看板</h3>
+          <p>用于跟踪你关心的电力资源、储能、数字电网、AIDC 承载和资金验证。</p>
+          <ul class="fields">
+            <li><b>回答</b><span>主题是否继续成立？个股资金和项目兑现有没有变化？</span></li>
+            <li><b>时间</b><span>收盘后刷新行情，公告和龙虎榜延迟核验。</span></li>
+            <li><b>更新</b><span><code>更新电力/AIDC 看板</code></span></li>
+          </ul>
+          <div class="button-row">
+            <a class="button" href="power-aidc-dashboard.html">打开电力/AIDC</a>
+            <a class="button" href="更新电力AIDC看板.command">更新脚本</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>hotstock 数据优化区</h2>
+          <p>把量化工具作为研究过滤器：主题强度、热股池、回测和参数优化。</p>
+        </div>
+      </div>
+
+      <div class="grid two">
+        <article class="workflow">
+          <h3>已生成结果</h3>
+          <ul class="data-list">
+            <li>
+              <div>
+                <b>热点催化与量化观察日报</b>
+                <span>主题强度、核心池、观察池、催化摘要和风险提示。</span>
+              </div>
+              <a class="button" href="hotstock_quant_skill/reports/daily/latest.html">打开</a>
+            </li>
+            <li>
+              <div>
+                <b>参数优化结果</b>
+                <span>均线、RSI 等策略参数组合的历史表现排序。</span>
+              </div>
+              <a class="button" href="hotstock_quant_skill/reports/optimized/parameter_optimization.xlsx">打开</a>
+            </li>
+            <li>
+              <div>
+                <b>批量回测汇总</b>
+                <span>多个标的或策略的胜率、收益、回撤、交易次数等指标。</span>
+              </div>
+              <a class="button" href="hotstock_quant_skill/reports/backtests/batch_backtest.xlsx">打开</a>
+            </li>
+          </ul>
+        </article>
+
+        <article class="workflow">
+          <h3>以后怎么用</h3>
+          <ul class="commands">
+            <li>
+              <div>
+                <b><code>运行 hotstock 今日热股池</code></b>
+                <span>重新生成日报、核心池和观察池。</span>
+              </div>
+              <span class="tag amber">日报</span>
+            </li>
+            <li>
+              <div>
+                <b><code>用 hotstock 优化这三个看板的数据</code></b>
+                <span>把主题强度、热股池评分、回测表现映射回三个主看板。</span>
+              </div>
+              <span class="tag green">整合</span>
+            </li>
+            <li>
+              <div>
+                <b><code>对电力/AIDC 股票池做回测</code></b>
+                <span>只分析历史规则表现和风险，不生成交易指令。</span>
+              </div>
+              <span class="tag blue">验证</span>
+            </li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>推荐日常顺序</h2>
+          <p>保持一个固定流程，比每天临时找信息更重要。</p>
+        </div>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <span class="tag green">收盘后</span>
+          <h3>先看盘后雷达</h3>
+          <p>确认指数、成交、板块资金、消息传导和外部变量，不急着从个股解释市场。</p>
+        </article>
+        <article class="card">
+          <span class="tag red">披露后</span>
+          <h3>再看龙虎榜</h3>
+          <p>核对强势股是否有资金席位确认，区分换手承接、情绪套利和机构介入。</p>
+        </article>
+        <article class="card">
+          <span class="tag amber">复盘时</span>
+          <h3>最后看 hotstock</h3>
+          <p>用量化结果做过滤：主题强度高但盘面不确认，要降权；盘面强但回测风险高，也要标记。</p>
+        </article>
+      </div>
+    </section>
+
+    <p class="footer-note">本页是本地研究入口。所有数据和回测仅用于研究与复盘，不构成买卖建议。</p>
+  </main>
+</body>
+</html>

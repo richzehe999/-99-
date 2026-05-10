@@ -1,0 +1,12 @@
+version = 1
+name = "A股报告邮件环境"
+
+[setup]
+script = """
+export QQ_SMTP_USER="240575148@qq.com"
+export A_SHARE_REPORT_TO="240575148@qq.com"
+export QQ_SMTP_AUTH_CODE="$(security find-generic-password -w -s codex-a-share-qq-smtp-auth -a 240575148@qq.com 2>/dev/null || true)"
+if [ -z "$QQ_SMTP_AUTH_CODE" ] && [ -f "/Users/wuzehe/Documents/New project/local_secrets/qq_smtp_auth_code.txt" ]; then
+  export QQ_SMTP_AUTH_CODE="$(cat "/Users/wuzehe/Documents/New project/local_secrets/qq_smtp_auth_code.txt")"
+fi
+"""

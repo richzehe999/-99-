@@ -1,0 +1,24 @@
+.DS_Store
+__pycache__/
+*.pyc
+
+# Local-only secrets and runtime logs
+local_secrets/*
+!local_secrets/.gitignore
+!local_secrets/README.md
+logs/*
+!logs/.gitkeep
+
+# Local previews and packaged artifacts
+radar-email-preview.html
+*.zip
+
+# Local Python/runtime environments
+.env
+.venv/
+venv/
+hotstock_quant_skill/.venv/
+hotstock_quant_skill/.venv-*/
+
+# Local/generated outputs
+outputs/

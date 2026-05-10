@@ -1,0 +1,918 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>中国中免 601888 深度分析报告</title>
+  <style>
+    :root {
+      --ink: #17202a;
+      --muted: #627184;
+      --line: #d8e0e8;
+      --paper: #f4f6f8;
+      --panel: #ffffff;
+      --blue: #1f6feb;
+      --teal: #087b83;
+      --green: #168056;
+      --red: #c4493d;
+      --amber: #a96f12;
+      --purple: #7653b5;
+      --soft-blue: #e9f1ff;
+      --soft-teal: #e7f6f5;
+      --soft-green: #e7f4ee;
+      --soft-red: #fff0ee;
+      --soft-amber: #fff6e3;
+      --shadow: 0 18px 42px rgba(23, 32, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      line-height: 1.55;
+    }
+
+    a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .layout {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 264px minmax(0, 1fr);
+    }
+
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 24px 18px;
+      color: #eef5fb;
+      background: #1c2733;
+      overflow-y: auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, #2aa198 0 46%, transparent 46%),
+        linear-gradient(315deg, #d99a20 0 48%, #2f70d7 48%);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.24);
+    }
+
+    .brand-title {
+      font-size: 15px;
+      font-weight: 760;
+      line-height: 1.25;
+    }
+
+    .brand-sub {
+      color: #aebdcc;
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    nav {
+      display: grid;
+      gap: 4px;
+      margin: 20px 0 26px;
+    }
+
+    nav a {
+      display: block;
+      color: #dce6f0;
+      padding: 8px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+    }
+
+    nav a:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+      text-decoration: none;
+    }
+
+    .aside-box {
+      padding: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 8px;
+      color: #d6e1ec;
+      background: rgba(255, 255, 255, 0.05);
+      font-size: 12px;
+    }
+
+    main {
+      min-width: 0;
+    }
+
+    .hero {
+      color: #fff;
+      background:
+        linear-gradient(90deg, rgba(19, 35, 50, 0.98), rgba(24, 59, 71, 0.9)),
+        repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0 1px, transparent 1px 18px);
+      background-size: cover;
+      background-position: center;
+      padding: 42px 38px 28px;
+    }
+
+    .hero-inner,
+    .content {
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      color: #b8e3e1;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 820px;
+      font-size: 38px;
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      max-width: 850px;
+      margin: 14px 0 22px;
+      color: #dce8ef;
+      font-size: 16px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .metric {
+      min-height: 92px;
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+    }
+
+    .metric-label {
+      color: #bfd0dc;
+      font-size: 12px;
+    }
+
+    .metric-value {
+      margin-top: 6px;
+      font-size: 24px;
+      font-weight: 780;
+      line-height: 1.15;
+    }
+
+    .metric-note {
+      margin-top: 4px;
+      color: #dbe8ef;
+      font-size: 12px;
+    }
+
+    .content {
+      padding: 28px 38px 52px;
+    }
+
+    section {
+      margin: 0 0 28px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 18px;
+      margin-bottom: 14px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.25;
+      letter-spacing: 0;
+    }
+
+    .section-note {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .grid-2,
+    .grid-3,
+    .grid-4 {
+      display: grid;
+      gap: 14px;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grid-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .card {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .card.compact {
+      padding: 14px;
+      box-shadow: none;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .tag-blue { color: #1556ac; background: var(--soft-blue); }
+    .tag-green { color: #116843; background: var(--soft-green); }
+    .tag-red { color: #9e2e25; background: var(--soft-red); }
+    .tag-amber { color: #825008; background: var(--soft-amber); }
+    .tag-teal { color: #086269; background: var(--soft-teal); }
+
+    .decision {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .big-call {
+      border-left: 5px solid var(--teal);
+    }
+
+    .big-call h2 {
+      margin-bottom: 10px;
+    }
+
+    .big-call p {
+      margin: 0 0 10px;
+      font-size: 16px;
+    }
+
+    .score {
+      display: grid;
+      gap: 10px;
+    }
+
+    .score-row {
+      display: grid;
+      grid-template-columns: 92px 1fr 44px;
+      gap: 10px;
+      align-items: center;
+      font-size: 13px;
+    }
+
+    .bar {
+      height: 9px;
+      border-radius: 999px;
+      background: #e2e8f0;
+      overflow: hidden;
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--teal), var(--blue));
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+      font-size: 13px;
+    }
+
+    th,
+    td {
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: #334255;
+      background: #eef2f6;
+      font-size: 12px;
+      font-weight: 760;
+      white-space: nowrap;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .num {
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .up { color: var(--green); font-weight: 700; }
+    .down { color: var(--red); font-weight: 700; }
+    .flat { color: var(--amber); font-weight: 700; }
+
+    .thesis-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .thesis-list li {
+      position: relative;
+      padding-left: 20px;
+    }
+
+    .thesis-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 9px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--teal);
+    }
+
+    .chart-card {
+      padding: 16px 16px 12px;
+    }
+
+    .svg-chart {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .action-band {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .band-item {
+      min-height: 116px;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .band-price {
+      font-size: 18px;
+      font-weight: 780;
+      margin: 8px 0 4px;
+    }
+
+    .band-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .watch-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .watch {
+      display: grid;
+      grid-template-columns: 32px 1fr;
+      gap: 10px;
+      align-items: start;
+      padding: 13px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .watch svg {
+      width: 24px;
+      height: 24px;
+      color: var(--teal);
+      margin-top: 2px;
+    }
+
+    .watch strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 14px;
+    }
+
+    .watch span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .sources {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .disclaimer {
+      padding: 14px 16px;
+      border: 1px solid #f1c9c3;
+      border-radius: 8px;
+      color: #71322d;
+      background: #fff6f4;
+      font-size: 13px;
+    }
+
+    @media (max-width: 980px) {
+      .layout {
+        display: block;
+      }
+
+      aside {
+        position: static;
+        height: auto;
+      }
+
+      nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .hero,
+      .content {
+        padding-left: 22px;
+        padding-right: 22px;
+      }
+
+      .hero-grid,
+      .grid-3,
+      .grid-4,
+      .decision,
+      .action-band,
+      .watch-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      h1 {
+        font-size: 28px;
+      }
+
+      .hero-grid,
+      .grid-2,
+      .grid-3,
+      .grid-4,
+      .decision,
+      .action-band,
+      .watch-grid,
+      nav {
+        grid-template-columns: 1fr;
+      }
+
+      .section-head {
+        display: block;
+      }
+
+      .section-note {
+        margin-top: 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside>
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div>
+          <div class="brand-title">中国中免 601888</div>
+          <div class="brand-sub">个股深度分析报告</div>
+        </div>
+      </div>
+      <nav aria-label="报告目录">
+        <a href="#decision">投资结论</a>
+        <a href="#business">业务结构</a>
+        <a href="#finance">财务表现</a>
+        <a href="#valuation">估值情景</a>
+        <a href="#operation">后续操作</a>
+        <a href="#risks">风险监控</a>
+        <a href="#sources">资料来源</a>
+      </nav>
+      <div class="aside-box">
+        数据时间：2026-05-06 盘中快照。价格、市值和估值会随交易变化；本报告用于梳理逻辑，不构成投资建议。
+      </div>
+    </aside>
+
+    <main>
+      <header class="hero">
+        <div class="hero-inner">
+          <div class="eyebrow">旅游零售龙头｜海南免税修复｜利润弹性验证期</div>
+          <h1>中国中免不是低估值白马，而是利润修复需要连续兑现的复苏股</h1>
+          <p>
+            当前股价已经反映了部分修复预期。后续收益空间取决于海南离岛免税是否持续高增、毛利率能否守住、机场渠道和DFS整合能否带来增量，而不是单靠“免税龙头”标签。
+          </p>
+          <div class="hero-grid" aria-label="核心指标">
+            <div class="metric">
+              <div class="metric-label">盘中价格</div>
+              <div class="metric-value">63.20 元</div>
+              <div class="metric-note">2026-05-06 13:41 北京时间</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">总市值</div>
+              <div class="metric-value">1313 亿</div>
+              <div class="metric-note">约 20.78 亿总股本</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">TTM PE</div>
+              <div class="metric-value">32.9 倍</div>
+              <div class="metric-note">TTM净利约 40.0 亿</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">操作评级</div>
+              <div class="metric-value">观察低吸</div>
+              <div class="metric-note">不追高，分批看验证</div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="content">
+        <section id="decision">
+          <div class="decision">
+            <div class="card big-call">
+              <span class="tag tag-teal">核心结论</span>
+              <h2>中线有修复逻辑，当前位置缺少重仓安全边际</h2>
+              <p>
+                2026Q1 的利润修复很明显，但收入只小幅增长，说明当前改善更多来自毛利、折扣、费用和业务结构，而不是总需求大爆发。
+              </p>
+              <p>
+                因此，后续要把它当作“基本面验证型交易”：价格低于 60 元才逐步提高仓位，70 元上方需要业绩继续超预期才值得持有。
+              </p>
+              <ul class="thesis-list">
+                <li>买入逻辑：海南离岛免税恢复、毛利率改善、机场渠道重启、DFS带来国际化协同。</li>
+                <li>卖出逻辑：海南数据回落、折扣重新加大、费用率抬升、利润增速低于估值预期。</li>
+                <li>策略定位：小仓观察加低位分批，不适合把当前价格当成确定性底部。</li>
+              </ul>
+            </div>
+            <div class="card">
+              <span class="tag tag-blue">投资打分</span>
+              <h2 style="margin:10px 0 14px;">现阶段综合判断</h2>
+              <div class="score">
+                <div class="score-row">
+                  <span>行业位置</span>
+                  <div class="bar"><span style="width:88%"></span></div>
+                  <strong>8.8</strong>
+                </div>
+                <div class="score-row">
+                  <span>业绩趋势</span>
+                  <div class="bar"><span style="width:68%"></span></div>
+                  <strong>6.8</strong>
+                </div>
+                <div class="score-row">
+                  <span>估值安全</span>
+                  <div class="bar"><span style="width:48%"></span></div>
+                  <strong>4.8</strong>
+                </div>
+                <div class="score-row">
+                  <span>政策弹性</span>
+                  <div class="bar"><span style="width:76%"></span></div>
+                  <strong>7.6</strong>
+                </div>
+                <div class="score-row">
+                  <span>操作赔率</span>
+                  <div class="bar"><span style="width:58%"></span></div>
+                  <strong>5.8</strong>
+                </div>
+              </div>
+              <p style="margin:14px 0 0;color:var(--muted);font-size:13px;">
+                结论偏中性略积极：基本面边际转好，但赔率需要价格回落或业绩二次确认来提升。
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="business">
+          <div class="section-head">
+            <h2>业务结构：龙头地位还在，但利润弹性不再只看牌照</h2>
+            <div class="section-note">关键变量：海南、机场、线上折扣、DFS整合</div>
+          </div>
+          <div class="grid-4">
+            <div class="card compact">
+              <span class="tag tag-green">海南离岛免税</span>
+              <p>当前最强修复点。2026Q1 海南地区收入 125.85 亿元，同比 +28.26%。若月度销售持续高增，估值可以维持较高弹性。</p>
+            </div>
+            <div class="card compact">
+              <span class="tag tag-blue">机场口岸免税</span>
+              <p>上海、北京核心机场渠道转场与开业，有利于承接国际客流恢复，但机场租金和客流结构决定真实利润弹性。</p>
+            </div>
+            <div class="card compact">
+              <span class="tag tag-amber">线上与有税业务</span>
+              <p>能拉动规模和会员触达，但价格战会压毛利。若线上折扣重新加深，会削弱利润修复质量。</p>
+            </div>
+            <div class="card compact">
+              <span class="tag tag-teal">DFS大中华区</span>
+              <p>战略意义在品牌、渠道和境外网络。短期需要关注整合成本、资产质量和并表后对利润率的扰动。</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="finance">
+          <div class="section-head">
+            <h2>财务表现：2025承压，2026Q1开始出现利润修复</h2>
+            <div class="section-note">收入恢复一般，利润改善更强</div>
+          </div>
+          <div class="grid-2">
+            <div class="card chart-card">
+              <h2 style="font-size:18px;margin-bottom:10px;">营收与归母净利润</h2>
+              <svg class="svg-chart" viewBox="0 0 620 330" role="img" aria-label="2025全年与2026一季度财务柱状图">
+                <rect x="0" y="0" width="620" height="330" rx="8" fill="#fff"/>
+                <line x1="70" y1="265" x2="580" y2="265" stroke="#cfd8e3"/>
+                <line x1="70" y1="70" x2="70" y2="265" stroke="#cfd8e3"/>
+                <text x="70" y="40" fill="#17202a" font-size="17" font-weight="700">财务数据（亿元）</text>
+                <text x="70" y="295" fill="#627184" font-size="13">2025全年</text>
+                <text x="310" y="295" fill="#627184" font-size="13">2026Q1</text>
+                <rect x="92" y="78" width="54" height="187" rx="5" fill="#1f6feb"/>
+                <rect x="162" y="253" width="54" height="12" rx="5" fill="#168056"/>
+                <rect x="332" y="206" width="54" height="59" rx="5" fill="#1f6feb"/>
+                <rect x="402" y="257" width="54" height="8" rx="5" fill="#168056"/>
+                <text x="89" y="68" fill="#1f6feb" font-size="13" font-weight="700">536.94</text>
+                <text x="158" y="246" fill="#168056" font-size="13" font-weight="700">35.86</text>
+                <text x="329" y="196" fill="#1f6feb" font-size="13" font-weight="700">169.06</text>
+                <text x="398" y="250" fill="#168056" font-size="13" font-weight="700">23.48</text>
+                <rect x="70" y="310" width="10" height="10" rx="2" fill="#1f6feb"/>
+                <text x="86" y="320" fill="#627184" font-size="12">营业收入</text>
+                <rect x="160" y="310" width="10" height="10" rx="2" fill="#168056"/>
+                <text x="176" y="320" fill="#627184" font-size="12">归母净利润</text>
+              </svg>
+            </div>
+            <div class="card">
+              <span class="tag tag-green">质量观察</span>
+              <h2 style="font-size:18px;margin:10px 0;">这次改善的含金量</h2>
+              <ul class="thesis-list">
+                <li>2025 年收入 536.94 亿元，同比 -4.92%；归母净利润 35.86 亿元，同比 -15.96%。</li>
+                <li>2026Q1 收入 169.06 亿元，同比 +0.96%；归母净利润 23.48 亿元，同比 +21.18%。</li>
+                <li>TTM 归母净利润粗算约 40.0 亿元，对应盘中 PE 约 32.9 倍。</li>
+                <li>Q1 经营现金流 38.91 亿元，同比 -18.89%，后续需要看现金流是否跟上利润修复。</li>
+              </ul>
+            </div>
+          </div>
+          <div class="table-wrap" style="margin-top:14px;">
+            <table>
+              <thead>
+                <tr>
+                  <th>项目</th>
+                  <th>2025全年</th>
+                  <th>同比</th>
+                  <th>2026Q1</th>
+                  <th>同比</th>
+                  <th>解读</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>营业收入</td>
+                  <td class="num">536.94 亿元</td>
+                  <td class="down">-4.92%</td>
+                  <td class="num">169.06 亿元</td>
+                  <td class="up">+0.96%</td>
+                  <td>收入恢复仍温和，Q1并非规模爆发。</td>
+                </tr>
+                <tr>
+                  <td>归母净利润</td>
+                  <td class="num">35.86 亿元</td>
+                  <td class="down">-15.96%</td>
+                  <td class="num">23.48 亿元</td>
+                  <td class="up">+21.18%</td>
+                  <td>利润修复快于收入，说明毛利、费用和结构是主因。</td>
+                </tr>
+                <tr>
+                  <td>扣非归母净利润</td>
+                  <td class="num">35.44 亿元</td>
+                  <td class="down">-14.47%</td>
+                  <td class="num">23.37 亿元</td>
+                  <td class="up">+20.76%</td>
+                  <td>扣非同步改善，Q1利润质量好于2025全年。</td>
+                </tr>
+                <tr>
+                  <td>海南地区收入</td>
+                  <td class="num">未单列核心口径</td>
+                  <td class="flat">结构改善</td>
+                  <td class="num">125.85 亿元</td>
+                  <td class="up">+28.26%</td>
+                  <td>这是当前估值修复的第一驱动项。</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="valuation">
+          <div class="section-head">
+            <h2>估值情景：63元附近不贵到离谱，但也谈不上便宜</h2>
+            <div class="section-note">以 20.78 亿股本、63.20 元盘中价粗算</div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>情景</th>
+                  <th>2026归母净利润假设</th>
+                  <th>合理PE区间</th>
+                  <th>对应股价区间</th>
+                  <th>需要满足的条件</th>
+                  <th>操作含义</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="tag tag-red">保守</span></td>
+                  <td class="num">40-45 亿元</td>
+                  <td class="num">25-28 倍</td>
+                  <td class="num">48-61 元</td>
+                  <td>Q1后增速回落，海南热度不持续，费用率没有明显下降。</td>
+                  <td>63元以上性价比一般，跌破60再看。</td>
+                </tr>
+                <tr>
+                  <td><span class="tag tag-amber">中性</span></td>
+                  <td class="num">50-55 亿元</td>
+                  <td class="num">28-32 倍</td>
+                  <td class="num">67-85 元</td>
+                  <td>Q2/Q3利润继续同比改善，毛利率稳定，机场渠道不拖累。</td>
+                  <td>60附近分批，70以上看数据兑现。</td>
+                </tr>
+                <tr>
+                  <td><span class="tag tag-green">乐观</span></td>
+                  <td class="num">60-70 亿元</td>
+                  <td class="num">32-38 倍</td>
+                  <td class="num">92-128 元</td>
+                  <td>海南、机场、DFS多线共振，折扣收窄，全年利润大幅修复。</td>
+                  <td>需要连续财报确认，不能只靠预期交易。</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="operation">
+          <div class="section-head">
+            <h2>后续操作：按价格和验证强度分层处理</h2>
+            <div class="section-note">适合分批，不适合一次性重仓</div>
+          </div>
+          <div class="action-band">
+            <div class="band-item">
+              <span class="tag tag-red">不追</span>
+              <div class="band-price">75元以上</div>
+              <p>除非Q2业绩和海南数据继续超预期，否则这里更多是兑现区。</p>
+            </div>
+            <div class="band-item">
+              <span class="tag tag-amber">观察</span>
+              <div class="band-price">68-75元</div>
+              <p>反弹压力区。已有仓位可做减仓或滚动，新增仓位谨慎。</p>
+            </div>
+            <div class="band-item">
+              <span class="tag tag-blue">轻仓</span>
+              <div class="band-price">60-62元</div>
+              <p>可建20%-30%计划仓位，前提是没有明显放量破位。</p>
+            </div>
+            <div class="band-item">
+              <span class="tag tag-green">加仓</span>
+              <div class="band-price">56-58元</div>
+              <p>若基本面未恶化，可提高到50%-60%计划仓位。</p>
+            </div>
+            <div class="band-item">
+              <span class="tag tag-teal">强赔率</span>
+              <div class="band-price">52-55元</div>
+              <p>估值安全边际更好，可考虑更积极配置，但仍要设风险线。</p>
+            </div>
+          </div>
+          <div class="grid-3" style="margin-top:14px;">
+            <div class="card compact">
+              <h2 style="font-size:17px;">已有仓位，成本70元以上</h2>
+              <p>不建议在急跌中情绪化割肉。反弹至 68-72 元附近可先降低仓位，保留部分等待Q2验证。</p>
+            </div>
+            <div class="card compact">
+              <h2 style="font-size:17px;">已有仓位，成本60-65元</h2>
+              <p>可以继续拿，但把 58 元作为重要防守位。若跌破且海南数据转弱，需要减仓。</p>
+            </div>
+            <div class="card compact">
+              <h2 style="font-size:17px;">已有仓位，成本55元以下</h2>
+              <p>持有优势明显。第一目标 68-70 元，第二目标 75-80 元，强势目标要等全年利润上修。</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="risks">
+          <div class="section-head">
+            <h2>风险监控：这只票最怕“利润修复不连续”</h2>
+            <div class="section-note">每月看行业数据，每季看财报验证</div>
+          </div>
+          <div class="watch-grid">
+            <div class="watch">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-5 5"/></svg>
+              <div><strong>海南离岛免税销售</strong><span>如果月度销售增速回落到个位数，市场会下修全年利润预期。</span></div>
+            </div>
+            <div class="watch">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6"/></svg>
+              <div><strong>折扣与毛利率</strong><span>毛利率不能只靠单季改善，若折扣重新放大，利润弹性会被压缩。</span></div>
+            </div>
+            <div class="watch">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 16 22 8"/><path d="m6 10 4 2"/><path d="m14 6 4 2"/><path d="m5 19 14-5"/></svg>
+              <div><strong>机场客流与租金</strong><span>口岸免税恢复要看国际客流质量和租金安排，不是开店就等于利润提升。</span></div>
+            </div>
+            <div class="watch">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h18"/><path d="M3 12h18"/><path d="M3 17h18"/><path d="M7 3v18"/><path d="M17 3v18"/></svg>
+              <div><strong>DFS并表影响</strong><span>关注收购资产估值、整合费用、亏损门店和供应链协同是否如预期落地。</span></div>
+            </div>
+            <div class="watch">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 16V9"/><path d="M12 16V6"/><path d="M16 16v-4"/></svg>
+              <div><strong>经营现金流</strong><span>2026Q1现金流同比下降，后续要确认利润不是以库存、应收或费用递延换来的。</span></div>
+            </div>
+            <div class="watch">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+              <div><strong>技术面破位</strong><span>若有效跌破58元且放量，短线趋势转弱，应先控制仓位再等基本面验证。</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="sources">
+          <div class="section-head">
+            <h2>资料来源与口径</h2>
+            <div class="section-note">公开资料整理，数值保留到常用精度</div>
+          </div>
+          <div class="card">
+            <ul class="sources">
+              <li><a href="https://www.futunn.com/stock/601888-SH/announcement" target="_blank" rel="noopener">富途牛牛：中国中免 601888 盘中行情与公告列表</a>，用于 2026-05-06 盘中价、市值、PE、PB 快照。</li>
+              <li><a href="https://finance.sina.com.cn/stock/aiassist/yjbg/2026-03-30/doc-inhsuvau2634174.shtml?froms=ggmp" target="_blank" rel="noopener">新浪财经：中国中免2025年年报核心财务数据</a>，用于 2025 年营收、归母净利润、扣非净利润、毛利率等。</li>
+              <li><a href="https://www.cls.cn/detail/2359636" target="_blank" rel="noopener">财联社：中国中免2026年第一季度公告摘要</a>，用于 Q1 收入、归母净利润及海南地区收入数据。</li>
+              <li><a href="https://www.thepaper.cn/newsDetail_forward_33079251" target="_blank" rel="noopener">澎湃新闻：中国中免2026Q1经营与DFS交割信息</a>，用于海南门店、DFS交割、机场渠道描述。</li>
+              <li><a href="https://www.eeo.com.cn/2026/0429/857802.shtml" target="_blank" rel="noopener">经济观察网：海南离岛免税一季度数据</a>，用于行业销售额修复背景。</li>
+              <li><a href="https://www.ndrc.gov.cn/xwdt/ztzl/hnqmshggkf/zjhn/202508/t20250827_1400094.html" target="_blank" rel="noopener">国家发展改革委：海南全岛封关相关政策信息</a>，用于政策背景。</li>
+            </ul>
+            <div class="disclaimer" style="margin-top:14px;">
+              风险提示：本文不是证券投资咨询意见，也不是买卖建议。个股价格受市场流动性、政策、行业景气、公司业绩、资金情绪等多因素影响，请结合自身风险承受能力决策。
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,69 @@
+# Enhanced configuration for Hotstock Quant Skill
+# Educational/research use only. Not financial advice.
+
+market:
+  default: A股
+  benchmark: "000300.SH"
+  timezone: "Asia/Shanghai"
+
+universe:
+  source: csv
+  csv_path: data/sample/universe.csv
+  exclude_st: true
+  exclude_new_stock_days: 60
+
+themes:
+  - name: NVIDIA产业链
+    keywords: ["NVIDIA", "英伟达", "GPU", "AI服务器", "算力", "HBM", "光模块", "CPO", "铜连接"]
+  - name: AMD产业链
+    keywords: ["AMD", "MI300", "MI350", "AI芯片", "GPU", "服务器"]
+  - name: 光通信
+    keywords: ["光模块", "CPO", "硅光", "800G", "1.6T", "光通信", "数据中心"]
+  - name: PCB
+    keywords: ["PCB", "HDI", "高速板", "高频高速", "服务器PCB"]
+  - name: 液冷
+    keywords: ["液冷", "温控", "数据中心散热", "冷板", "浸没式"]
+
+screening:
+  market_cap_max_billion_cny: 300
+  turnover_min_million_cny: 300
+  pct_change_min: 3
+  min_score_core: 80
+  min_score_watch: 60
+  max_one_day_pct_for_new_core: 18
+
+scoring_weights:
+  theme_relevance: 0.30
+  money_strength: 0.25
+  trend_strength: 0.20
+  elasticity: 0.15
+  catalyst_strength: 0.10
+
+backtest:
+  initial_cash: 1000000
+  commission_rate: 0.0003
+  slippage_rate: 0.0005
+  benchmark: "000300.SH"
+  allow_same_day_exit: false
+
+parameter_optimization:
+  ma_short: [5, 10, 15]
+  ma_long: [20, 30, 60]
+  rsi_period: [6, 14, 21]
+  rsi_buy: [25, 30, 35]
+  rsi_sell: [65, 70, 75]
+  stop_loss: [0.05, 0.08, 0.10]
+  take_profit: [0.10, 0.15, 0.20]
+
+news:
+  mode: local_or_rss
+  local_news_csv: data/sample/news.csv
+  rss_feeds:
+    - "https://example.com/rss"
+  lookback_days: 7
+
+push:
+  enabled: false
+  channel: webhook
+  webhook_url: ""
+  secret: ""

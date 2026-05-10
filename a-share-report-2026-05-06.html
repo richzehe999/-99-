@@ -1,0 +1,1143 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A股盘后验证雷达｜2026-05-07</title>
+  <style>
+    :root {
+      --ink: #17202a;
+      --muted: #657180;
+      --line: #d9e0e7;
+      --paper: #f7f8f9;
+      --panel: #ffffff;
+      --blue: #2f6feb;
+      --green: #178a5a;
+      --red: #c64a45;
+      --amber: #b7791f;
+      --cyan: #087ea4;
+      --slate: #2d3642;
+      --soft-blue: #eaf1ff;
+      --soft-green: #eaf7f1;
+      --soft-red: #fff0ef;
+      --soft-amber: #fff6e5;
+      --shadow: 0 14px 40px rgba(23, 32, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      line-height: 1.5;
+    }
+
+    a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 248px minmax(0, 1fr);
+    }
+
+    aside {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 22px 18px;
+      color: #eef4f8;
+      background: #1d2733;
+      overflow-y: auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 26px;
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background:
+        linear-gradient(135deg, #4eb1cb 0 48%, transparent 48%),
+        linear-gradient(315deg, #f0b84f 0 48%, #2f6feb 48%);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .brand span {
+      display: block;
+      margin-top: 1px;
+      color: #9eb0c0;
+      font-size: 12px;
+    }
+
+    nav {
+      display: grid;
+      gap: 6px;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 10px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      color: #dbe7ee;
+      font-size: 14px;
+    }
+
+    .nav-link:hover {
+      background: rgba(255, 255, 255, 0.07);
+      text-decoration: none;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .dot.blue { background: var(--blue); }
+    .dot.amber { background: var(--amber); }
+    .dot.red { background: var(--red); }
+    .dot.cyan { background: var(--cyan); }
+
+    .side-note {
+      margin-top: 24px;
+      padding: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      color: #b7c6d1;
+      font-size: 12px;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    main {
+      min-width: 0;
+      padding: 28px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .title-block h2 {
+      margin: 0 0 6px;
+      font-size: clamp(28px, 4vw, 46px);
+      line-height: 1.08;
+    }
+
+    .title-block p {
+      max-width: 820px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .status-pill {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 11px;
+      border: 1px solid #cbd6e1;
+      border-radius: 999px;
+      background: var(--panel);
+      color: var(--slate);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .pulse {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--amber);
+      box-shadow: 0 0 0 5px rgba(183, 121, 31, 0.16);
+    }
+
+    section {
+      scroll-margin-top: 20px;
+      margin-bottom: 22px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .grid.kpi {
+      grid-template-columns: repeat(5, minmax(130px, 1fr));
+    }
+
+    .grid.two {
+      grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .panel,
+    .kpi-card,
+    .theme-card,
+    .source-list {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .panel {
+      padding: 18px;
+    }
+
+    .kpi-card {
+      padding: 14px;
+      min-height: 104px;
+      box-shadow: none;
+    }
+
+    .eyebrow {
+      margin: 0 0 7px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .kpi-value {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 750;
+      line-height: 1.1;
+    }
+
+    .kpi-card strong {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .up { color: var(--green); }
+    .down { color: var(--red); }
+    .flat { color: var(--slate); }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .section-title h3 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .section-title span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .summary {
+      display: grid;
+      gap: 12px;
+    }
+
+    .summary-row {
+      display: grid;
+      grid-template-columns: 128px minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .summary-row:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    .summary-row b {
+      font-size: 14px;
+    }
+
+    .summary-row p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .risk-meter {
+      display: grid;
+      gap: 12px;
+    }
+
+    .meter {
+      display: grid;
+      gap: 6px;
+    }
+
+    .meter-head {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .bar {
+      height: 10px;
+      border-radius: 999px;
+      background: #edf1f5;
+      overflow: hidden;
+    }
+
+    .fill {
+      height: 100%;
+      border-radius: inherit;
+      background: var(--blue);
+    }
+
+    .fill.green { background: var(--green); }
+    .fill.amber { background: var(--amber); }
+    .fill.red { background: var(--red); }
+    .fill.cyan { background: var(--cyan); }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    button.filter {
+      min-height: 34px;
+      padding: 6px 12px;
+      border: 1px solid #cdd7e1;
+      border-radius: 8px;
+      background: #fff;
+      color: var(--slate);
+      font: inherit;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    button.filter.active {
+      border-color: var(--blue);
+      background: var(--soft-blue);
+      color: #174ea6;
+      font-weight: 700;
+    }
+
+    .theme-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .theme-card {
+      padding: 16px;
+      box-shadow: none;
+      transition: transform 0.18s ease, border-color 0.18s ease;
+    }
+
+    .theme-card[hidden] {
+      display: none;
+    }
+
+    .theme-card:hover {
+      transform: translateY(-2px);
+      border-color: #b7c6d1;
+    }
+
+    .theme-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .theme-head h4 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .tag {
+      flex: 0 0 auto;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .tag.positive { color: #0f6842; background: var(--soft-green); }
+    .tag.negative { color: #9a302c; background: var(--soft-red); }
+    .tag.watch { color: #865a13; background: var(--soft-amber); }
+    .tag.neutral { color: #36516e; background: var(--soft-blue); }
+
+    .theme-card p {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .buyer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .buyer-card {
+      min-height: 154px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfd;
+    }
+
+    .buyer-card h4 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin: 0 0 8px;
+      font-size: 15px;
+    }
+
+    .buyer-card p {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .buyer-signal {
+      display: block;
+      color: var(--slate);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .chain {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 7px;
+      color: var(--slate);
+      font-size: 13px;
+    }
+
+    .node {
+      padding: 6px 8px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfd;
+    }
+
+    .arrow {
+      color: #98a6b3;
+      font-weight: 800;
+    }
+
+    .matrix {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .matrix th,
+    .matrix td {
+      padding: 11px 10px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .matrix th {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .matrix tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .map-wrap {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 220px;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .network {
+      width: 100%;
+      min-height: 300px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background:
+        linear-gradient(#edf1f5 1px, transparent 1px),
+        linear-gradient(90deg, #edf1f5 1px, transparent 1px),
+        #fbfcfd;
+      background-size: 26px 26px;
+    }
+
+    .legend {
+      display: grid;
+      gap: 9px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      background: var(--blue);
+    }
+
+    .swatch.green { background: var(--green); }
+    .swatch.red { background: var(--red); }
+    .swatch.amber { background: var(--amber); }
+    .swatch.cyan { background: var(--cyan); }
+
+    .checklist {
+      display: grid;
+      gap: 10px;
+    }
+
+    .check {
+      display: grid;
+      grid-template-columns: 22px minmax(0, 1fr);
+      gap: 9px;
+      align-items: start;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fbfcfd;
+    }
+
+    .box {
+      width: 18px;
+      height: 18px;
+      border: 2px solid #9fb0bd;
+      border-radius: 5px;
+      margin-top: 2px;
+    }
+
+    .check b {
+      display: block;
+      margin-bottom: 2px;
+      font-size: 14px;
+    }
+
+    .check span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .source-list {
+      padding: 16px;
+      box-shadow: none;
+    }
+
+    .source-list ul {
+      columns: 2;
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .source-list li {
+      break-inside: avoid;
+      margin-bottom: 8px;
+    }
+
+    .mobile-tabs {
+      display: none;
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      padding: 8px;
+      gap: 8px;
+      overflow-x: auto;
+      background: rgba(247, 248, 249, 0.96);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .mobile-tabs a {
+      flex: 0 0 auto;
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      color: var(--slate);
+      font-size: 13px;
+    }
+
+    @media (max-width: 1120px) {
+      .grid.kpi {
+        grid-template-columns: repeat(3, minmax(130px, 1fr));
+      }
+
+      .grid.two,
+      .grid.three,
+      .map-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .theme-grid,
+      .buyer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .app {
+        display: block;
+      }
+
+      aside {
+        display: none;
+      }
+
+      .mobile-tabs {
+        display: flex;
+      }
+
+      main {
+        padding: 18px 12px 30px;
+      }
+
+      .topbar {
+        display: grid;
+      }
+
+      .status-pill {
+        width: fit-content;
+      }
+
+      .grid.kpi {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .summary-row {
+        grid-template-columns: 1fr;
+        gap: 5px;
+      }
+
+      .matrix {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+
+      .source-list ul {
+        columns: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside>
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div>
+          <h1>A股消息雷达</h1>
+          <span>2026-05-07 盘后验证版</span>
+        </div>
+      </div>
+      <nav aria-label="报告导航">
+        <a class="nav-link" href="#overview"><span class="dot blue"></span>市场基准</a>
+        <a class="nav-link" href="#signals"><span class="dot green"></span>核心消息</a>
+        <a class="nav-link" href="#chains"><span class="dot amber"></span>传导链</a>
+        <a class="nav-link" href="#map"><span class="dot cyan"></span>联动地图</a>
+        <a class="nav-link" href="#buyer"><span class="dot blue"></span>买方维度</a>
+        <a class="nav-link" href="#watch"><span class="dot red"></span>后续验证</a>
+        <a class="nav-link" href="#sources"><span class="dot"></span>来源</a>
+      </nav>
+      <div class="side-note">
+        本页把前一交易日的验证结论，与5月7日A股真实收盘表现逐项对照，区分延续、切换、未确认和需要继续观察的链条。
+      </div>
+    </aside>
+
+    <div class="mobile-tabs" aria-label="移动端导航">
+      <a href="#overview">市场</a>
+      <a href="#signals">消息</a>
+      <a href="#chains">传导</a>
+      <a href="#map">联动</a>
+      <a href="#buyer">买方</a>
+      <a href="#watch">验证</a>
+      <a href="#sources">来源</a>
+    </div>
+
+    <main>
+      <header class="topbar">
+        <div class="title-block">
+          <h2>A股盘后验证雷达</h2>
+          <p>区间：2026年5月7日收盘后。核心变化是科技主线继续成立，但内部从存储/算力进一步切换到光纤、CPO、PCB和光通信；能源冲击继续没有被A股盘面确认，油气和煤炭延续调整。</p>
+        </div>
+        <div class="status-pill"><span class="pulse"></span>已接入5月7日收盘数据</div>
+      </header>
+
+      <section id="overview">
+        <div class="section-title">
+          <h3>市场验证盘</h3>
+          <span>5月7日收盘</span>
+        </div>
+        <div class="grid kpi">
+          <article class="kpi-card">
+            <p class="eyebrow">上证指数</p>
+            <p class="kpi-value up">4180.09</p>
+            <strong>+0.48%，连续反弹</strong>
+          </article>
+          <article class="kpi-card">
+            <p class="eyebrow">深证成指</p>
+            <p class="kpi-value up">15641.89</p>
+            <strong>+1.18%，续创逾5年阶段新高</strong>
+          </article>
+          <article class="kpi-card">
+            <p class="eyebrow">创业板指</p>
+            <p class="kpi-value up">3833.06</p>
+            <strong>+1.45%，续创近11年阶段新高</strong>
+          </article>
+          <article class="kpi-card">
+            <p class="eyebrow">科创50</p>
+            <p class="kpi-value up">1678.89</p>
+            <strong>+1.32%，元器件与半导体强</strong>
+          </article>
+          <article class="kpi-card">
+            <p class="eyebrow">全市场成交额</p>
+            <p class="kpi-value up">3.17万亿</p>
+            <strong>仍破3万亿，较前一日缩量约783亿元</strong>
+          </article>
+        </div>
+      </section>
+
+      <section class="grid two">
+        <div class="panel">
+          <div class="section-title">
+            <h3>验证结论</h3>
+            <span>推演到盘面的校验</span>
+          </div>
+          <div class="summary">
+            <div class="summary-row">
+              <b>核心判断</b>
+              <p>5月7日盘面确认科技成长主线仍在，但内部主线从存储芯片、AI算力，进一步切换到光纤、CPO、PCB和光通信。</p>
+            </div>
+            <div class="summary-row">
+              <b>已验证</b>
+              <p>“AI硬件景气 → A股光通信/CPO/PCB扩散”这条链条成立。全市场超3500股上涨，连续两日超百股涨停。</p>
+            </div>
+            <div class="summary-row">
+              <b>被降级</b>
+              <p>“霍尔木兹 → 油气/煤炭走强”连续两日未被确认。5月7日油气股、煤炭、煤化工继续走弱，能源线权重继续下调。</p>
+            </div>
+            <div class="summary-row">
+              <b>下一步</b>
+              <p>重点从“科技是否强”切到“科技内部怎么轮动”：看光通信/CPO/PCB是否继续接力，存储芯片是否高位分化。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="section-title">
+            <h3>验证强度</h3>
+            <span>基于5月7日收盘数据</span>
+          </div>
+          <div class="risk-meter">
+            <div class="meter">
+              <div class="meter-head"><span>AI硬件连续性</span><b>很高</b></div>
+              <div class="bar"><div class="fill green" style="width: 92%"></div></div>
+            </div>
+            <div class="meter">
+              <div class="meter-head"><span>能源冲击盘面确认</span><b>很低</b></div>
+              <div class="bar"><div class="fill red" style="width: 15%"></div></div>
+            </div>
+            <div class="meter">
+              <div class="meter-head"><span>市场量能确认</span><b>高但缩量</b></div>
+              <div class="bar"><div class="fill blue" style="width: 78%"></div></div>
+            </div>
+            <div class="meter">
+              <div class="meter-head"><span>热点轮动速度</span><b>高</b></div>
+              <div class="bar"><div class="fill amber" style="width: 82%"></div></div>
+            </div>
+            <div class="meter">
+              <div class="meter-head"><span>资源线扩散</span><b>降温</b></div>
+              <div class="bar"><div class="fill cyan" style="width: 42%"></div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="buyer" class="panel">
+        <div class="section-title">
+          <h3>买方决策看板</h3>
+          <span>位置：验证结论之后，核心消息之前</span>
+        </div>
+        <div class="buyer-grid">
+          <article class="buyer-card">
+            <h4>资金连续性 <span class="tag watch">高位缩量</span></h4>
+            <p>看成交额、主线成交占比、ETF/主动资金是否继续流入。</p>
+            <span class="buyer-signal">5月8日信号：光通信/CPO/PCB继续放量才算延续。</span>
+          </article>
+          <article class="buyer-card">
+            <h4>拥挤度与位置 <span class="tag watch">偏高</span></h4>
+            <p>看涨停数量、龙头连板、历史新高股数量和高位股回撤。</p>
+            <span class="buyer-signal">5月8日信号：高位龙头不能快速补跌，补涨分支需要承接。</span>
+          </article>
+          <article class="buyer-card">
+            <h4>扩散质量 <span class="tag positive">已扩散</span></h4>
+            <p>看主线是否从单点消息扩散到产业链上下游。</p>
+            <span class="buyer-signal">5月8日信号：液冷、服务器、电源、设备材料能否继续接力。</span>
+          </article>
+          <article class="buyer-card">
+            <h4>催化兑现 <span class="tag watch">需接力</span></h4>
+            <p>看海外AI基础设施、订单、业绩预告、产业链价格是否继续强化。</p>
+            <span class="buyer-signal">5月8日信号：若无新催化，高位事件交易可能转入兑现。</span>
+          </article>
+          <article class="buyer-card">
+            <h4>风格切换 <span class="tag negative">未切换</span></h4>
+            <p>看红利、能源、地产、消费是否从科技手中分流资金。</p>
+            <span class="buyer-signal">5月8日信号：红利/能源回流叠加科技缩量，说明风险偏好降温。</span>
+          </article>
+          <article class="buyer-card">
+            <h4>证伪条件 <span class="tag neutral">预设规则</span></h4>
+            <p>提前定义什么情况说明主线不成立，避免只做事后解释。</p>
+            <span class="buyer-signal">5月8日信号：成交跌破3万亿且CPO/PCB冲高回落，降低科技权重。</span>
+          </article>
+        </div>
+        <table class="matrix">
+          <thead>
+            <tr>
+              <th>维度</th>
+              <th>5月7日客观读数</th>
+              <th>下一步判断用途</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>资金连续性</td>
+              <td>全市场成交3.17万亿元，仍高位但较前一交易日缩量约783亿元</td>
+              <td>判断主线是继续进攻，还是高位缩量分化</td>
+            </tr>
+            <tr>
+              <td>拥挤度与位置</td>
+              <td>连续两日超百股涨停，部分光通信和PCB个股创历史新高</td>
+              <td>判断追高风险和低位补涨承接质量</td>
+            </tr>
+            <tr>
+              <td>扩散质量</td>
+              <td>从存储/算力扩散到光纤、CPO、PCB、通信线缆和元器件</td>
+              <td>判断是单点消息行情，还是产业链级别传导</td>
+            </tr>
+            <tr>
+              <td>催化兑现</td>
+              <td>英伟达与康宁合作提供光互连事件催化，但A股交易已经较充分</td>
+              <td>判断事件催化是否还能被订单、业绩或价格继续验证</td>
+            </tr>
+            <tr>
+              <td>风格切换</td>
+              <td>能源、煤炭、油气继续走弱，红利风格弱于科技</td>
+              <td>判断科技资金是否被防御、红利、地产、消费分流</td>
+            </tr>
+            <tr>
+              <td>证伪条件</td>
+              <td>当前未触发证伪，主要风险是缩量高位轮动过快</td>
+              <td>定义主线失效条件，避免盘后强行解释</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="signals">
+        <div class="section-title">
+          <h3>验证条目</h3>
+          <span>点击筛选状态</span>
+        </div>
+        <div class="filters" role="group" aria-label="消息筛选">
+          <button class="filter active" data-filter="all">全部</button>
+          <button class="filter" data-filter="positive">已验证</button>
+          <button class="filter" data-filter="negative">未确认</button>
+          <button class="filter" data-filter="watch">继续观察</button>
+        </div>
+        <div class="theme-grid">
+          <article class="theme-card" data-kind="positive">
+            <div class="theme-head">
+              <h4>AI硬件链继续扩散</h4>
+              <span class="tag positive">强验证</span>
+            </div>
+            <p>5月7日AI产业链继续走强，光纤、CPO、PCB、光通信成为新的强势分支。科技主线不是单点行情，而是在产业链内部继续轮动。</p>
+            <div class="chain"><span class="node">AI算力</span><span class="arrow">→</span><span class="node">光互连</span><span class="arrow">→</span><span class="node">CPO/PCB/光纤</span></div>
+          </article>
+
+          <article class="theme-card" data-kind="negative">
+            <div class="theme-head">
+              <h4>能源交易继续被证伪</h4>
+              <span class="tag negative">连续未确认</span>
+            </div>
+            <p>油气股5月7日继续调整，煤炭、煤化工、动力煤也走低。能源冲击目前只保留为外部风险，不作为A股主线处理。</p>
+            <div class="chain"><span class="node">地缘风险</span><span class="arrow">→</span><span class="node">油价扰动</span><span class="arrow">→</span><span class="node">A股继续未确认</span></div>
+          </article>
+
+          <article class="theme-card" data-kind="positive">
+            <div class="theme-head">
+              <h4>英伟达与康宁合作催化</h4>
+              <span class="tag positive">事件验证</span>
+            </div>
+            <p>英伟达宣布与康宁达成长期合作并斥资5亿美元购入认股权，强化高速光互连、CPO等技术路线预期，直接催化A股光通信链。</p>
+            <div class="chain"><span class="node">英伟达/康宁</span><span class="arrow">→</span><span class="node">光互连</span><span class="arrow">→</span><span class="node">A股光通信</span></div>
+          </article>
+
+          <article class="theme-card" data-kind="positive">
+            <div class="theme-head">
+              <h4>量能仍高但开始缩量</h4>
+              <span class="tag watch">继续观察</span>
+            </div>
+            <p>成交额继续超过3万亿元，但较前一交易日缩量约783亿元。行情仍强，但轮动更快，追高分支需要看次日资金承接。</p>
+            <div class="chain"><span class="node">3万亿成交</span><span class="arrow">→</span><span class="node">缩量上行</span><span class="arrow">→</span><span class="node">看承接</span></div>
+          </article>
+
+          <article class="theme-card" data-kind="watch">
+            <div class="theme-head">
+              <h4>北证与小盘风险偏好</h4>
+              <span class="tag positive">已验证</span>
+            </div>
+            <p>北证50涨3.05%，全市场超3500股上涨，连续两日超百股涨停，说明风险偏好不只集中在少数权重科技股。</p>
+            <div class="chain"><span class="node">赚钱效应</span><span class="arrow">→</span><span class="node">北证50</span><span class="arrow">→</span><span class="node">小盘活跃</span></div>
+          </article>
+
+          <article class="theme-card" data-kind="watch">
+            <div class="theme-head">
+              <h4>地产、低空、气候变量</h4>
+              <span class="tag watch">继续观察</span>
+            </div>
+            <p>这些方向仍没有压过AI硬件主线。除非出现更明确政策或灾害冲击，否则暂时作为辅助变量，不列为核心交易链。</p>
+            <div class="chain"><span class="node">政策/气候</span><span class="arrow">→</span><span class="node">辅助变量</span><span class="arrow">→</span><span class="node">等待成交确认</span></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="chains" class="panel">
+        <div class="section-title">
+          <h3>板块传导矩阵</h3>
+          <span>推演到验证结果</span>
+        </div>
+        <table class="matrix">
+          <thead>
+            <tr>
+              <th>此前推演</th>
+              <th>5月7日盘面证据</th>
+              <th>A股映射</th>
+              <th>验证状态</th>
+              <th>后续处理</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>AI硬件链继续扩散</td>
+              <td>CPO、光纤、光通信、PCB集体走强，多个相关个股涨停或新高</td>
+              <td>光模块、CPO、PCB、通信设备、元器件</td>
+              <td><span class="tag positive">强验证</span></td>
+              <td>看5月8日是否继续从光互连扩散到液冷、服务器、电源</td>
+            </tr>
+            <tr>
+              <td>霍尔木兹风险带动能源股</td>
+              <td>油气股集体调整，煤炭、煤化工、动力煤继续走低</td>
+              <td>油气、煤炭、能源金属继续降级</td>
+              <td><span class="tag negative">连续未确认</span></td>
+              <td>只有油价继续冲高且能源板块放量，才重新上调权重</td>
+            </tr>
+            <tr>
+              <td>英伟达产业链催化</td>
+              <td>英伟达与康宁合作消息催化光通信、CPO、光纤概念</td>
+              <td>高速光互连、光纤材料、光模块、CPO</td>
+              <td><span class="tag positive">事件验证</span></td>
+              <td>观察海外AI基础设施消息是否持续发酵</td>
+            </tr>
+            <tr>
+              <td>前日强势科技是否连续</td>
+              <td>指数继续上涨，但成交较前一日缩量，科技内部从存储切到光通信</td>
+              <td>存储芯片高位分化，CPO/光纤/PCB接力</td>
+              <td><span class="tag watch">轮动确认</span></td>
+              <td>重点看轮动速度是否过快导致分支冲高回落</td>
+            </tr>
+            <tr>
+              <td>政策、地产、气候等辅助变量</td>
+              <td>当日主线仍被AI硬件压制，相关方向没有成为核心资金链</td>
+              <td>地产、低空经济、农业气候均保留观察</td>
+              <td><span class="tag watch">继续观察</span></td>
+              <td>等待政策或外部冲击带来明确成交确认</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="map" class="panel">
+        <div class="section-title">
+          <h3>联动地图</h3>
+          <span>实际主线、未确认链条、后续观察</span>
+        </div>
+        <div class="map-wrap">
+          <svg class="network" viewBox="0 0 760 330" role="img" aria-label="A股板块联动传导地图">
+            <defs>
+              <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+                <path d="M0,0 L0,6 L9,3 z" fill="#8fa0ae"></path>
+              </marker>
+              <style>
+                .edge { stroke: #8fa0ae; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+                .bubble { stroke: #fff; stroke-width: 3; }
+                .label { fill: #17202a; font-size: 15px; font-weight: 700; text-anchor: middle; dominant-baseline: middle; }
+                .small { fill: #657180; font-size: 12px; text-anchor: middle; dominant-baseline: middle; }
+              </style>
+            </defs>
+            <path class="edge" d="M130 92 C230 64, 270 64, 358 95"></path>
+            <path class="edge" d="M130 92 C210 138, 260 160, 350 174"></path>
+            <path class="edge" d="M580 83 C510 92, 470 112, 417 145"></path>
+            <path class="edge" d="M580 83 C566 142, 548 170, 498 216"></path>
+            <path class="edge" d="M376 176 C410 210, 438 230, 482 248"></path>
+            <path class="edge" d="M376 176 C305 222, 260 242, 188 260"></path>
+            <circle class="bubble" cx="130" cy="92" r="58" fill="#eaf7f1"></circle>
+            <text class="label" x="130" y="82">英伟达/康宁</text>
+            <text class="small" x="130" y="106">事件催化</text>
+            <circle class="bubble" cx="382" cy="110" r="52" fill="#eaf1ff"></circle>
+            <text class="label" x="382" y="101">成交高位</text>
+            <text class="small" x="382" y="124">3.17万亿</text>
+            <circle class="bubble" cx="376" cy="176" r="66" fill="#edf6ff"></circle>
+            <text class="label" x="376" y="164">AI硬件主线</text>
+            <text class="small" x="376" y="188">CPO/光纤/PCB</text>
+            <circle class="bubble" cx="580" cy="83" r="59" fill="#fff0ef"></circle>
+            <text class="label" x="580" y="73">霍尔木兹</text>
+            <text class="small" x="580" y="98">连续未确认</text>
+            <circle class="bubble" cx="508" cy="235" r="54" fill="#fff6e5"></circle>
+            <text class="label" x="508" y="225">能源降级</text>
+            <text class="small" x="508" y="249">油气/煤炭走弱</text>
+            <circle class="bubble" cx="180" cy="266" r="48" fill="#f4f6f8"></circle>
+            <text class="label" x="180" y="257">轮动分支</text>
+            <text class="small" x="180" y="279">机器人/液冷/AI应用</text>
+          </svg>
+          <div class="legend">
+            <div class="legend-item"><span class="swatch green"></span>已验证：AI硬件链继续扩散</div>
+            <div class="legend-item"><span class="swatch red"></span>未确认：霍尔木兹到油气煤炭</div>
+            <div class="legend-item"><span class="swatch"></span>核心主线：光纤、CPO、PCB、光通信</div>
+            <div class="legend-item"><span class="swatch amber"></span>轮动方向：机器人、液冷服务器、AI应用</div>
+            <div class="legend-item"><span class="swatch cyan"></span>后续重点：缩量后承接质量</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="watch" class="grid three">
+        <div class="panel">
+          <div class="section-title">
+            <h3>已验证</h3>
+          </div>
+          <div class="checklist">
+            <div class="check"><span class="box"></span><div><b>AI硬件链连续</b><span>光纤、CPO、PCB、光通信接力走强。</span></div></div>
+            <div class="check"><span class="box"></span><div><b>指数继续上行</b><span>深成指、创业板指续创阶段新高，北证50涨超3%。</span></div></div>
+            <div class="check"><span class="box"></span><div><b>市场广度仍好</b><span>超3500股上涨，连续两日超百股涨停。</span></div></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="section-title">
+            <h3>未确认</h3>
+          </div>
+          <div class="checklist">
+            <div class="check"><span class="box"></span><div><b>能源线继续未走强</b><span>油气股、煤炭、煤化工延续调整。</span></div></div>
+            <div class="check"><span class="box"></span><div><b>资源线降温</b><span>能源金属等跌幅居前，前一交易日资源扩散没有延续。</span></div></div>
+            <div class="check"><span class="box"></span><div><b>地产仍非主线</b><span>市场主导逻辑仍是AI硬件与科技成长。</span></div></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="section-title">
+            <h3>后续验证</h3>
+          </div>
+          <div class="checklist">
+            <div class="check"><span class="box"></span><div><b>光通信是否高位承接</b><span>观察CPO、光纤、PCB次日是否继续放量。</span></div></div>
+            <div class="check"><span class="box"></span><div><b>AI分支是否扩散</b><span>液冷服务器、机器人、AI应用能否接力。</span></div></div>
+            <div class="check"><span class="box"></span><div><b>缩量是否影响高度</b><span>成交仍高但已缩量，需防止快速轮动后的分化。</span></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="sources">
+        <div class="section-title">
+          <h3>数据与消息来源</h3>
+          <span>用于本版报告校验</span>
+        </div>
+        <div class="source-list">
+          <ul>
+            <li><a href="https://www.sse.com.cn/disclosure/announcement/general/c/c_20260423_10816345.shtml">上交所劳动节休市安排</a></li>
+            <li><a href="https://www.nbd.com.cn/articles/2026-05-07/4382196.html">每日经济新闻5月7日A股收盘</a></li>
+            <li><a href="https://finance.sina.com.cn/stock/bxjj/2026-05-07/doc-inhxaaii2876039.shtml">新浪/格隆汇5月7日A股收评</a></li>
+            <li><a href="https://finance.ce.cn/stock/gsgdbd/202605/t20260507_2950051.shtml">中国经济网5月7日指数收盘</a></li>
+            <li><a href="https://m.cnfin.com/yw-lb/zixun/20260507/4409082_1.html">新华财经科创板5月7日收盘</a></li>
+            <li><a href="https://www.stcn.com/article/detail/3898042.html">证券时报5月7日收评</a></li>
+            <li><a href="https://finance.sina.com.cn/stock/bxjj/2026-05-07/doc-inhwzvzm2835507.shtml">新浪/格隆汇光通信异动</a></li>
+            <li><a href="https://www.corning.com/worldwide/en/about-us/news-events/news-releases/2026/05/nvidia-and-corning-announce-long-term-partnership-to-strengthen-us-manufacturing-for-ai-infrastructure.html">康宁：英伟达长期合作公告</a></li>
+            <li><a href="https://finance.sina.com.cn/jjxw/2026-05-04/doc-inhwtrmy7833001.shtml">新浪港股5月4日收盘</a></li>
+            <li><a href="https://www.marketscreener.com/news/oil-jumps-stocks-drop-as-iran-tightens-grip-on-strait-of-hormuz-ce7f58dfd880f425">Reuters/MarketScreener油价与霍尔木兹</a></li>
+            <li><a href="https://www.stats.gov.cn/sj/sjjd/202604/t20260430_1963474.html">国家统计局4月PMI解读</a></li>
+            <li><a href="https://www.suzhou.gov.cn/szsrmzf/szyw/202605/b1c1e017426849859456ea8ff8ca72c7.shtml">苏州市稳地产政策</a></li>
+            <li><a href="https://www.caac.gov.cn/XXGK/XXGK/ZCFBJD/202604/t20260421_230620.html">民航局无人机标准解读</a></li>
+            <li><a href="https://www.chinanews.com.cn/sh/2026/05-04/10615463.shtml">中新网广东强降雨</a></li>
+            <li><a href="https://udn.com/news/story/7331/9482302">联合新闻网C-17抵京报道</a></li>
+          </ul>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const buttons = document.querySelectorAll(".filter");
+    const cards = document.querySelectorAll(".theme-card");
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        buttons.forEach((item) => item.classList.remove("active"));
+        button.classList.add("active");
+        const filter = button.dataset.filter;
+        cards.forEach((card) => {
+          card.hidden = filter !== "all" && card.dataset.kind !== filter;
+        });
+      });
+    });
+  </script>
+</body>
+</html>
