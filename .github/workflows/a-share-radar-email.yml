@@ -1,75 +1,65 @@
-name: A-share radar email
+name: A股雷达邮件
 
 on:
-  schedule:
-    # China Standard Time = UTC+8
-    # Weekdays 08:30 CST
-    - cron: "30 0 * * 1-5"
-    # Weekdays 16:30 CST
-    - cron: "30 8 * * 1-5"
   workflow_dispatch:
     inputs:
       mode:
-        description: "Report mode"
+        description: "报告模式"
         required: true
-        default: "premarket"
+        default: "盘前交易"
         type: choice
         options:
-          - premarket
-          - aftermarket
+          - 盘前交易
+          - 售后市场
+
+  schedule:
+    # 北京时间 08:30 = UTC 00:30
+    - cron: "30 0 * * 1-5"
+    # 北京时间 16:30 = UTC 08:30
+    - cron: "30 8 * * 1-5"
 
 jobs:
   send:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+
     env:
+      A_SHARE_REPORT_TO: ${{ secrets.A_SHARE_REPORT_TO }}
       QQ_SMTP_USER: ${{ secrets.QQ_SMTP_USER }}
       QQ_SMTP_AUTH_CODE: ${{ secrets.QQ_SMTP_AUTH_CODE }}
-      A_SHARE_REPORT_TO: ${{ secrets.A_SHARE_REPORT_TO }}
-      SMTP_HOST: smtp.qq.com
-      SMTP_PORTS: "465,587"
+      PYTHONIOENCODING: utf-8
+
     steps:
-      - name: Check out repository
+      - name: 拉取代码
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: 设置 Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Resolve report mode
-        id: mode
-        shell: bash
+      - name: 安装依赖
         run: |
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            echo "mode=${{ inputs.mode }}" >> "$GITHUB_OUTPUT"
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
           else
-            hour="$(TZ=Asia/Shanghai date +%H)"
-            if [[ "$hour" -lt 12 ]]; then
-              echo "mode=premarket" >> "$GITHUB_OUTPUT"
-            else
-              echo "mode=aftermarket" >> "$GITHUB_OUTPUT"
-            fi
+            pip install pandas numpy requests
           fi
 
-      - name: Check SMTP secrets
-        shell: bash
+      - name: 检查 Secrets
         run: |
-          test -n "$QQ_SMTP_USER" || { echo "Missing QQ_SMTP_USER secret"; exit 1; }
-          test -n "$QQ_SMTP_AUTH_CODE" || { echo "Missing QQ_SMTP_AUTH_CODE secret"; exit 1; }
-          test -n "$A_SHARE_REPORT_TO" || { echo "Missing A_SHARE_REPORT_TO secret"; exit 1; }
+          test -n "$A_SHARE_REPORT_TO" || (echo "缺少 A_SHARE_REPORT_TO" && exit 1)
+          test -n "$QQ_SMTP_USER" || (echo "缺少 QQ_SMTP_USER" && exit 1)
+          test -n "$QQ_SMTP_AUTH_CODE" || (echo "缺少 QQ_SMTP_AUTH_CODE" && exit 1)
 
-      - name: Generate and send HTML email
+      - name: 检查脚本
         run: |
-          python3 scripts/cloud_a_share_radar_email.py \
-            --mode "${{ steps.mode.outputs.mode }}" \
-            --output-html "radar-email-preview.html" \
-            --send
+          if [ ! -f scripts/cloud_a_share_radar_email.py ]; then
+            echo "未找到 scripts/cloud_a_share_radar_email.py"
+            find . -maxdepth 4 -type f | sort
+            exit 1
+          fi
 
-      - name: Upload generated preview
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: radar-email-preview
-          path: radar-email-preview.html
-          if-no-files-found: ignore
+      - name: 发送邮件
+        run: |
+          python scripts/cloud_a_share_radar_email.py
