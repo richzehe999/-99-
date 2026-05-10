@@ -16,7 +16,7 @@ from typing import Any, Dict, Iterable, List, Optional
 
 CN_TZ = timezone(timedelta(hours=8))
 DEFAULT_RECIPIENT = "240575148@qq.com"
-DEFAULT_SMTP_HOST = "smtp.qq.com"
+DEFAULT_SMTP_HOST = "smtp.gmail.com"
 DEFAULT_SMTP_PORT = 465
 DEFAULT_SMTP_PORTS = (465, 587)
 BLOCKED_EMAIL_MARKERS = ("<style", "<script", "<head", "</head", "<!doctype")
@@ -434,13 +434,13 @@ def smtp_login_and_send(
 
 
 def send_email(subject: str, html_body: str, plain_body: str) -> None:
-    sender = os.environ.get("QQ_SMTP_USER")
-    password = os.environ.get("QQ_SMTP_AUTH_CODE")
+    sender = os.environ.get("SMTP_USER") or os.environ.get("GMAIL_SMTP_USER") or os.environ.get("QQ_SMTP_USER")
+    password = os.environ.get("SMTP_PASSWORD") or os.environ.get("GMAIL_APP_PASSWORD") or os.environ.get("QQ_SMTP_AUTH_CODE")
     recipient = os.environ.get("A_SHARE_REPORT_TO", DEFAULT_RECIPIENT)
     host = os.environ.get("SMTP_HOST") or DEFAULT_SMTP_HOST
     ports = parse_smtp_ports()
 
-    missing = [name for name, value in [("QQ_SMTP_USER", sender), ("QQ_SMTP_AUTH_CODE", password)] if not value]
+    missing = [name for name, value in [("SMTP_USER", sender), ("SMTP_PASSWORD", password)] if not value]
     if missing:
         raise SystemExit(f"Missing required environment variables: {', '.join(missing)}")
 
@@ -465,11 +465,11 @@ def send_email(subject: str, html_body: str, plain_body: str) -> None:
             errors.append(f"{port}: network failed {exc}")
 
     raise SystemExit(
-        "QQ SMTP发送失败。已尝试端口 "
+        "SMTP发送失败。已尝试端口 "
         + ", ".join(str(port) for port in ports)
         + "；错误："
         + " | ".join(errors)
-        + "。如果错误里出现 Invalid input from IP，说明 QQ 拒绝当前网络出口，请关闭代理/VPN或换网络后重试。"
+        + "。如果使用 Gmail，请确认开启两步验证并使用 App Password，不要使用 Gmail 登录密码。"
     )
 
 
