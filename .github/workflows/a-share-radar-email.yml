@@ -10,10 +10,13 @@ on:
         type: choice
         options:
           - premarket
+          - midday
           - aftermarket
   schedule:
     # 北京时间 08:30 = UTC 00:30，工作日盘前邮件
     - cron: "30 0 * * 1-5"
+    # 北京时间 12:30 = UTC 04:30，工作日午间邮件
+    - cron: "30 4 * * 1-5"
     # 北京时间 16:30 = UTC 08:30，工作日盘后邮件
     - cron: "30 8 * * 1-5"
 
@@ -38,15 +41,6 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: 安装依赖
-        run: |
-          python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then
-            pip install -r requirements.txt
-          else
-            pip install pandas numpy requests
-          fi
-
       - name: 解析报告模式
         id: mode
         shell: bash
@@ -55,8 +49,10 @@ jobs:
             echo "mode=${{ inputs.mode }}" >> "$GITHUB_OUTPUT"
           else
             hour="$(TZ=Asia/Shanghai date +%H)"
-            if [[ "$hour" -lt 12 ]]; then
+            if [[ "$hour" -lt 10 ]]; then
               echo "mode=premarket" >> "$GITHUB_OUTPUT"
+            elif [[ "$hour" -lt 15 ]]; then
+              echo "mode=midday" >> "$GITHUB_OUTPUT"
             else
               echo "mode=aftermarket" >> "$GITHUB_OUTPUT"
             fi
@@ -68,18 +64,16 @@ jobs:
           test -n "$QQ_SMTP_USER" || { echo "缺少 QQ_SMTP_USER"; exit 1; }
           test -n "$QQ_SMTP_AUTH_CODE" || { echo "缺少 QQ_SMTP_AUTH_CODE"; exit 1; }
 
-      - name: 检查脚本
+      - name: 检查脚本与模板
         run: |
-          if [ ! -f scripts/cloud_a_share_radar_email.py ]; then
-            echo "未找到 scripts/cloud_a_share_radar_email.py"
-            find . -maxdepth 4 -type f | sort
-            exit 1
-          fi
+          test -f scripts/cloud_a_share_radar_email.py || { echo "未找到 scripts/cloud_a_share_radar_email.py"; exit 1; }
+          test -f a-share-report-site/index.html || { echo "未找到 a-share-report-site/index.html"; exit 1; }
 
       - name: 生成并发送邮件
         run: |
           python scripts/cloud_a_share_radar_email.py \
             --mode "${{ steps.mode.outputs.mode }}" \
+            --template-html "a-share-report-site/index.html" \
             --output-html "radar-email-preview.html" \
             --send
 
