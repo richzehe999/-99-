@@ -4,19 +4,19 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: '报告模式'
+        description: "报告模式"
         required: true
-        default: '盘前'
+        default: "盘前交易"
         type: choice
         options:
-          - 盘前
-          - 盘后
+          - 盘前交易
+          - 售后市场
 
   schedule:
-    # 北京时间 08:30 = UTC 00:30 — 盘前
-    - cron: '30 0 * * 1-5'
-    # 北京时间 16:30 = UTC 08:30 — 盘后
-    - cron: '30 8 * * 1-5'
+    # 北京时间 08:30 = UTC 00:30
+    - cron: "30 0 * * 1-5"
+    # 北京时间 16:30 = UTC 08:30
+    - cron: "30 8 * * 1-5"
 
 jobs:
   send:
@@ -29,30 +29,38 @@ jobs:
       PYTHONIOENCODING: utf-8
 
     steps:
-      - uses: actions/checkout@v4
+      - name: 拉取代码
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - name: 设置 Python
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
-      - name: 确定运行模式
-        id: mode
+      - name: 安装依赖
         run: |
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            INPUT="${{ github.event.inputs.mode }}"
-            if [[ "$INPUT" == "盘后" ]]; then
-              echo "value=aftermarket" >> "$GITHUB_OUTPUT"
-            else
-              echo "value=premarket" >> "$GITHUB_OUTPUT"
-            fi
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
           else
-            HOUR=$(TZ='Asia/Shanghai' date +%H)
-            if [ "$HOUR" -lt 12 ]; then
-              echo "value=premarket" >> "$GITHUB_OUTPUT"
-            else
-              echo "value=aftermarket" >> "$GITHUB_OUTPUT"
-            fi
+            pip install pandas numpy requests
           fi
 
-      - name: 发送 ${{ steps.mode.outputs.value }} 邮件
-        run: python scripts/cloud_a_share_radar_email.py --mode ${{ steps.mode.outputs.value }} --send
+      - name: 检查 Secrets
+        run: |
+          test -n "$A_SHARE_REPORT_TO" || (echo "缺少 A_SHARE_REPORT_TO" && exit 1)
+          test -n "$QQ_SMTP_USER" || (echo "缺少 QQ_SMTP_USER" && exit 1)
+          test -n "$QQ_SMTP_AUTH_CODE" || (echo "缺少 QQ_SMTP_AUTH_CODE" && exit 1)
+
+      - name: 检查脚本
+        run: |
+          if [ ! -f scripts/cloud_a_share_radar_email.py ]; then
+            echo "未找到 scripts/cloud_a_share_radar_email.py"
+            find . -maxdepth 4 -type f | sort
+            exit 1
+          fi
+
+      - name: 发送邮件
+        run: |
+          python scripts/cloud_a_share_radar_email.py
+        run: python scripts/cloud_a_share_radar_email.py --mode premarket --send
