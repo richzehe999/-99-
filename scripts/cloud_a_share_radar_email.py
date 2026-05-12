@@ -19,7 +19,7 @@ DEFAULT_RECIPIENT = "240575148@qq.com"
 DEFAULT_SMTP_HOST = "smtp.gmail.com"
 DEFAULT_SMTP_PORT = 465
 DEFAULT_SMTP_PORTS = (465, 587)
-BLOCKED_EMAIL_MARKERS = ("<style", "<script", "<head", "</head", "<!doctype")
+BLOCKED_EMAIL_MARKERS = ("<script", "<!doctype")
 
 # ── 数据结构 ──────────────────────────────────────────────
 
