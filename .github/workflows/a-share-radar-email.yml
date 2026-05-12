@@ -6,26 +6,27 @@ on:
       mode:
         description: "报告模式"
         required: true
-        default: "盘前交易"
+        default: "premarket"
         type: choice
         options:
-          - 盘前交易
-          - 售后市场
-
+          - premarket
+          - aftermarket
   schedule:
-    # 北京时间 08:30 = UTC 00:30
+    # 北京时间 08:30 = UTC 00:30，工作日盘前邮件
     - cron: "30 0 * * 1-5"
-    # 北京时间 16:30 = UTC 08:30
+    # 北京时间 16:30 = UTC 08:30，工作日盘后邮件
     - cron: "30 8 * * 1-5"
 
 jobs:
   send:
     runs-on: ubuntu-latest
-
+    timeout-minutes: 15
     env:
       A_SHARE_REPORT_TO: ${{ secrets.A_SHARE_REPORT_TO }}
       QQ_SMTP_USER: ${{ secrets.QQ_SMTP_USER }}
       QQ_SMTP_AUTH_CODE: ${{ secrets.QQ_SMTP_AUTH_CODE }}
+      SMTP_HOST: smtp.qq.com
+      SMTP_PORTS: "465,587"
       PYTHONIOENCODING: utf-8
 
     steps:
@@ -46,11 +47,26 @@ jobs:
             pip install pandas numpy requests
           fi
 
+      - name: 解析报告模式
+        id: mode
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "mode=${{ inputs.mode }}" >> "$GITHUB_OUTPUT"
+          else
+            hour="$(TZ=Asia/Shanghai date +%H)"
+            if [[ "$hour" -lt 12 ]]; then
+              echo "mode=premarket" >> "$GITHUB_OUTPUT"
+            else
+              echo "mode=aftermarket" >> "$GITHUB_OUTPUT"
+            fi
+          fi
+
       - name: 检查 Secrets
         run: |
-          test -n "$A_SHARE_REPORT_TO" || (echo "缺少 A_SHARE_REPORT_TO" && exit 1)
-          test -n "$QQ_SMTP_USER" || (echo "缺少 QQ_SMTP_USER" && exit 1)
-          test -n "$QQ_SMTP_AUTH_CODE" || (echo "缺少 QQ_SMTP_AUTH_CODE" && exit 1)
+          test -n "$A_SHARE_REPORT_TO" || { echo "缺少 A_SHARE_REPORT_TO"; exit 1; }
+          test -n "$QQ_SMTP_USER" || { echo "缺少 QQ_SMTP_USER"; exit 1; }
+          test -n "$QQ_SMTP_AUTH_CODE" || { echo "缺少 QQ_SMTP_AUTH_CODE"; exit 1; }
 
       - name: 检查脚本
         run: |
@@ -60,7 +76,17 @@ jobs:
             exit 1
           fi
 
-      - name: 发送邮件
+      - name: 生成并发送邮件
         run: |
-          python scripts/cloud_a_share_radar_email.py
-        run: python scripts/cloud_a_share_radar_email.py --mode premarket --send
+          python scripts/cloud_a_share_radar_email.py \
+            --mode "${{ steps.mode.outputs.mode }}" \
+            --output-html "radar-email-preview.html" \
+            --send
+
+      - name: 上传邮件预览
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: radar-email-preview
+          path: radar-email-preview.html
+          if-no-files-found: ignore
