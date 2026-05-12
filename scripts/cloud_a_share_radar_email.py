@@ -594,6 +594,10 @@ def validate_email_html(html_body: str) -> None:
     if blocked:
         raise SystemExit(f"Email HTML contains blocked webpage markup: {', '.join(blocked)}")
 
+def env_value(name: str, default: Optional[str] = None) -> Optional[str]:
+    value = os.environ.get(name, default)
+    return value.strip() if value else value
+
 def parse_smtp_ports() -> List[int]:
     raw = os.environ.get("SMTP_PORTS")
     if raw:
@@ -611,7 +615,7 @@ def smtp_login_and_send(host: str, port: int, sender: str, password: str,
         if port != 465:
             server.starttls(context=context)
             server.ehlo()
-        server.login(sender, password, initial_response_ok=False)
+        server.login(sender, password)
         server.send_message(message)
     finally:
         try:
@@ -620,12 +624,11 @@ def smtp_login_and_send(host: str, port: int, sender: str, password: str,
             pass
 
 def send_email(subject: str, html_body: str, plain_body: str) -> None:
-    sender = (os.environ.get("SMTP_USER") or os.environ.get("GMAIL_SMTP_USER")
-              or os.environ.get("QQ_SMTP_USER"))
-    password = (os.environ.get("SMTP_PASSWORD") or os.environ.get("GMAIL_APP_PASSWORD")
-                or os.environ.get("QQ_SMTP_AUTH_CODE"))
-    recipient = os.environ.get("A_SHARE_REPORT_TO", DEFAULT_RECIPIENT)
-    host = os.environ.get("SMTP_HOST") or DEFAULT_SMTP_HOST
+    sender = env_value("SMTP_USER") or env_value("GMAIL_SMTP_USER") or env_value("QQ_SMTP_USER")
+    password = (env_value("SMTP_PASSWORD") or env_value("GMAIL_APP_PASSWORD")
+                or env_value("QQ_SMTP_AUTH_CODE"))
+    recipient = env_value("A_SHARE_REPORT_TO", DEFAULT_RECIPIENT)
+    host = env_value("SMTP_HOST", DEFAULT_SMTP_HOST)
     ports = parse_smtp_ports()
 
     missing = [n for n, v in [("SMTP_USER", sender), ("SMTP_PASSWORD", password)] if not v]
