@@ -32,7 +32,6 @@ MODE_CONTEXT = {
     "midday": "午间：早盘资金 -> 强弱扩散 -> 下午验证条件。",
     "aftermarket": "盘后：当日主线 -> 资金结构 -> 次日观察条件。",
 }
-
 INDEX_SECIDS = {
     "上证指数": "1.000001",
     "深证成指": "0.399001",
@@ -454,7 +453,7 @@ def smtp_login_and_send(host: str, port: int, sender: str, password: str, messag
         if port != 465:
             server.starttls(context=context)
             server.ehlo()
-        server.login(sender, password, initial_response_ok=False)
+        server.login(sender, password)
         server.send_message(message)
     finally:
         try:
