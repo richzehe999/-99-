@@ -33,43 +33,60 @@ jobs:
       PYTHONIOENCODING: utf-8
 
     steps:
-      - name: 拉取代码
-        uses: actions/checkout@v4
-
-      - name: 设置 Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
       - name: 解析报告模式
         id: mode
         shell: bash
         run: |
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             echo "mode=${{ inputs.mode }}" >> "$GITHUB_OUTPUT"
+            echo "skip=false" >> "$GITHUB_OUTPUT"
           else
-            hour="$(TZ=Asia/Shanghai date +%H)"
-            if [[ "$hour" -lt 10 ]]; then
-              echo "mode=premarket" >> "$GITHUB_OUTPUT"
-            elif [[ "$hour" -lt 15 ]]; then
-              echo "mode=midday" >> "$GITHUB_OUTPUT"
-            else
-              echo "mode=aftermarket" >> "$GITHUB_OUTPUT"
-            fi
+            case "${{ github.event.schedule }}" in
+              "30 0 * * 1-5")
+                echo "mode=premarket" >> "$GITHUB_OUTPUT"
+                echo "skip=false" >> "$GITHUB_OUTPUT"
+                ;;
+              "30 4 * * 1-5")
+                echo "mode=midday" >> "$GITHUB_OUTPUT"
+                echo "skip=false" >> "$GITHUB_OUTPUT"
+                ;;
+              "30 8 * * 1-5")
+                echo "mode=aftermarket" >> "$GITHUB_OUTPUT"
+                echo "skip=false" >> "$GITHUB_OUTPUT"
+                ;;
+              *)
+                echo "::notice::跳过非白名单定时触发：${{ github.event.schedule }}"
+                echo "mode=skip" >> "$GITHUB_OUTPUT"
+                echo "skip=true" >> "$GITHUB_OUTPUT"
+                ;;
+            esac
           fi
 
+      - name: 拉取代码
+        if: steps.mode.outputs.skip != 'true'
+        uses: actions/checkout@v4
+
+      - name: 设置 Python
+        if: steps.mode.outputs.skip != 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
       - name: 检查 Secrets
+        if: steps.mode.outputs.skip != 'true'
         run: |
           test -n "$A_SHARE_REPORT_TO" || { echo "缺少 A_SHARE_REPORT_TO"; exit 1; }
           test -n "$QQ_SMTP_USER" || { echo "缺少 QQ_SMTP_USER"; exit 1; }
           test -n "$QQ_SMTP_AUTH_CODE" || { echo "缺少 QQ_SMTP_AUTH_CODE"; exit 1; }
 
       - name: 检查脚本与模板
+        if: steps.mode.outputs.skip != 'true'
         run: |
           test -f scripts/cloud_a_share_radar_email.py || { echo "未找到 scripts/cloud_a_share_radar_email.py"; exit 1; }
           test -f a-share-report-site/index.html || { echo "未找到 a-share-report-site/index.html"; exit 1; }
 
       - name: 生成并发送邮件
+        if: steps.mode.outputs.skip != 'true'
         run: |
           python scripts/cloud_a_share_radar_email.py \
             --mode "${{ steps.mode.outputs.mode }}" \
@@ -78,7 +95,7 @@ jobs:
             --send
 
       - name: 上传邮件预览
-        if: always()
+        if: always() && steps.mode.outputs.skip != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: radar-email-preview
