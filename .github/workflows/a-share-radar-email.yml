@@ -3,19 +3,22 @@ name: A-share radar email
 on:
   schedule:
     # China Standard Time = UTC+8
-    # Weekdays 08:30 CST
-    - cron: "30 0 * * 1-5"
-    # Weekdays 16:30 CST
-    - cron: "30 8 * * 1-5"
+    # Weekdays 08:10 CST: premarket
+    - cron: "10 0 * * 1-5"
+    # Weekdays 12:10 CST: midday
+    - cron: "10 4 * * 1-5"
+    # Weekdays 16:10 CST: aftermarket
+    - cron: "10 8 * * 1-5"
   workflow_dispatch:
     inputs:
       mode:
         description: "Report mode"
         required: true
-        default: "premarket"
+        default: "aftermarket"
         type: choice
         options:
           - premarket
+          - midday
           - aftermarket
 
 jobs:
@@ -23,51 +26,115 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
+      A_SHARE_REPORT_TO: ${{ secrets.A_SHARE_REPORT_TO }}
       SMTP_USER: ${{ secrets.SMTP_USER }}
       SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-      A_SHARE_REPORT_TO: ${{ secrets.A_SHARE_REPORT_TO }}
-      SMTP_HOST: smtp.gmail.com
-      SMTP_PORTS: "465,587"
+      GMAIL_SMTP_USER: ${{ secrets.GMAIL_SMTP_USER }}
+      GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+      QQ_SMTP_USER: ${{ secrets.QQ_SMTP_USER }}
+      QQ_SMTP_AUTH_CODE: ${{ secrets.QQ_SMTP_AUTH_CODE }}
+      SMTP_HOST: ${{ secrets.SMTP_HOST || 'smtp.qq.com' }}
+      SMTP_PORTS: ${{ secrets.SMTP_PORTS || '465,587' }}
+      PYTHONIOENCODING: utf-8
     steps:
+      - name: Resolve report mode and send window
+        id: mode
+        shell: bash
+        run: |
+          event="${{ github.event_name }}"
+          schedule="${{ github.event.schedule }}"
+          now_hm="$(TZ=Asia/Shanghai date +%H%M)"
+          echo "Beijing time HHMM: ${now_hm}"
+          echo "Event: ${event}; Schedule: ${schedule}"
+
+          if [[ "${event}" == "workflow_dispatch" ]]; then
+            echo "mode=${{ inputs.mode }}" >> "$GITHUB_OUTPUT"
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          case "${schedule}" in
+            "10 0 * * 1-5")
+              mode="premarket"
+              start="0730"
+              end="0930"
+              ;;
+            "10 4 * * 1-5")
+              mode="midday"
+              start="1130"
+              end="1330"
+              ;;
+            "10 8 * * 1-5")
+              mode="aftermarket"
+              start="1600"
+              end="2300"
+              ;;
+            *)
+              echo "::notice::Skip non-whitelisted schedule: ${schedule}"
+              echo "mode=skip" >> "$GITHUB_OUTPUT"
+              echo "skip=true" >> "$GITHUB_OUTPUT"
+              exit 0
+              ;;
+          esac
+
+          if [[ "${now_hm}" < "${start}" || "${now_hm}" > "${end}" ]]; then
+            echo "::notice::Skip ${mode}: Beijing time ${now_hm} outside ${start}-${end}. This prevents delayed overnight sends."
+            echo "mode=${mode}" >> "$GITHUB_OUTPUT"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "mode=${mode}" >> "$GITHUB_OUTPUT"
+          echo "skip=false" >> "$GITHUB_OUTPUT"
+
+      - name: Stop if outside send window
+        if: steps.mode.outputs.skip == 'true'
+        run: |
+          echo "Skipped by send-window guard."
+
       - name: Check out repository
+        if: steps.mode.outputs.skip != 'true'
         uses: actions/checkout@v4
 
       - name: Set up Python
+        if: steps.mode.outputs.skip != 'true'
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Resolve report mode
-        id: mode
+      - name: Check SMTP secrets
+        if: steps.mode.outputs.skip != 'true'
         shell: bash
         run: |
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            echo "mode=${{ inputs.mode }}" >> "$GITHUB_OUTPUT"
-          else
-            hour="$(TZ=Asia/Shanghai date +%H)"
-            if [[ "$hour" -lt 12 ]]; then
-              echo "mode=premarket" >> "$GITHUB_OUTPUT"
-            else
-              echo "mode=aftermarket" >> "$GITHUB_OUTPUT"
-            fi
+          test -n "$A_SHARE_REPORT_TO" || { echo "Missing A_SHARE_REPORT_TO secret"; exit 1; }
+          if [[ -z "$SMTP_USER" && -z "$GMAIL_SMTP_USER" && -z "$QQ_SMTP_USER" ]]; then
+            echo "Missing SMTP user secret: set SMTP_USER, GMAIL_SMTP_USER, or QQ_SMTP_USER"
+            exit 1
+          fi
+          if [[ -z "$SMTP_PASSWORD" && -z "$GMAIL_APP_PASSWORD" && -z "$QQ_SMTP_AUTH_CODE" ]]; then
+            echo "Missing SMTP password secret: set SMTP_PASSWORD, GMAIL_APP_PASSWORD, or QQ_SMTP_AUTH_CODE"
+            exit 1
           fi
 
-      - name: Check SMTP secrets
+      - name: Check script and template
+        if: steps.mode.outputs.skip != 'true'
         shell: bash
         run: |
-          test -n "$SMTP_USER" || { echo "Missing SMTP_USER secret"; exit 1; }
-          test -n "$SMTP_PASSWORD" || { echo "Missing SMTP_PASSWORD secret"; exit 1; }
-          test -n "$A_SHARE_REPORT_TO" || { echo "Missing A_SHARE_REPORT_TO secret"; exit 1; }
+          test -f scripts/cloud_a_share_radar_email.py || { echo "Missing scripts/cloud_a_share_radar_email.py"; exit 1; }
+          test -f a-share-report-site/index.html || { echo "Missing a-share-report-site/index.html"; exit 1; }
+          wc -c a-share-report-site/index.html
 
       - name: Generate and send HTML email
+        if: steps.mode.outputs.skip != 'true'
         run: |
           python3 scripts/cloud_a_share_radar_email.py \
             --mode "${{ steps.mode.outputs.mode }}" \
+            --template-html "a-share-report-site/index.html" \
             --output-html "radar-email-preview.html" \
             --send
 
       - name: Upload generated preview
-        if: always()
+        if: always() && steps.mode.outputs.skip != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: radar-email-preview
