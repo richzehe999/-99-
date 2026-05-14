@@ -11,15 +11,28 @@ from dataclasses import dataclass
 from datetime import datetime, timezone, timedelta
 from email.message import EmailMessage
 from html import escape
+from html.parser import HTMLParser
+from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional
 
 
 CN_TZ = timezone(timedelta(hours=8))
 DEFAULT_RECIPIENT = "240575148@qq.com"
-DEFAULT_SMTP_HOST = "smtp.gmail.com"
+DEFAULT_SMTP_HOST = "smtp.qq.com"
 DEFAULT_SMTP_PORT = 465
 DEFAULT_SMTP_PORTS = (465, 587)
-BLOCKED_EMAIL_MARKERS = ("<style", "<script", "<head", "</head", "<!doctype")
+DEFAULT_TEMPLATE_HTML = Path("a-share-report-site/index.html")
+BLOCKED_EMAIL_MARKERS = ("<style", "<script", "<head", "</head", "<!doctype", "display:flex", "display:grid")
+MODE_NAMES = {
+    "premarket": "A股盘前分析雷达",
+    "midday": "A股午间联动雷达",
+    "aftermarket": "A股盘后验证雷达",
+}
+MODE_CONTEXT = {
+    "premarket": "盘前联动版：承接最新网页模板结论，用于开盘前确认外盘、商品、政策和A股映射条件。",
+    "midday": "午间联动版：承接最新网页模板结论，用于午间复核资金方向、强弱扩散和下午验证条件。",
+    "aftermarket": "盘后验证版：承接最新网页模板结论，用于收盘后复盘主线、资金和次日观察条件。",
+}
 
 
 @dataclass
@@ -29,6 +42,142 @@ class Quote:
     price: Optional[float]
     pct: Optional[float]
     amount: Optional[float]
+
+
+class SiteTemplateParser(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.skip_depth = 0
+        self.title = ""
+        self.status = ""
+        self.paragraphs: List[str] = []
+        self.kpis: List[str] = []
+        self.summaries: List[str] = []
+        self.mini_items: List[str] = []
+        self.themes: List[str] = []
+        self.dashboard_cards: List[str] = []
+        self.sources: List[str] = []
+        self.table_rows: List[List[str]] = []
+        self._captures: List[Dict[str, Any]] = []
+        self._in_tbody = 0
+        self._current_row: Optional[List[str]] = None
+        self._current_cell: Optional[List[str]] = None
+        self._source_depth = 0
+
+    @staticmethod
+    def _classes(attrs: List[tuple[str, Optional[str]]]) -> set[str]:
+        raw = dict(attrs).get("class") or ""
+        return set(raw.split())
+
+    @staticmethod
+    def _clean(value: str) -> str:
+        lines = [" ".join(line.split()) for line in value.splitlines()]
+        return "\n".join(line for line in lines if line)
+
+    def _start_capture(self, kind: str, tag: str) -> None:
+        self._captures.append({"kind": kind, "tag": tag, "parts": [], "depth": 1})
+
+    def _finish_capture(self, capture: Dict[str, Any]) -> None:
+        text = self._clean("".join(capture["parts"]))
+        if not text:
+            return
+        kind = capture["kind"]
+        if kind == "title" and not self.title:
+            self.title = text
+        elif kind == "status" and not self.status:
+            self.status = text
+        elif kind == "p":
+            self.paragraphs.append(text)
+        elif kind == "kpi":
+            self.kpis.append(text)
+        elif kind == "summary":
+            self.summaries.append(text)
+        elif kind == "mini":
+            self.mini_items.append(text)
+        elif kind == "theme":
+            self.themes.append(text)
+        elif kind == "dashboard_card":
+            self.dashboard_cards.append(text)
+        elif kind == "source":
+            self.sources.append(text)
+
+    def handle_starttag(self, tag: str, attrs: List[tuple[str, Optional[str]]]) -> None:
+        if tag in {"style", "script", "head"}:
+            self.skip_depth += 1
+            return
+        if self.skip_depth:
+            return
+
+        classes = self._classes(attrs)
+        for capture in self._captures:
+            capture["depth"] += 1
+            if tag in {"br", "p", "li", "td", "th", "div", "h2", "h3", "small", "strong", "em"}:
+                capture["parts"].append("\n")
+
+        if "source-list" in classes:
+            self._source_depth += 1
+        if tag == "tbody":
+            self._in_tbody += 1
+        if tag == "tr" and self._in_tbody:
+            self._current_row = []
+        if tag in {"td", "th"} and self._current_row is not None:
+            self._current_cell = []
+
+        if tag == "h1":
+            self._start_capture("title", tag)
+        elif tag == "p":
+            self._start_capture("p", tag)
+        elif "status-pill" in classes:
+            self._start_capture("status", tag)
+        elif tag == "article" and "kpi" in classes:
+            self._start_capture("kpi", tag)
+        elif "summary-row" in classes:
+            self._start_capture("summary", tag)
+        elif tag == "li" and self._source_depth:
+            self._start_capture("source", tag)
+        elif tag == "li":
+            self._start_capture("mini", tag)
+        elif tag == "article" and "theme-card" in classes:
+            self._start_capture("theme", tag)
+        elif tag == "article" and classes & {"chart-card", "panel", "risk-card"}:
+            self._start_capture("dashboard_card", tag)
+
+    def handle_endtag(self, tag: str) -> None:
+        if self.skip_depth:
+            if tag in {"style", "script", "head"}:
+                self.skip_depth -= 1
+            return
+
+        if tag in {"td", "th"} and self._current_cell is not None and self._current_row is not None:
+            self._current_row.append(self._clean("".join(self._current_cell)))
+            self._current_cell = None
+        elif tag == "tr" and self._current_row is not None:
+            row = [cell for cell in self._current_row if cell]
+            if len(row) >= 2:
+                self.table_rows.append(row)
+            self._current_row = None
+        elif tag == "tbody" and self._in_tbody:
+            self._in_tbody -= 1
+
+        finished: List[Dict[str, Any]] = []
+        for capture in self._captures:
+            capture["depth"] -= 1
+            if capture["depth"] <= 0:
+                finished.append(capture)
+        for capture in finished:
+            self._captures.remove(capture)
+            self._finish_capture(capture)
+
+        if tag == "div" and self._source_depth:
+            self._source_depth -= 1
+
+    def handle_data(self, data: str) -> None:
+        if self.skip_depth:
+            return
+        for capture in self._captures:
+            capture["parts"].append(data)
+        if self._current_cell is not None:
+            self._current_cell.append(data)
 
 
 INDEX_SECIDS = {
@@ -195,7 +344,7 @@ def html_table(headers: Iterable[str], rows: Iterable[Iterable[str]]) -> str:
     body = []
     for row in rows:
         cells = "".join(
-            f'<td style="padding:11px 8px;border-bottom:1px solid #edf1f5;vertical-align:top;">{cell}</td>'
+            f'<td style="padding:11px 8px;border-bottom:1px solid #edf1f5;vertical-align:top;color:#17202a;">{cell}</td>'
             for cell in row
         )
         body.append(f"<tr>{cells}</tr>")
@@ -203,6 +352,200 @@ def html_table(headers: Iterable[str], rows: Iterable[Iterable[str]]) -> str:
         '<table style="width:100%;border-collapse:collapse;font-size:14px;">'
         f"<thead><tr>{head}</tr></thead><tbody>{''.join(body)}</tbody></table>"
     )
+
+
+def list_items(items: Iterable[str], limit: int = 8) -> str:
+    rows = []
+    for item in list(items)[:limit]:
+        rows.append(
+            '<li style="margin:0 0 8px;padding:0;color:#2d3642;font-size:14px;">'
+            f"{escape(item).replace(chr(10), '<br>')}"
+            "</li>"
+        )
+    if not rows:
+        rows.append('<li style="margin:0;color:#2d3642;font-size:14px;">数据待确认</li>')
+    return '<ul style="margin:0;padding-left:18px;">' + "".join(rows) + "</ul>"
+
+
+def section(title: str, body: str, subtitle: str = "") -> str:
+    if subtitle:
+        title_html = (
+            '<table style="width:100%;border-collapse:collapse;margin-bottom:12px;"><tr>'
+            f'<td style="padding:0;vertical-align:bottom;white-space:nowrap;"><h2 style="margin:0;color:#17202a;font-size:20px;line-height:1.2;">{escape(title)}</h2></td>'
+            f'<td style="padding:0 0 0 14px;vertical-align:bottom;text-align:right;width:99%;">'
+            f'<span style="color:#657180;font-size:12px;">{escape(subtitle)}</span></td>'
+            '</tr></table>'
+        )
+    else:
+        title_html = f'<h2 style="margin:0 0 12px;color:#17202a;font-size:20px;line-height:1.2;">{escape(title)}</h2>'
+    return (
+        '<div style="margin-top:18px;padding:18px;border:1px solid #d9e0e7;border-radius:8px;background:#ffffff;">'
+        f'{title_html}{body}</div>'
+    )
+
+
+def rows_to_email_table(rows: List[List[str]], limit: int = 8) -> str:
+    if not rows:
+        return html_table(["项目", "内容"], [["数据待确认", "模板中未提取到表格内容"]])
+    headers = [f"列{i + 1}" for i in range(max(len(row) for row in rows[:limit]))]
+    normalized = []
+    for row in rows[:limit]:
+        normalized.append([escape(cell).replace(chr(10), "<br>") for cell in row])
+    return html_table(headers, normalized)
+
+
+def dashboard_cards_to_email(cards: List[str], limit: int = 18) -> str:
+    if not cards:
+        return list_items([])
+    cells = []
+    for card_text in cards[:limit]:
+        parts = [part for part in card_text.splitlines() if part]
+        title = parts[0] if parts else "看板模块"
+        body = "<br>".join(escape(part) for part in parts[1:7])
+        cells.append(
+            '<td style="width:50%;padding:6px;vertical-align:top;">'
+            '<div style="min-height:132px;padding:15px;border:1px solid #d9e0e7;border-radius:8px;background:#fbfcfd;">'
+            f'<h3 style="margin:0 0 8px;color:#17202a;font-size:16px;line-height:1.25;">{escape(title)}</h3>'
+            f'<p style="margin:0;color:#2d3642;font-size:13px;line-height:1.55;">{body}</p>'
+            "</div></td>"
+        )
+    rows = []
+    for idx in range(0, len(cells), 2):
+        row_cells = cells[idx : idx + 2]
+        if len(row_cells) == 1:
+            row_cells.append('<td style="width:50%;padding:6px;"></td>')
+        rows.append("<tr>" + "".join(row_cells) + "</tr>")
+    return '<table style="width:100%;border-collapse:collapse;">' + "".join(rows) + "</table>"
+
+
+def build_kpi_rows_from_quotes(quotes: List[Quote]) -> List[str]:
+    rows = []
+    for quote in quotes[:5]:
+        rows.append(
+            '<td style="width:20%;padding:6px;vertical-align:top;">'
+            '<div style="min-height:108px;padding:14px;border:1px solid #d9e0e7;border-radius:8px;background:#ffffff;text-align:center;">'
+            f'<div style="font-size:12px;color:#657180;margin-bottom:7px;">{escape(quote.name)}</div>'
+            f'<div style="font-size:24px;font-weight:900;color:{pct_color(quote.pct)};line-height:1.1;">{escape(fmt_num(quote.price))}</div>'
+            f'<div style="font-size:12px;color:#2d3642;margin-top:8px;">{escape(fmt_pct(quote.pct))}｜成交 {escape(fmt_amount(quote.amount))}</div>'
+            "</div></td>"
+        )
+    return rows
+
+
+def build_kpi_rows_from_template(kpis: List[str]) -> List[str]:
+    rows = []
+    for kpi in kpis[:5]:
+        parts = [part for part in kpi.splitlines() if part]
+        title = parts[0] if parts else "指标"
+        value = parts[1] if len(parts) > 1 else "数据待确认"
+        note = " ".join(parts[2:]) if len(parts) > 2 else ""
+        rows.append(
+            '<td style="width:20%;padding:6px;vertical-align:top;">'
+            '<div style="min-height:108px;padding:14px;border:1px solid #d9e0e7;border-radius:8px;background:#ffffff;text-align:center;">'
+            f'<div style="font-size:12px;color:#657180;margin-bottom:7px;">{escape(title)}</div>'
+            f'<div style="font-size:24px;font-weight:900;color:#17202a;line-height:1.1;">{escape(value)}</div>'
+            f'<div style="font-size:12px;color:#2d3642;margin-top:8px;">{escape(note)}</div>'
+            "</div></td>"
+        )
+    return rows
+
+
+def board_flow_rows(boards: List[Dict[str, Any]]) -> List[List[str]]:
+    rows = []
+    for item in boards[:8]:
+        rows.append(
+            [
+                str(item.get("f14", "数据待确认")),
+                fmt_amount(safe_float(item.get("f62"))),
+                fmt_pct(safe_float(item.get("f3"))),
+            ]
+        )
+    return rows
+
+
+def quote_rows(quotes: List[Quote]) -> List[List[str]]:
+    return [[q.name, fmt_num(q.price), fmt_pct(q.pct), fmt_amount(q.amount)] for q in quotes]
+
+
+def build_runtime_update_section(indices: List[Quote], boards: List[Dict[str, Any]], global_quotes: List[Quote]) -> str:
+    runtime_blocks = []
+    if indices:
+        runtime_blocks.append(section("运行时指数更新", html_table(["指数", "点位", "涨跌幅", "成交额"], quote_rows(indices[:8])), "发送前实时抓取"))
+    if boards:
+        runtime_blocks.append(section("运行时板块资金", html_table(["板块", "主力净流入", "涨跌幅"], board_flow_rows(boards)), "发送前实时抓取"))
+    if global_quotes:
+        runtime_blocks.append(section("运行时外部变量", html_table(["变量", "最新值", "涨跌幅"], [[q.name, fmt_num(q.price), fmt_pct(q.pct)] for q in global_quotes]), "发送前实时抓取"))
+    return "".join(runtime_blocks)
+
+
+def build_html_from_site_template(
+    mode: str,
+    template_path: Path,
+    indices: Optional[List[Quote]] = None,
+    boards: Optional[List[Dict[str, Any]]] = None,
+    global_quotes: Optional[List[Quote]] = None,
+) -> str:
+    parser = SiteTemplateParser()
+    parser.feed(template_path.read_text(encoding="utf-8"))
+
+    indices = indices or []
+    boards = boards or []
+    global_quotes = global_quotes or []
+    report_date = cn_now().strftime("%Y-%m-%d")
+    mode_name = MODE_NAMES[mode]
+    hero_text = parser.paragraphs[0] if parser.paragraphs else "模板报告内容已读取，数据口径以网页正文为准。"
+    status = parser.status or "已接入网页模板"
+
+    has_live_indices = any(quote.price is not None for quote in indices[:5])
+    kpi_rows = build_kpi_rows_from_quotes(indices) if has_live_indices else build_kpi_rows_from_template(parser.kpis)
+    while len(kpi_rows) < 5:
+        kpi_rows.append('<td style="width:20%;padding:6px;"></td>')
+
+    theme_cards = []
+    for theme in parser.themes[:6]:
+        parts = [part for part in theme.splitlines() if part]
+        title = parts[0] if parts else "验证条目"
+        body = "<br>".join(escape(part) for part in parts[1:4])
+        theme_cards.append(
+            '<td style="width:33.33%;padding:6px;vertical-align:top;">'
+            '<div style="min-height:126px;padding:15px;border:1px solid #d9e0e7;border-radius:8px;background:#fbfcfd;">'
+            f'<h3 style="margin:0 0 8px;color:#17202a;font-size:16px;line-height:1.25;">{escape(title)}</h3>'
+            f'<p style="margin:0;color:#2d3642;font-size:13px;line-height:1.55;">{body}</p>'
+            "</div></td>"
+        )
+    theme_rows = []
+    for idx in range(0, len(theme_cards), 3):
+        theme_rows.append("<tr>" + "".join(theme_cards[idx : idx + 3]) + "</tr>")
+    theme_table = '<table style="width:100%;border-collapse:collapse;">' + "".join(theme_rows) + "</table>" if theme_rows else list_items([])
+
+    return f"""<div style="margin:0;background:#f7f8f9;color:#17202a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',Arial,sans-serif;line-height:1.5;padding:0;">
+  <div style="max-width:1180px;margin:0 auto;background:#f7f8f9;padding:22px;">
+    <div style="padding:24px 26px;border:1px solid #d9e0e7;border-radius:8px;background:#ffffff;">
+      <table style="width:100%;border-collapse:collapse;"><tr>
+        <td style="padding:0;vertical-align:top;">
+          <div style="font-size:13px;color:#657180;margin-bottom:8px;">{escape(MODE_CONTEXT[mode])}</div>
+          <h1 style="margin:0 0 10px;color:#17202a;font-size:36px;line-height:1.08;">{escape(mode_name)}</h1>
+          <p style="margin:0;max-width:920px;color:#2d3642;font-size:14px;">{escape(hero_text)}</p>
+        </td>
+        <td style="padding:0 0 0 18px;vertical-align:top;text-align:right;white-space:nowrap;width:1%;">
+          <div style="border:1px solid #cbd6e1;border-radius:999px;padding:8px 12px;color:#2d3642;background:#ffffff;font-size:12px;display:inline-block;">{escape(status)}</div>
+        </td>
+      </tr></table>
+    </div>
+
+    <table style="width:100%;border-collapse:collapse;margin-top:18px;"><tr>{''.join(kpi_rows)}</tr></table>
+
+    {build_runtime_update_section(indices, boards, global_quotes)}
+    {section("完整看板模块", dashboard_cards_to_email(parser.dashboard_cards), "资金、强弱、买方维度、风险观察")}
+    {section("结构摘要", list_items(parser.summaries, 8), "从网页模板抽取")}
+    {section("验证条目", theme_table, "已验证 / 未确认 / 继续观察")}
+    {section("消息传导与风险观察", rows_to_email_table(parser.table_rows, 10), "事件 -> A股映射 -> 盘面验证")}
+    {section("后续观察", list_items(parser.mini_items, 9), "盘前、午间、盘后任务共用")}
+    {section("来源说明", list_items(parser.sources, 10), "网页模板来源")}
+
+    <p style="margin:22px 0 0;color:#657180;font-size:12px;">报告日期：{escape(report_date)}｜模板：{escape(str(template_path))}｜本报告仅用于市场结构观察，不构成投资建议。</p>
+  </div>
+</div>"""
 
 
 def card(title: str, body: str, tag: str = "", tag_color: str = "#eaf1ff", tag_text: str = "#36516e") -> str:
@@ -225,8 +568,12 @@ def card(title: str, body: str, tag: str = "", tag_color: str = "#eaf1ff", tag_t
 def build_html(mode: str, indices: List[Quote], boards: List[Dict[str, Any]], global_quotes: List[Quote]) -> str:
     now = cn_now()
     report_date = now.strftime("%Y-%m-%d")
-    mode_name = "A股盘前分析雷达" if mode == "premarket" else "A股盘后验证雷达"
-    status = "盘前最新可得数据" if mode == "premarket" else "盘后收盘数据优先"
+    mode_name = MODE_NAMES[mode]
+    status = {
+        "premarket": "盘前最新可得数据",
+        "midday": "午间最新可得数据",
+        "aftermarket": "盘后收盘数据优先",
+    }[mode]
 
     core_indices = indices[:5]
     kpi_cells = []
@@ -288,6 +635,18 @@ def build_html(mode: str, indices: List[Quote], boards: List[Dict[str, Any]], gl
             card("开盘15分钟", "观察CPO、半导体、油气、红利和指数权重谁主动放量。", "验证", "#eaf7f1", "#0f6842"),
             card("证伪条件", "若热点高开低走、成交不足或外盘反向拖累，盘前预案降级。", "风控", "#fff6e5", "#865a13"),
         ]
+    elif mode == "midday":
+        lead = "午间重点是复核早盘主线是否被资金确认，并列出下午继续验证或降级条件。"
+        conclusion_rows = [
+            ("资金", "看早盘主力净流入是否集中在少数主线，还是转为快速轮动。"),
+            ("扩散", "确认龙头、补涨、权重和防御方向的相对强弱。"),
+            ("下午", "只保留早盘放量确认、承接稳定和仍需证伪的观察点。"),
+        ]
+        cards = [
+            card("早盘资金复核", "用指数、成交额和板块资金判断上午主线是否有效。", "复核", "#eaf7f1", "#0f6842"),
+            card("强弱扩散", "关注主线是否从龙头扩散到补涨分支，或转向防御权重。", "扩散", "#eaf1ff", "#36516e"),
+            card("下午条件", "若成交不足、冲高回落或热点只剩抱团，午间结论降级。", "条件", "#fff6e5", "#865a13"),
+        ]
     else:
         lead = "盘后重点是验证当日主线、资金扩散和外部变量是否被A股盘面确认。"
         conclusion_rows = [
@@ -301,11 +660,13 @@ def build_html(mode: str, indices: List[Quote], boards: List[Dict[str, Any]], gl
             card("明日观察", "关注主线放量、补涨承接、防御切换和成交阈值。", "观察", "#fff6e5", "#865a13"),
         ]
 
-    conclusion_html = "".join(
-        '<div style="display:grid;grid-template-columns:86px 1fr;gap:12px;padding:10px 0;border-bottom:1px solid #edf1f5;">'
-        f'<b style="font-size:14px;">{escape(label)}</b><span style="color:#657180;font-size:14px;">{escape(text)}</span></div>'
+    conclusion_html = '<table style="width:100%;border-collapse:collapse;">' + "".join(
+        '<tr><td style="width:86px;padding:10px 12px 10px 0;vertical-align:top;border-bottom:1px solid #edf1f5;">'
+        f'<b style="font-size:14px;">{escape(label)}</b></td>'
+        '<td style="padding:10px 0;vertical-align:top;border-bottom:1px solid #edf1f5;">'
+        f'<span style="color:#657180;font-size:14px;">{escape(text)}</span></td></tr>'
         for label, text in conclusion_rows
-    )
+    ) + '</table>'
 
     return f"""<div style="margin:0;background:#f7f8f9;color:#17202a;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',Arial,sans-serif;line-height:1.5;padding:0;">
   <div style="max-width:1180px;margin:0 auto;background:#ffffff;">
@@ -314,22 +675,24 @@ def build_html(mode: str, indices: List[Quote], boards: List[Dict[str, Any]], gl
         <td style="width:230px;background:#1d2733;color:#eef4f8;padding:28px 24px;vertical-align:top;">
           <div style="font-size:18px;font-weight:800;">A股消息雷达</div>
           <div style="color:#9eb0c0;font-size:13px;margin-top:4px;">{escape(report_date)}｜{escape(status)}</div>
-          <div style="display:grid;gap:18px;margin-top:34px;font-weight:700;color:#dbe7ee;font-size:15px;">
-            <div>市场基准</div><div>核心消息</div><div>传导链</div><div>外部风险</div><div>后续验证</div>
+          <div style="margin-top:34px;font-weight:700;color:#dbe7ee;font-size:15px;">
+            <div style="padding:9px 0;">市场基准</div><div style="padding:9px 0;">核心消息</div><div style="padding:9px 0;">传导链</div><div style="padding:9px 0;">外部风险</div><div style="padding:9px 0;">后续验证</div>
           </div>
           <div style="margin-top:36px;border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:14px;color:#b7c6d1;font-size:13px;">
             每次发送前刷新数据；若非交易日，明确使用最近交易日口径。
           </div>
         </td>
         <td style="padding:34px 34px 42px;vertical-align:top;">
-          <div style="display:flex;justify-content:space-between;gap:24px;align-items:flex-start;">
-            <div>
+          <table style="width:100%;border-collapse:collapse;"><tr>
+            <td style="padding:0;vertical-align:top;">
               <h1 style="margin:0 0 10px;font-size:40px;line-height:1.08;color:#17202a;">{escape(mode_name)}</h1>
               <p style="margin:0 0 10px;max-width:780px;font-size:16px;color:#2d3642;">{escape(lead)}</p>
               <p style="margin:0;color:#657180;font-size:13px;">报告日期：{escape(report_date)}｜数据源：东方财富行情接口、Yahoo Finance公开行情等；实际可得性以运行时为准。</p>
-            </div>
-            <div style="white-space:nowrap;border:1px solid #cbd6e1;border-radius:999px;padding:9px 14px;color:#2d3642;background:#fff;font-size:13px;">{escape(status)}</div>
-          </div>
+            </td>
+            <td style="padding:0 0 0 24px;vertical-align:top;text-align:right;white-space:nowrap;width:1%;">
+              <div style="border:1px solid #cbd6e1;border-radius:999px;padding:9px 14px;color:#2d3642;background:#fff;font-size:13px;display:inline-block;">{escape(status)}</div>
+            </td>
+          </tr></table>
 
           <table style="width:100%;border-collapse:collapse;margin-top:28px;"><tr>{''.join(kpi_cells)}</tr></table>
 
@@ -424,7 +787,7 @@ def smtp_login_and_send(
         if port != 465:
             server.starttls(context=context)
             server.ehlo()
-        server.login(sender, password, initial_response_ok=False)
+        server.login(sender, password)
         server.send_message(message)
     finally:
         try:
@@ -475,15 +838,20 @@ def send_email(subject: str, html_body: str, plain_body: str) -> None:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Generate and send cloud A-share radar HTML email.")
-    parser.add_argument("--mode", choices=["premarket", "aftermarket"], required=True)
+    parser.add_argument("--mode", choices=["premarket", "midday", "aftermarket"], required=True)
+    parser.add_argument(
+        "--template-html",
+        default=os.environ.get("A_SHARE_EMAIL_TEMPLATE", str(DEFAULT_TEMPLATE_HTML)),
+        help="Read the A-share report site template and convert it into email-safe inline HTML.",
+    )
     parser.add_argument("--output-html", help="Write generated HTML to this path.")
-    parser.add_argument("--send", action="store_true", help="Send the report through QQ SMTP.")
+    parser.add_argument("--send", action="store_true", help="Send the report through SMTP.")
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
-    mode_name = "A股盘前分析雷达" if args.mode == "premarket" else "A股盘后验证雷达"
+    mode_name = MODE_NAMES[args.mode]
     report_date = cn_now().strftime("%Y-%m-%d")
 
     errors: List[str] = []
@@ -494,8 +862,18 @@ def main() -> None:
         indices = [Quote(name=name, code=secid.split(".", 1)[1], price=None, pct=None, amount=None) for name, secid in INDEX_SECIDS.items()]
 
     boards = fetch_board_flow()
+    if not boards:
+        errors.append("板块资金接口暂不可用")
     global_quotes = fetch_global_quotes()
-    html_body = build_html(args.mode, indices, boards, global_quotes)
+    if not global_quotes:
+        errors.append("外部变量接口暂不可用")
+
+    template_path = Path(args.template_html)
+    if template_path.exists():
+        html_body = build_html_from_site_template(args.mode, template_path, indices, boards, global_quotes)
+    else:
+        errors.append(f"模板文件不存在，已回退到运行时行情版: {template_path}")
+        html_body = build_html(args.mode, indices, boards, global_quotes)
 
     if errors:
         html_body += (
