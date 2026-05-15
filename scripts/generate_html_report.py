@@ -544,6 +544,9 @@ def generate_html(indices: List[Dict], boards_in: List[Dict], boards_out: List[D
     time_str = now.strftime("%H:%M")
     mode_label = MODE_LABELS.get(mode, MODE_LABELS["aftermarket"])
     title = MODE_TITLES.get(mode, MODE_TITLES["aftermarket"])
+    has_negative = any(idx["pct"] is not None and idx["pct"] < 0 for idx in indices[:3])
+    direction = "集体收跌" if all(idx["pct"] is not None and idx["pct"] < 0 for idx in indices[:3]) else \
+                ("涨跌互现" if has_negative else "集体收涨")
     summary = f"今日主要指数{direction}。"
     if boards_in and boards_out:
         top_in = boards_in[0].get("f14", "?")
