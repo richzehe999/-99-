@@ -50,14 +50,12 @@ jobs:
             fi
           fi
 
-      - name: 生成HTML报告（仅盘后）
-        if: steps.mode.outputs.value == 'aftermarket'
+      - name: 生成HTML报告
         run: |
-          python3 scripts/generate_html_report.py --output a-share-report-site/index.html
-          python3 scripts/generate_html_report.py --output index.html
+          python3 scripts/generate_html_report.py --mode ${{ steps.mode.outputs.value }} --output a-share-report-site/index.html
+          python3 scripts/generate_html_report.py --mode ${{ steps.mode.outputs.value }} --output index.html
 
-      - name: 提交并推送HTML报告（仅盘后）
-        if: steps.mode.outputs.value == 'aftermarket'
+      - name: 提交并推送HTML报告
         run: |
           git config user.name "a-share-radar-bot"
           git config user.email "bot@github.com"

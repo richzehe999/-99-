@@ -526,16 +526,24 @@ def build_source_section() -> str:
 </div>"""
 
 
-def generate_html(indices: List[Dict], boards_in: List[Dict], boards_out: List[Dict], concepts: List[Dict], lhb: Optional[Dict]) -> str:
+MODE_LABELS = {
+    "premarket": "盘前版（隔夜+上日收盘）",
+    "midday": "午间版（早盘行情）",
+    "aftermarket": "收盘版（全日数据）",
+}
+MODE_TITLES = {
+    "premarket": "A股盘前雷达",
+    "midday": "A股午间雷达",
+    "aftermarket": "A股盘后验证雷达",
+}
+
+
+def generate_html(indices: List[Dict], boards_in: List[Dict], boards_out: List[Dict], concepts: List[Dict], lhb: Optional[Dict], mode: str = "aftermarket") -> str:
     now = cn_now()
     date_str = now.strftime("%Y年%m月%d日")
     time_str = now.strftime("%H:%M")
-    short_date = now.strftime("%m/%d")
-
-    # Build summary text
-    has_negative = any(idx["pct"] is not None and idx["pct"] < 0 for idx in indices[:3])
-    direction = "集体收跌" if all(idx["pct"] is not None and idx["pct"] < 0 for idx in indices[:3]) else \
-                ("涨跌互现" if has_negative else "集体收涨")
+    mode_label = MODE_LABELS.get(mode, MODE_LABELS["aftermarket"])
+    title = MODE_TITLES.get(mode, MODE_TITLES["aftermarket"])
     summary = f"今日主要指数{direction}。"
     if boards_in and boards_out:
         top_in = boards_in[0].get("f14", "?")
@@ -555,15 +563,15 @@ def generate_html(indices: List[Dict], boards_in: List[Dict], boards_out: List[D
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>A股盘后验证雷达 | {date_str}</title>
+<title>{title} | {date_str}</title>
 <style>{CSS}</style>
 </head>
 <body>
 <main class="page">
   <header class="hero">
     <div>
-      <h1>A股盘后验证雷达</h1>
-      <p>区间：{date_str}收盘后（{time_str}版）。{summary}</p>
+      <h1>{title}</h1>
+      <p>区间：{date_str} {mode_label}（{time_str}版）。{summary}</p>
       <div class="toolbar" role="group" aria-label="雷达模式切换">
         <button class="mode-button active" data-mode="signal" type="button">强信号样式</button>
         <button class="mode-button" data-mode="condition" type="button">观察条件样式</button>
@@ -664,6 +672,7 @@ def generate_html(indices: List[Dict], boards_in: List[Dict], boards_out: List[D
 def main() -> None:
     parser = argparse.ArgumentParser(description="Generate A-share radar HTML report")
     parser.add_argument("--output", default="a-share-report-site/index.html", help="Output path")
+    parser.add_argument("--mode", choices=["premarket", "midday", "aftermarket"], default="aftermarket", help="Report mode")
     args = parser.parse_args()
 
     indices = fetch_indices()
@@ -672,7 +681,7 @@ def main() -> None:
     concepts = fetch_concept_flow(4)
     lhb = fetch_lhb_stats()
 
-    html = generate_html(indices, boards_in, boards_out, concepts, lhb)
+    html = generate_html(indices, boards_in, boards_out, concepts, lhb, mode=args.mode)
 
     os.makedirs(os.path.dirname(args.output) or ".", exist_ok=True)
     with open(args.output, "w", encoding="utf-8") as f:
