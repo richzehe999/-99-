@@ -23,7 +23,7 @@ on:
 jobs:
   notify:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
 
     steps:
       - uses: actions/checkout@v4
@@ -47,6 +47,21 @@ jobs:
               echo "value=aftermarket" >> "$GITHUB_OUTPUT"
             fi
           fi
+
+      - name: 生成HTML报告（仅盘后）
+        if: steps.mode.outputs.value == 'aftermarket'
+        run: |
+          python3 scripts/generate_html_report.py --output a-share-report-site/index.html
+          python3 scripts/generate_html_report.py --output index.html
+
+      - name: 提交并推送HTML报告（仅盘后）
+        if: steps.mode.outputs.value == 'aftermarket'
+        run: |
+          git config user.name "a-share-radar-bot"
+          git config user.email "bot@github.com"
+          git add a-share-report-site/index.html index.html
+          git diff --cached --quiet || git commit -m "auto: update radar report $(TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M')"
+          git -c http.version=HTTP/1.1 push origin main
 
       - name: 推送飞书
         env:
