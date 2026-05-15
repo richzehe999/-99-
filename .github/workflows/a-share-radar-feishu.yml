@@ -19,6 +19,10 @@ on:
           - premarket
           - midday
           - aftermarket
+      date:
+        description: "日期覆写（可选），例如 2026-05-15 08:00"
+        required: false
+        default: ""
 
 jobs:
   notify:
@@ -39,6 +43,7 @@ jobs:
         run: |
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             echo "value=${{ inputs.mode }}" >> "$GITHUB_OUTPUT"
+            echo "date=${{ inputs.date }}" >> "$GITHUB_OUTPUT"
           else
             HOUR=$(TZ='Asia/Shanghai' date +%H)
             if [ "$HOUR" -lt 10 ]; then
@@ -48,12 +53,17 @@ jobs:
             else
               echo "value=aftermarket" >> "$GITHUB_OUTPUT"
             fi
+            echo "date=" >> "$GITHUB_OUTPUT"
           fi
 
       - name: 生成HTML报告
         run: |
-          python3 scripts/generate_html_report.py --mode ${{ steps.mode.outputs.value }} --output a-share-report-site/index.html
-          python3 scripts/generate_html_report.py --mode ${{ steps.mode.outputs.value }} --output index.html
+          DATE_ARG=""
+          if [[ -n "${{ steps.mode.outputs.date }}" ]]; then
+            DATE_ARG="--date \"${{ steps.mode.outputs.date }}\""
+          fi
+          python3 scripts/generate_html_report.py --mode ${{ steps.mode.outputs.value }} $DATE_ARG --output a-share-report-site/index.html
+          python3 scripts/generate_html_report.py --mode ${{ steps.mode.outputs.value }} $DATE_ARG --output index.html
 
       - name: 提交并推送HTML报告
         run: |
@@ -67,4 +77,9 @@ jobs:
       - name: 推送飞书
         env:
           FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
-        run: python3 scripts/feishu_radar_notify.py --mode ${{ steps.mode.outputs.value }}
+        run: |
+          DATE_ARG=""
+          if [[ -n "${{ steps.mode.outputs.date }}" ]]; then
+            DATE_ARG="--date \"${{ steps.mode.outputs.date }}\""
+          fi
+          python3 scripts/feishu_radar_notify.py --mode ${{ steps.mode.outputs.value }} $DATE_ARG

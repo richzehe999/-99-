@@ -538,9 +538,9 @@ MODE_TITLES = {
 }
 
 
-def generate_html(indices: List[Dict], boards_in: List[Dict], boards_out: List[Dict], concepts: List[Dict], lhb: Optional[Dict], mode: str = "aftermarket") -> str:
+def generate_html(indices: List[Dict], boards_in: List[Dict], boards_out: List[Dict], concepts: List[Dict], lhb: Optional[Dict], mode: str = "aftermarket", date_override: Optional[str] = None) -> str:
     now = cn_now()
-    date_str = now.strftime("%Y年%m月%d日")
+    date_str = date_override if date_override else now.strftime("%Y年%m月%d日")
     time_str = now.strftime("%H:%M")
     mode_label = MODE_LABELS.get(mode, MODE_LABELS["aftermarket"])
     title = MODE_TITLES.get(mode, MODE_TITLES["aftermarket"])
@@ -676,6 +676,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Generate A-share radar HTML report")
     parser.add_argument("--output", default="a-share-report-site/index.html", help="Output path")
     parser.add_argument("--mode", choices=["premarket", "midday", "aftermarket"], default="aftermarket", help="Report mode")
+    parser.add_argument("--date", default=None, help="Date override, e.g. 2026年05月15日")
     args = parser.parse_args()
 
     indices = fetch_indices()
@@ -684,7 +685,7 @@ def main() -> None:
     concepts = fetch_concept_flow(4)
     lhb = fetch_lhb_stats()
 
-    html = generate_html(indices, boards_in, boards_out, concepts, lhb, mode=args.mode)
+    html = generate_html(indices, boards_in, boards_out, concepts, lhb, mode=args.mode, date_override=args.date)
 
     os.makedirs(os.path.dirname(args.output) or ".", exist_ok=True)
     with open(args.output, "w", encoding="utf-8") as f:
