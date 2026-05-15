@@ -277,7 +277,15 @@ def build_followup(mode: str) -> List[Dict[str, Any]]:
 def build_card(mode: str, indices: List[Dict[str, Any]], boards_in: List[Dict[str, Any]], boards_out: List[Dict[str, Any]], globals_: List[Dict[str, Any]], date_override: Optional[str] = None) -> str:
     info = MODE_INFO[mode]
     now = cn_now()
-    now_str = date_override if date_override else now.strftime("%Y-%m-%d %H:%M")
+    if date_override:
+        try:
+            d = datetime.strptime(date_override, "%Y-%m-%d")
+            now_str = d.strftime("%Y-%m-%d %H:%M")
+            now = d  # override for header date
+        except ValueError:
+            now_str = date_override
+    else:
+        now_str = now.strftime("%Y-%m-%d %H:%M")
 
     elements = []
 
