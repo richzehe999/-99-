@@ -307,6 +307,16 @@ def build_card(mode: str, indices: List[Dict[str, Any]], boards_in: List[Dict[st
     # Follow-up
     elements.extend(build_followup(mode))
 
+    elements.append({"tag": "hr"})
+
+    # Link to full HTML report
+    pages_url = "https://richzehe999.github.io/-99-/"
+    preview_url = "https://htmlpreview.github.io/?https://raw.githubusercontent.com/richzehe999/-99-/main/a-share-report-site/index.html"
+    elements.append({
+        "tag": "div",
+        "text": {"tag": "lark_md", "content": f"**📄 完整可视化报告**\n[📊 GitHub Pages（推荐）]({pages_url}) | [📄 备用渲染]({preview_url})"},
+    })
+
     # Note
     elements.append({
         "tag": "note",
