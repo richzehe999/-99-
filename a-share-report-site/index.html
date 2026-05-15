@@ -679,13 +679,13 @@
     <header class="hero">
       <div>
         <h1>A股盘后验证雷达</h1>
-        <p>区间：2026年5月13日收盘后（17:00版）。今日是A股交易日，使用当日收盘数据。核心变化：三大指数集体收涨，上证+0.67%至4242.57点，深证+1.67%至16089.75点，创业板+2.63%突破4000点并创历史新高；沪深两市成交额合计3.24万亿元、较上一交易日缩量约26.42亿元。资金侧更偏向TMT/硬科技与设备链：电子（口径为行业主力资金）净流入超163亿元；消费电子、IT服务、半导体等板块在披露口径里处于净流入前列，个股层面工业富联、天孚通信、新易盛等净买入靠前。</p>
+        <p>区间：2026年5月15日收盘后（17:00版）。今日是A股交易日，使用当日收盘数据。核心变化：三大指数集体收跌，上证-1.02%至4135.39点，深证-1.17%至15561.37点，创业板-0.56%至3929.06点；科创50跌1.67%至1696.26点。沪深两市成交额合计约3.34万亿元、连续第8个交易日突破3万亿但较前日缩量约179亿元。结构层面"新老切换"信号明显：电子(-361.59亿)、通信、有色遭主力大幅抛售，而人形机器人、氟化工、机械设备逆势获资金净流入。午后韩国KOSPI暴跌6.12%触发熔断，对A股情绪形成额外拖累。</p>
         <div class="toolbar" role="group" aria-label="雷达模式切换">
           <button class="mode-button active" data-mode="signal" type="button">强信号样式</button>
           <button class="mode-button" data-mode="condition" type="button">观察条件样式</button>
         </div>
       </div>
-      <div class="status-pill"><span class="pulse"></span>已接入5月13日收盘数据（17:00版）</div>
+      <div class="status-pill"><span class="pulse"></span>已接入5月15日收盘数据（17:00版）</div>
     </header>
 
     <section class="section" id="overview">
@@ -696,28 +696,28 @@
       <div class="grid kpi-grid">
         <article class="card kpi">
           <small>上证指数</small>
-          <strong class="up">4242.57</strong>
-          <em>+0.67%，高位延续上行</em>
+          <strong class="down">4135.39</strong>
+          <em>-1.02%，高开低走午后加速下行</em>
         </article>
         <article class="card kpi">
           <small>深证成指</small>
-          <strong class="up">16089.75</strong>
-          <em>+1.67%，成长链回暖</em>
+          <strong class="down">15561.37</strong>
+          <em>-1.17%，科技链回落拖累</em>
         </article>
         <article class="card kpi">
           <small>创业板指</small>
-          <strong class="up">4000+</strong>
-          <em>+2.63%，突破4000并创历史新高</em>
+          <strong class="down">3929.06</strong>
+          <em>-0.56%，盘中一度跌2%后回拉</em>
         </article>
         <article class="card kpi">
           <small>科创50</small>
-          <strong class="up">1770.15</strong>
-          <em>+2.69%，半导体链带动走强</em>
+          <strong class="down">1696.26</strong>
+          <em>-1.67%，半导体冲高回落振幅5.79%</em>
         </article>
         <article class="card kpi">
           <small>沪深京成交额</small>
-          <strong class="flat">32400亿</strong>
-          <em>沪1.45万亿、深1.79万亿；较上一交易日缩量约26.42亿</em>
+          <strong class="flat">33400亿</strong>
+          <em>连续第8日破3万亿；较前日缩量约179亿</em>
         </article>
       </div>
     </section>
@@ -725,60 +725,65 @@
     <section class="section mode-panel" data-mode-panel="signal">
       <div class="grid two">
         <article class="card chart-card">
-          <div class="chart-title">行业板块主力资金净流入 TOP <span>已披露金额优先</span></div>
+          <div class="chart-title">行业板块主力资金净流入 TOP <span>申万一级，亿元</span></div>
           <div class="hbar-list">
-            <div class="hbar-row"><span>电子</span><div class="track"><div class="hbar" style="width:100%"></div></div><span class="value">163.44亿</span></div>
-            <div class="hbar-row"><span>消费电子</span><div class="track"><div class="hbar" style="width:54.4%"></div></div><span class="value">88.86亿</span></div>
-            <div class="hbar-row"><span>IT服务</span><div class="track"><div class="hbar" style="width:34.8%"></div></div><span class="value">56.87亿</span></div>
-            <div class="hbar-row"><span>半导体</span><div class="track"><div class="hbar" style="width:30.6%"></div></div><span class="value">50.00亿</span></div>
-            <div class="hbar-row"><span>通信/光互连（个股）</span><div class="track"><div class="hbar" style="width:19.2%"></div></div><span class="value">天孚通信、 新易盛成交居前</span></div>
-            <div class="hbar-row"><span>电力（午间）</span><div class="track"><div class="hbar" style="width:20%"></div></div><span class="value">32.66亿（午间口径）</span></div>
+            <div class="hbar-row"><span>机械设备</span><div class="track"><div class="hbar" style="width:100%"></div></div><span class="value">30.00亿</span></div>
+            <div class="hbar-row"><span>家用电器</span><div class="track"><div class="hbar" style="width:50.2%"></div></div><span class="value">15.05亿</span></div>
+            <div class="hbar-row"><span>传媒</span><div class="track"><div class="hbar" style="width:46.8%"></div></div><span class="value">14.03亿</span></div>
+            <div class="hbar-row"><span>基础化工</span><div class="track"><div class="hbar" style="width:45.4%"></div></div><span class="value">13.61亿</span></div>
+            <div class="hbar-row"><span>汽车</span><div class="track"><div class="hbar" style="width:44.4%"></div></div><span class="value">13.32亿</span></div>
+            <div class="hbar-row"><span>轻工制造</span><div class="track"><div class="hbar" style="width:13.1%"></div></div><span class="value">3.94亿</span></div>
+            <div class="hbar-row"><span>石油石化</span><div class="track"><div class="hbar" style="width:6.9%"></div></div><span class="value">2.07亿</span></div>
+            <div class="hbar-row"><span>煤炭</span><div class="track"><div class="hbar" style="width:5.7%"></div></div><span class="value">1.70亿</span></div>
           </div>
         </article>
 
         <article class="card chart-card">
-          <div class="chart-title">主力资金要点 <span>以公开披露口径为准</span></div>
+          <div class="chart-title">行业板块主力资金净流出 TOP <span>申万一级，亿元</span></div>
           <div class="hbar-list">
-            <div class="hbar-row"><span>个股净买入（示例）</span><div class="track"><div class="hbar" style="width:68%"></div></div><span class="value">工业富联净买入约64.23亿（盘中口径）</span></div>
-            <div class="hbar-row"><span>两市成交</span><div class="track"><div class="hbar" style="width:52%"></div></div><span class="value">3.24万亿（沪1.45/深1.79）</span></div>
-            <div class="hbar-row"><span>口径提示</span><div class="track"><div class="hbar" style="width:32%"></div></div><span class="value">行业/板块“主力资金”口径不等同北向或融资</span></div>
-            <div class="hbar-row"><span>北向资金</span><div class="track"><div class="hbar out" style="width:18%"></div></div><span class="value">本版未获取到当日可靠公开净流入数据（Wind/终端口径为主）</span></div>
-            <div class="hbar-row"><span>两融</span><div class="track"><div class="hbar" style="width:22%"></div></div><span class="value">本版暂未纳入全市场两融余额（日更需交易所/数据宝口径）</span></div>
+            <div class="hbar-row"><span>电子</span><div class="track"><div class="hbar out" style="width:100%"></div></div><span class="value">-361.59亿</span></div>
+            <div class="hbar-row"><span>有色金属</span><div class="track"><div class="hbar out" style="width:41.7%"></div></div><span class="value">-150.96亿</span></div>
+            <div class="hbar-row"><span>通信</span><div class="track"><div class="hbar out" style="width:34.5%"></div></div><span class="value">-124.79亿</span></div>
+            <div class="hbar-row"><span>电力设备</span><div class="track"><div class="hbar out" style="width:23.2%"></div></div><span class="value">-83.94亿</span></div>
+            <div class="hbar-row"><span>国防军工</span><div class="track"><div class="hbar out" style="width:15.9%"></div></div><span class="value">-57.48亿</span></div>
+            <div class="hbar-row"><span>计算机</span><div class="track"><div class="hbar out" style="width:15.8%"></div></div><span class="value">-57.10亿</span></div>
+            <div class="hbar-row"><span>非银金融</span><div class="track"><div class="hbar out" style="width:15.0%"></div></div><span class="value">-54.08亿</span></div>
+            <div class="hbar-row"><span>全市场主力</span><div class="track"><div class="hbar out" style="width:100%"></div></div><span class="value">-996.58亿</span></div>
           </div>
         </article>
 
         <article class="card chart-card">
           <div class="chart-title">指数强弱幅 <span>以公开收盘口径为准</span></div>
           <div class="perf-list">
-            <div class="perf-row"><span>创业板指</span><div class="zero-line"><div class="perf pos" style="width:100%"></div></div><span class="up">+2.63%</span></div>
-            <div class="perf-row"><span>科创50</span><div class="zero-line"><div class="perf pos" style="width:98%"></div></div><span class="up">+2.69%</span></div>
-            <div class="perf-row"><span>深证成指</span><div class="zero-line"><div class="perf pos" style="width:62%"></div></div><span class="up">+1.67%</span></div>
-            <div class="perf-row"><span>上证指数</span><div class="zero-line"><div class="perf pos" style="width:25%"></div></div><span class="up">+0.67%</span></div>
+            <div class="perf-row"><span>创业板指</span><div class="zero-line"><div class="perf neg" style="width:21%"></div></div><span class="down">-0.56%</span></div>
+            <div class="perf-row"><span>上证指数</span><div class="zero-line"><div class="perf neg" style="width:39%"></div></div><span class="down">-1.02%</span></div>
+            <div class="perf-row"><span>深证成指</span><div class="zero-line"><div class="perf neg" style="width:45%"></div></div><span class="down">-1.17%</span></div>
+            <div class="perf-row"><span>科创50</span><div class="zero-line"><div class="perf neg" style="width:64%"></div></div><span class="down">-1.67%</span></div>
           </div>
         </article>
 
         <article class="card chart-card">
-          <div class="chart-title">资金流入流出总览 <span>重点行业披露金额合计</span></div>
+          <div class="chart-title">概念板块资金亮点 <span>活跃方向合计</span></div>
           <div class="waterfall">
             <div class="water-item">
-              <div class="water-value up">净流入（示例）</div>
+              <div class="water-value up">+36.51亿</div>
               <div class="water-bar" style="height:96px"></div>
-              <span>消费电子/IT服务/半导体</span>
+              <span>人形机器人（主力）</span>
             </div>
             <div class="water-item">
-              <div class="water-value down">净流出（缺省）</div>
-              <div class="water-bar red" style="height:168px"></div>
-              <span>本版未列全量TOP</span>
+              <div class="water-value up">+25.49亿</div>
+              <div class="water-bar" style="height:72px"></div>
+              <span>汽车零部件</span>
             </div>
             <div class="water-item">
-              <div class="water-value flat">32400亿</div>
-              <div class="water-bar" style="height:128px; background: var(--blue);"></div>
-              <span>沪深京成交</span>
+              <div class="water-value up">+21.99亿</div>
+              <div class="water-bar" style="height:60px"></div>
+              <span>氟化工</span>
             </div>
             <div class="water-item">
-              <div class="water-value down">-26.42亿</div>
-              <div class="water-bar orange" style="height:76px"></div>
-              <span>较前日缩量</span>
+              <div class="water-value down">33400亿</div>
+              <div class="water-bar" style="height:120px; background: var(--blue);"></div>
+              <span>全市场成交（缩量179亿）</span>
             </div>
           </div>
         </article>
@@ -790,25 +795,25 @@
         <article class="card panel">
           <div class="chart-title">明日开盘验证 <span>15分钟</span></div>
           <ul class="mini-list">
-            <li><b>电子/消费电子</b><span>能否继续放量并维持净流入，避免开盘冲高回落。</span></li>
-            <li><b>IT服务</b><span>是否跟随硬件链共振，而不是单边回落。</span></li>
-            <li><b>半导体</b><span>是否出现资金回流与强势扩散（封测/设备/设计同步）。</span></li>
+            <li><b>人形机器人</b><span>高开标的（巨轮智能/三丰智能等）是否继续放量封板，避免开盘冲高回落。</span></li>
+            <li><b>氟化工</b><span>多氟多、中巨芯等高辨识度标的是否延续强势，能否带动板块内扩散。</span></li>
+            <li><b>电子/通信</b><span>抛压是否延续，中际旭创、工业富联等是否止跌企稳。</span></li>
           </ul>
         </article>
         <article class="card panel">
-          <div class="chart-title">量能阈值 <span>3.2万亿和3万亿</span></div>
+          <div class="chart-title">量能阈值 <span>3.3万亿和3万亿</span></div>
           <ul class="mini-list">
-            <li><b>延续</b><span>成交维持3.2万亿以上，且资金净流入方向不明显收敛。</span></li>
-            <li><b>降级</b><span>成交跌向3万亿附近，且龙头冲高回落带动板块走弱。</span></li>
-            <li><b>证伪</b><span>电子/半导体与光互连同步冲高回落，资金转入纯防御。</span></li>
+            <li><b>延续</b><span>成交维持3.3万亿以上，且机器人/氟化工主线方向不明显收敛。</span></li>
+            <li><b>降级</b><span>成交跌向3万亿附近，且新主线同步冲高回落、电子继续下探。</span></li>
+            <li><b>证伪</b><span>机器人/氟化工集体高开低走，资金重回防御无方向切换。</span></li>
           </ul>
         </article>
         <article class="card panel">
           <div class="chart-title">外部变量 <span>只进观察池</span></div>
           <ul class="mini-list">
-            <li><b>油价</b><span>原油/LPG强于A股油气映射，暂不升级为主线。</span></li>
-            <li><b>天气</b><span>南方暴雨映射水利、农业、保险，等待成交确认。</span></li>
-            <li><b>地缘</b><span>霍尔木兹影响油气、航运、航空、化工和贵金属。</span></li>
+            <li><b>韩国熔断</b><span>KOSPI暴跌6.12%后是否企稳，若持续动荡会影响亚太风险偏好。</span></li>
+            <li><b>贵金属</b><span>国际期货大跌后是否修复，映射A股贵金属/有色板块的企稳信号。</span></li>
+            <li><b>地缘</b><span>霍尔木兹影响油气、航运、贵金属——5/15贵金属领跌，映射链待修复。</span></li>
           </ul>
         </article>
       </div>
@@ -817,24 +822,25 @@
     <section class="section" id="capital">
       <div class="section-title">
         <h2>资金验证</h2>
-        <span>从“成交”到“净流入方向”</span>
+        <span>从"成交"到"净流入方向"</span>
       </div>
       <div class="grid two">
         <article class="card panel">
           <div class="summary">
-            <div class="summary-row"><b>成交</b><span>沪深两市成交额合计3.24万亿元（沪1.45/深1.79），较上一交易日缩量约26.42亿元。</span></div>
-            <div class="summary-row"><b>流入</b><span>公开披露口径中：电子净流入163.44亿元；消费电子净流入88.86亿元、IT服务净流入56.87亿元、半导体净流入50.00亿元。</span></div>
-            <div class="summary-row"><b>个股</b><span>成交额靠前集中在工业富联、中际旭创、天孚通信、新易盛、澜起科技等“AI硬件与光互连”。</span></div>
-            <div class="summary-row"><b>缺口</b><span>北向资金、全市场两融余额与涨跌家数：本版未找到当日稳定可复核的公开抓取来源，因此不填数。</span></div>
+            <div class="summary-row"><b>成交</b><span>沪深京成交额合计约3.34万亿元，连续第8个交易日突破3万亿；较前日缩量约179亿元。</span></div>
+            <div class="summary-row"><b>流入</b><span>申万一级口径：机械设备净流入30.00亿、家用电器15.05亿、传媒14.03亿、基础化工13.61亿、汽车13.32亿。概念板块：人形机器人净流入36.51亿、氟化工21.99亿、汽车零部件25.49亿。</span></div>
+            <div class="summary-row"><b>流出</b><span>电子净流出361.59亿（全市场最大）、有色金属150.96亿、通信124.79亿、电力设备83.94亿。全市场主力净流出996.58亿元。</span></div>
+            <div class="summary-row"><b>个股</b><span>沪深主板成交额第一：工业富联237.97亿（-1.43%，主力净流出9.44亿）。净流入居前：阳光电源22.23亿（+13.27%）、多氟多21.69亿（涨停）、N维通利19.27亿（首日涨297%）。</span></div>
+            <div class="summary-row"><b>缺口</b><span>北向资金全天成交4353.39亿（占两市13.02%），精准全天净买卖数据需Wind/终端口径复核。</span></div>
           </div>
         </article>
         <article class="card panel">
           <div class="chart-title">结构结论 <span>强弱不是看指数红绿</span></div>
           <ul class="mini-list">
-            <li><b>主线</b><span>TMT/硬科技明显回流：电子、消费电子、IT服务、半导体在披露口径中净流入靠前。</span></li>
-            <li><b>强点</b><span>成交额靠前个股集中在工业富联、中际旭创、天孚通信、新易盛、澜起科技等“AI硬件与光互连”链。</span></li>
-            <li><b>风险</b><span>指数走强并不自动等同于“普涨”；本版不做涨跌家数推断，次日重点看资金是否继续集中在少数高位龙头。</span></li>
-            <li><b>风格</b><span>若成交回落但指数继续上行，说明资金更偏向抱团与权重；需警惕高位波动放大。</span></li>
+            <li><b>主线切换</b><span>5/13的"电子/消费电子/半导体"主线发生系统性兑现：电子单日净流出361.59亿，高位科技链遭大面积获利了结。</span></li>
+            <li><b>新主线</b><span>人形机器人（特斯拉Optimus V3量产+宇树科技+政策落地）和氟化工（韩国转采购+涨价40%）成为当日最强逆势方向。</span></li>
+            <li><b>风格</b><span>5/13"龙头拥挤度升高"的风险在5/15兑现：中际旭创、工业富联、立讯精密等AI硬件龙头遭抛售。</span></li>
+            <li><b>风险</b><span>指数下跌+超3500只个股下跌+全市场主力净流出996亿，不属于结构性调整而是明显的获利回吐。</span></li>
           </ul>
         </article>
       </div>
@@ -843,7 +849,7 @@
     <section class="section" id="structure">
       <div class="section-title">
         <h2>热点结构</h2>
-        <span>主线、扩散、补涨、防御切换</span>
+        <span>主线切换、新方向承接、防御补涨</span>
       </div>
       <div class="card panel">
         <table class="matrix">
@@ -858,39 +864,39 @@
           </thead>
           <tbody>
             <tr>
-              <td>主线</td>
-              <td>电子/消费电子/IT服务/半导体</td>
-              <td>披露口径下：电子净流入163.44亿元；消费电子净流入88.86亿元、IT服务净流入56.87亿元、半导体净流入50.00亿元。创业板指收涨2.63%并突破4000。</td>
-              <td>资金更愿意在“AI硬件与算力链”上做风险偏好表达，带动指数走强；关键在于次日是否继续扩散而非仅龙头抱团。</td>
+              <td>主线切换</td>
+              <td>电子→机器人/氟化工</td>
+              <td>电子单日净流出361.59亿（全市场第一），通信净流出124.79亿，计算机净流出57.10亿。人形机器人主力净流入36.51亿+14只涨停，氟化工净流入21.99亿+9只涨停。</td>
+              <td>5/13的"硬件链主线"在5/15出现系统性获利回吐，资金切换至机器人（AI量产叙事）和氟化工（供应链转移+涨价）。切换是否持续取决于次日机器人/氟化工的承接力度。</td>
+              <td><span class="tag negative">主线切换确认</span></td>
+            </tr>
+            <tr>
+              <td>新主线</td>
+              <td>人形机器人</td>
+              <td>巨轮智能、雷赛智能、科力尔、中马传动等涨停；三瑞智能/纽威数控20%涨停；绿的谐波涨超15%突破300元；三花智控涨8%。</td>
+              <td>特斯拉Optimus V3年中量产+宇树科技载人变形机甲+杭州具身智能法规落地，三重催化驱动。次日看连板梯队能否维持。</td>
+              <td><span class="tag positive">强信号</span></td>
+            </tr>
+            <tr>
+              <td>新主线</td>
+              <td>氟化工</td>
+              <td>中巨芯20%涨停，滨化股份、多氟多、中欣氟材、金石资源涨停。无水氢氟酸价格较年初涨40%，韩国厂商转向中国采购。</td>
+              <td>供应链转移逻辑（韩国半导体厂→中国氢氟酸）叠加价格上行周期。电子级氢氟酸需求5年CAGR 25.7%，中期景气逻辑强。</td>
               <td><span class="tag positive">强验证</span></td>
             </tr>
             <tr>
-              <td>扩散</td>
-              <td>光互连/通信链（个股）</td>
-              <td>成交额靠前个股中，中际旭创、天孚通信、新易盛等“光互连”链辨识度高。</td>
-              <td>硬件链的弹性更多由少数高辨识度标的驱动，若次日放量冲高回落，视为拥挤度降级信号。</td>
-              <td><span class="tag watch">有效但拥挤</span></td>
-            </tr>
-            <tr>
               <td>补涨</td>
-              <td>非金属材料、机器人</td>
-              <td>联瑞新材涨超10%，平安电工、石英股份涨停；百达精工、晋拓股份涨停。</td>
-              <td>资金寻找低位替代分支，尚未证明能接替主线。</td>
+              <td>机械设备/工业母机</td>
+              <td>机械设备板块主力净流入30.00亿（全行业第一），工业母机5只个股涨停。</td>
+              <td>资金寻找低位替代板块，工业母机受机器人产业链拉动逻辑清晰，但持续性仍需量能验证。</td>
               <td><span class="tag watch">补涨观察</span></td>
             </tr>
             <tr>
-              <td>防御切换</td>
-              <td>证券、公路铁路运输、贵金属</td>
-              <td>指数高位阶段防御/权重具备托底属性（本版不填行业净流入榜单数值）。</td>
-              <td>指数高位震荡时资金向权重和防御资产切换，托底意义大于进攻意义。</td>
-              <td><span class="tag positive">部分验证</span></td>
-            </tr>
-            <tr>
               <td>拖累</td>
-              <td>不做“拖累TOP”填数</td>
-              <td>本版未覆盖当日全量净流出TOP（需稳定可复核的公开口径），因此仅给出“净流入主线+次日条件”。</td>
-              <td>避免把不完整的资金榜单当作因果链；次日主要看“主线是否延续+量能是否守住3.2万亿”。</td>
-              <td><span class="tag watch">缺口已标注</span></td>
+              <td>贵金属/有色/通信</td>
+              <td>有色金属跌4.10%，贵金属跌5.88%（国际期货大跌）；通信净流出124.79亿（光互连龙头集体回调）。</td>
+              <td>贵金属/有色属于外部定价（国际期货驱动），通信/电子属于前期获利盘回吐。两类拖累性质不同，需分别跟踪修复条件。</td>
+              <td><span class="tag negative">集体承压</span></td>
             </tr>
           </tbody>
         </table>
@@ -905,11 +911,11 @@
       <div class="grid two">
         <article class="card panel">
           <div class="chart-title">今天一句话 <span>市场结构</span></div>
-          <p class="summary-row" style="display:block; border-bottom:0; padding:0;">指数集体反弹、创业板指站上4000点；资金回流科技成长与设备链，但轮动速度偏快，次日更看“承接+成交阈值”。</p>
+          <p class="summary-row" style="display:block; border-bottom:0; padding:0;">三大指数集体收跌，全市场主力净流出996亿——但"科技退潮"与"新方向承接"同步上演：电子、通信、有色遭抛售，人形机器人和氟化工逆势涨停潮。韩国KOSPI熔断加剧午后情绪走弱。次日关键看新主线承接力和电子抛压是否收敛。</p>
         </article>
         <article class="card panel">
           <div class="chart-title">避免误读 <span>不要只看指数</span></div>
-          <p class="summary-row" style="display:block; border-bottom:0; padding:0;">不要把指数上涨等同于“普涨”。重点看：上涨/下跌家数、成交是否持续在3万亿上方、以及龙头是否冲高回落。</p>
+          <p class="summary-row" style="display:block; border-bottom:0; padding:0;">不要把"新主线涨停潮"等同于市场转强——当日超3500只个股下跌，结构分化极其剧烈。重点看：次日机器人/氟化工的连板延续性，以及电子/通信抛压是否出现企稳信号。</p>
         </article>
       </div>
     </section>
@@ -921,16 +927,16 @@
       </div>
       <div class="grid three">
         <article class="card panel">
-          <div class="chart-title">资金连续性 <span class="tag watch">3万亿+</span></div>
-          <p class="summary-row" style="display:block; border-bottom:0; padding:0;">沪深两市成交额约3.24万亿。下一信号：成交不低于3.2万亿且“电子/消费电子/IT服务/半导体”至少两个方向保持净流入，否则更像单日冲高后的结构性回落。</p>
+          <div class="chart-title">资金连续性 <span class="tag watch">切换中</span></div>
+          <p class="summary-row" style="display:block; border-bottom:0; padding:0;">全市场成交3.34万亿（连续第8日>3万亿），但主力净卖出996亿。下一信号：机器人+氟化工合计净买入能否延续到50亿+，且电子净流出收敛至100亿以内，否则切换只是单日脉冲。</p>
         </article>
         <article class="card panel">
-          <div class="chart-title">拥挤度与位置 <span class="tag negative">高位</span></div>
-          <p class="summary-row" style="display:block; border-bottom:0; padding:0;">成交靠前集中在少数AI硬件龙头（工业富联/中际旭创/天孚通信/新易盛/澜起科技等）。下一信号：次日若出现“高开低走+放量”，视为拥挤度降级信号。</p>
+          <div class="chart-title">拥挤度与位置 <span class="tag negative">高位兑现</span></div>
+          <p class="summary-row" style="display:block; border-bottom:0; padding:0;">5/13提示"光互连龙头拥挤度升高"风险在5/15兑现：中际旭创（5/13成交靠前→5/15净流出居前）、工业富联（成交237亿但主力净流出9.44亿）。下一信号：电子净流出是否收窄、机器人/氟化工是否出现新的拥挤征兆。</p>
         </article>
         <article class="card panel">
           <div class="chart-title">扩散质量 <span class="tag watch">待验证</span></div>
-          <p class="summary-row" style="display:block; border-bottom:0; padding:0;">今日结构更偏“硬件链带动指数”。下一信号：看资金能否从少数龙头扩散到更多细分（封测/设备/服务器链/软件服务），否则容易演变为“龙头抱团+高波动”。</p>
+          <p class="summary-row" style="display:block; border-bottom:0; padding:0;">今日结构更偏"新主线涨停潮+老主线清仓式卖出"。下一信号：人形机器人能否从龙头扩散到减速器/伺服电机/传感器等细分领域，氟化工能否从无水氢氟酸扩散到萤石/制冷剂/含氟聚合物。</p>
         </article>
       </div>
     </section>
@@ -948,34 +954,34 @@
       </div>
       <div class="theme-grid">
         <article class="theme-card" data-kind="positive">
-          <div class="theme-head"><h3>电子板块成为资金主线</h3><span class="tag positive">强验证</span></div>
-          <p>披露口径下电子板块主力资金净流入163.44亿元，消费电子、IT服务、半导体等方向同步靠前，指数端表现为创业板与科创50明显走强。</p>
-          <div class="chain"><span class="node">AI需求</span><span class="arrow">-></span><span class="node">硬件链回流</span><span class="arrow">-></span><span class="node">指数走强</span></div>
-        </article>
-        <article class="theme-card" data-kind="watch">
-          <div class="theme-head"><h3>光互连龙头强但拥挤度上升</h3><span class="tag watch">继续观察</span></div>
-          <p>成交额靠前个股中，中际旭创、天孚通信、新易盛等“光互连”链辨识度高。次日重点看是否出现放量冲高回落。</p>
-          <div class="chain"><span class="node">AI算力</span><span class="arrow">-></span><span class="node">光互连</span><span class="arrow">-></span><span class="node">拥挤度</span></div>
-        </article>
-        <article class="theme-card" data-kind="watch">
-          <div class="theme-head"><h3>半导体回流是否可持续</h3><span class="tag watch">继续观察</span></div>
-          <p>披露口径下半导体板块净流入50.00亿元。次日观察：封测/设备/设计能否同步扩散，避免仅靠少数权重拉动。</p>
-          <div class="chain"><span class="node">回流</span><span class="arrow">-></span><span class="node">扩散</span><span class="arrow">-></span><span class="node">连续性</span></div>
-        </article>
-        <article class="theme-card" data-kind="watch">
-          <div class="theme-head"><h3>广度/量能是否继续匹配</h3><span class="tag watch">继续观察</span></div>
-          <p>Wind口径显示上涨家数占优（上涨3213家、下跌2130家，平盘166家）。次日关注：成交是否仍维持在3万亿上方、以及上涨扩散是否变窄。</p>
-          <div class="chain"><span class="node">量能</span><span class="arrow">-></span><span class="node">广度</span><span class="arrow">-></span><span class="node">持续性</span></div>
-        </article>
-        <article class="theme-card" data-kind="watch">
-          <div class="theme-head"><h3>能源商品强于A股油气映射</h3><span class="tag watch">待确认</span></div>
-          <p>国内商品期货液化气涨超7%、原油涨超2%，但A股油气、航运、航空链未成为日内主线。</p>
-          <div class="chain"><span class="node">霍尔木兹</span><span class="arrow">-></span><span class="node">原油/LPG</span><span class="arrow">-></span><span class="node">A股待确认</span></div>
+          <div class="theme-head"><h3>人形机器人概念逆势爆发</h3><span class="tag positive">强信号</span></div>
+          <p>特斯拉Optimus V3年中量产+宇树科技量产版载人变形机甲GD01（售价390万起）+杭州具身智能法规施行，三重催化驱动。当日14只个股涨停，主力净流入36.51亿。次日看连板梯队是否维持。</p>
+          <div class="chain"><span class="node">Optimus量产</span><span class="arrow">-></span><span class="node">机器人板块</span><span class="arrow">-></span><span class="node">涨停潮</span></div>
         </article>
         <article class="theme-card" data-kind="positive">
-          <div class="theme-head"><h3>防御和权重托底有效</h3><span class="tag positive">部分验证</span></div>
-          <p>在指数高位阶段，防御/权重往往承担“稳定器”角色。本版不补全行业净流入榜单，只把它当作次日风格切换观察项。</p>
-          <div class="chain"><span class="node">高位震荡</span><span class="arrow">-></span><span class="node">证券/红利</span><span class="arrow">-></span><span class="node">指数托底</span></div>
+          <div class="theme-head"><h3>氟化工概念集体大涨</h3><span class="tag positive">强验证</span></div>
+          <p>韩国半导体厂转向中国采购无水氢氟酸，价格较年初上涨约40%，电子级氢氟酸5年CAGR 25.7%。当日中巨芯20%涨停，多氟多等涨停。中长期景气逻辑清晰。</p>
+          <div class="chain"><span class="node">韩国转采购</span><span class="arrow">-></span><span class="node">氢氟酸涨价</span><span class="arrow">-></span><span class="node">氟化工涨停潮</span></div>
+        </article>
+        <article class="theme-card" data-kind="negative">
+          <div class="theme-head"><h3>电子板块遭集中抛售</h3><span class="tag negative">主线切换</span></div>
+          <p>5/13电子净流入163.44亿为当日主线，5/15电子净流出361.59亿为全市场最大。中际旭创、工业富联、立讯精密等AI硬件龙头资金集体流出，前期拥挤度风险兑现。</p>
+          <div class="chain"><span class="node">资金兑现</span><span class="arrow">-></span><span class="node">电子抛售</span><span class="arrow">-></span><span class="node">主线切换</span></div>
+        </article>
+        <article class="theme-card" data-kind="negative">
+          <div class="theme-head"><h3>贵金属/有色领跌</h3><span class="tag negative">外部传导</span></div>
+          <p>有色金属跌4.10%、贵金属跌5.88%，受国际期货大跌影响。兴业银锡、山金国际、湖南白银等跌幅居前。商品端因素驱动的回调，与A股内部主线逻辑独立。</p>
+          <div class="chain"><span class="node">国际期货</span><span class="arrow">-></span><span class="node">贵金属/有色</span><span class="arrow">-></span><span class="node">A股映射拖累</span></div>
+        </article>
+        <article class="theme-card" data-kind="watch">
+          <div class="theme-head"><h3>机械设备获逆势加仓</h3><span class="tag watch">补涨观察</span></div>
+          <p>机械设备板块主力净流入30.00亿（全行业第一），工业母机5只涨停。机器人产业链拉动工业母机/设备需求逻辑清晰，但作为独立主线持续性待验证。</p>
+          <div class="chain"><span class="node">机器人拉动</span><span class="arrow">-></span><span class="node">工业母机</span><span class="arrow">-></span><span class="node">补涨扩散</span></div>
+        </article>
+        <article class="theme-card" data-kind="watch">
+          <div class="theme-head"><h3>量能维持但广度收窄</h3><span class="tag watch">继续观察</span></div>
+          <p>成交3.34万亿连续第8日破3万亿，但上涨仅1816家、下跌3584家，涨停73家、跌停45家，赚钱效应明显走弱。次日关注：成交是否仍维持在3万亿以上、赚钱广度是否修复。</p>
+          <div class="chain"><span class="node">量能维持</span><span class="arrow">-></span><span class="node">广度收窄</span><span class="arrow">-></span><span class="node">结构分化</span></div>
         </article>
       </div>
     </section>
@@ -998,38 +1004,38 @@
           </thead>
           <tbody>
             <tr>
-              <td>人工智能与能源双向赋能行动方案</td>
-              <td>电网投资、绿电、算力供电、负荷侧调节</td>
-              <td>电网设备、电力、储能、电源、液冷、数据中心能效</td>
-              <td>本版今日主线更偏“硬件链”，能源/电力映射仍留在观察池，待出现放量与资金确认再升级。</td>
-              <td><span class="tag watch">待验证</span></td>
+              <td>特斯拉Optimus V3年中量产+宇树科技变形机甲+杭州具身智能法规施行</td>
+              <td>人形机器人产业链、伺服电机、减速器、传感器</td>
+              <td>人形机器人、减速器、工业母机、电机</td>
+              <td>当日最强主线：14只涨停、主力净流入36.51亿。标的扩散从整机到零部件（巨轮智能/绿的谐波/三花智控）。</td>
+              <td><span class="tag positive">强传导</span></td>
             </tr>
             <tr>
-              <td>AI算力与光互连</td>
-              <td>光模块、光互连、AI数据中心</td>
-              <td>CPO、光纤、通信设备、PCB、液冷</td>
-              <td>成交靠前个股集中在光互连链（中际旭创、天孚通信、新易盛等）；但是否“扩散到更多细分”仍待次日确认。</td>
-              <td><span class="tag watch">中强但偏窄</span></td>
+              <td>韩国半导体厂转向中国采购无水氢氟酸</td>
+              <td>电子级氢氟酸、氟化工全产业链</td>
+              <td>氟化工、萤石、制冷剂、含氟聚合物</td>
+              <td>中巨芯20%涨停、多氟多等涨停。供应链转移+价格上行周期双重逻辑驱动。</td>
+              <td><span class="tag positive">强传导</span></td>
             </tr>
             <tr>
-              <td>半导体资金回流</td>
-              <td>芯片、存储、先进封装、电子化学品</td>
-              <td>半导体、存储芯片、消费电子、元件</td>
-              <td>披露口径下半导体板块净流入50.00亿元。次日验证点：封测/设备/设计是否共振，避免单边抱团。</td>
-              <td><span class="tag watch">待验证</span></td>
+              <td>韩国KOSPI暴跌6.12%触发熔断</td>
+              <td>亚太股市风险偏好、半导体出口链</td>
+              <td>半导体、电子（情绪面拖累）</td>
+              <td>A股午后加速走低；半导体/电子本就面临获利回吐，韩国熔断加剧盘面恐慌。</td>
+              <td><span class="tag watch">情绪放大</span></td>
+            </tr>
+            <tr>
+              <td>国际贵金属/有色金属期货大跌</td>
+              <td>黄金、白银、铜、铝</td>
+              <td>贵金属、有色金属、工业金属</td>
+              <td>有色金属跌4.10%、贵金属跌5.88%，领跌全市场。</td>
+              <td><span class="tag negative">强传导</span></td>
             </tr>
             <tr>
               <td>霍尔木兹海峡和美伊对峙</td>
-              <td>布伦特/WTI、LPG、航运费率、航空燃油成本、避险资产</td>
-              <td>油气、油服、航运、航空、化工、电力、贵金属</td>
-              <td>商品端原油/LPG强，但A股油气航运没有成为主线；贵金属仅小幅资金流入</td>
-              <td><span class="tag watch">弱到中</span></td>
-            </tr>
-            <tr>
-              <td>南方强降雨和强对流</td>
-              <td>农产品、电力负荷、水利排涝、交通运输、保险赔付</td>
-              <td>农业、食品、水利、基建、电力、保险</td>
-              <td>日内未形成独立主线，只作为灾害映射观察池</td>
+              <td>布伦特/WTI、LPG、航运费率</td>
+              <td>油气、油服、航运、航空、贵金属</td>
+              <td>5/13商品端原油/LPG强但A股未验证。5/15有色/贵金属领跌，油气链表现平淡。</td>
               <td><span class="tag watch">待验证</span></td>
             </tr>
           </tbody>
@@ -1045,19 +1051,19 @@
       <div class="risk-grid">
         <article class="risk-card">
           <h3>地缘与航道</h3>
-          <p>美伊围绕霍尔木兹海峡的海上角力仍在延续，影响油价、航运和风险偏好。A股映射：油气/油服、航运、航空成本、军工和贵金属。</p>
+          <p>美伊围绕霍尔木兹海峡的海上角力仍在延续。5/15贵金属领跌来源自国际商品联动而非地缘升级。油气/A股映射仍待盘面确认。</p>
         </article>
         <article class="risk-card">
-          <h3>能源与化工</h3>
-          <p>国内期货原油系上冲，液化气涨超7%、原油涨超2%；油价扰动抬升化工成本和航空燃油压力。</p>
+          <h3>韩国市场动荡</h3>
+          <p>韩国KOSPI暴跌6.12%触发熔断（三星电子-8.61%、SK海力士-7.66%），对亚太半导体/科技股风险偏好形成外溢压力。需关注后续是否企稳。</p>
         </article>
         <article class="risk-card">
-          <h3>金属与黑色</h3>
-          <p>沪铜、国际铜偏强，沪银强；焦煤、焦炭、多晶硅、生猪走弱。小金属净流出说明商品强弱没有同步变成A股主线。</p>
+          <h3>贵金属与有色</h3>
+          <p>国际贵金属和工业金属期货大跌，A股有色-4.10%、贵金属-5.88%领跌。外部定价类资产波动加大，关注全球宏观预期变化。</p>
         </article>
         <article class="risk-card">
-          <h3>气候与灾害</h3>
-          <p>近期南方强降雨/强对流风险仍在（以中央气象台预警为准）。映射观察池：水利/基建、电力负荷、农业、保险；需盘面量能与资金确认后再升级。</p>
+          <h3>高位科技拥挤</h3>
+          <p>5/13拥挤度预警→5/15兑现：电子-361亿、通信-125亿、计算机-57亿。若明日电子抛压不收敛，则5/13以来的"硬件链主线"彻底终结。</p>
         </article>
       </div>
     </section>
@@ -1079,22 +1085,22 @@
           </thead>
           <tbody>
             <tr>
-              <td>高油价和霍尔木兹</td>
-              <td>布伦特/WTI是否继续上冲，海峡大型商船通行是否恢复</td>
-              <td>油气、油服、航运放量强于大盘，航空明显承压</td>
-              <td><span class="tag watch">商品强，A股未确认</span></td>
+              <td>韩国熔断余波</td>
+              <td>KOSPI是否企稳，三星/SK海力士是否止跌，半导体出口链影响</td>
+              <td>若韩国持续动荡，A股半导体/电子链抛压可能加剧；若快速企稳则影响有限</td>
+              <td><span class="tag negative">情绪传导中</span></td>
             </tr>
             <tr>
-              <td>高位科技拥挤</td>
-              <td>中际旭创、寒武纪、新易盛、海光信息等高辨识度股是否集中回撤</td>
-              <td>若CPO/科创50冲高回落并带动半导体继续流出，科技主线降级</td>
-              <td><span class="tag negative">拥挤度升高</span></td>
+              <td>电子/通信主线终结</td>
+              <td>中际旭创、工业富联、立讯精密、中科曙光等是否继续被大幅净卖出</td>
+              <td>若电子净流出收敛至100亿以内+龙头止跌，则视为正常调整而非终结</td>
+              <td><span class="tag negative">大面积兑现</span></td>
             </tr>
             <tr>
-              <td>成交快速缩量</td>
-              <td>3.2万亿和3万亿两个阈值</td>
-              <td>跌破3万亿且下跌家数维持4000只以上，说明轮动进入退潮</td>
-              <td><span class="tag watch">接近警戒</span></td>
+              <td>新主线承接力</td>
+              <td>人形机器人和氟化工的连板梯队、次日溢价、板块扩散情况</td>
+              <td>若次日机器人/氟化工高开低走+量能收缩，切换失败重回混沌</td>
+              <td><span class="tag watch">待确认</span></td>
             </tr>
           </tbody>
         </table>
@@ -1110,25 +1116,25 @@
         <article class="card panel">
           <div class="chart-title">已验证</div>
           <div class="checklist">
-            <div class="check"><span class="box"></span><div><b>硬件链成为资金主线</b><span>电子/消费电子/IT服务/半导体成为披露口径的净流入主线。</span></div></div>
-            <div class="check"><span class="box"></span><div><b>权重和防御托底</b><span>证券、电力、上证50ETF提供指数稳定器。</span></div></div>
-            <div class="check"><span class="box"></span><div><b>高位科技分化</b><span>半导体、电池、消费电子大额净流出。</span></div></div>
+            <div class="check"><span class="box"></span><div><b>人形机器人成为当日最强主线</b><span>三重催化（特斯拉量产+宇树新品+政策）+14只涨停+36.51亿主力净流入。</span></div></div>
+            <div class="check"><span class="box"></span><div><b>氟化工集体大涨</b><span>韩国转采购+涨价40%逻辑，中巨芯20%涨停、多氟多等涨停。</span></div></div>
+            <div class="check"><span class="box"></span><div><b>电子高位兑现</b><span>5/13拥挤度预警在5/15兑现：电子单日净流出361.59亿。</span></div></div>
           </div>
         </article>
         <article class="card panel">
           <div class="chart-title">未确认</div>
           <div class="checklist">
-            <div class="check"><span class="box"></span><div><b>能源商品到A股油气</b><span>LPG和原油强，但油气、航运未成为A股主线。</span></div></div>
-            <div class="check"><span class="box"></span><div><b>天气灾害交易</b><span>暴雨强对流尚未映射为水利、农业、保险主线。</span></div></div>
-            <div class="check"><span class="box"></span><div><b>全市场赚钱效应</b><span>本版不使用“涨跌家数”做结论；只用可复核的成交与资金方向判断结构强弱。</span></div></div>
+            <div class="check"><span class="box"></span><div><b>机器人/氟化工持续性</b><span>今日涨停潮是否只是单日脉冲，次日连板和溢价是验证关键。</span></div></div>
+            <div class="check"><span class="box"></span><div><b>电子/通信止跌信号</b><span>361亿净流出后是否出现企稳，工业富联/中际旭创能否止跌。</span></div></div>
+            <div class="check"><span class="box"></span><div><b>韩国熔断影响消化</b><span>KOSPI能否企稳，亚太风险偏好修复情况。</span></div></div>
           </div>
         </article>
         <article class="card panel">
           <div class="chart-title">明日观察点</div>
           <div class="checklist">
-            <div class="check"><span class="box"></span><div><b>成交阈值</b><span>继续观察3.2万亿附近能否维持；快速跌破3万亿需警惕退潮。</span></div></div>
-            <div class="check"><span class="box"></span><div><b>次日承接</b><span>消费电子/IT服务/半导体等主力净流入方向，次日是否“高开不砸盘”。</span></div></div>
-            <div class="check"><span class="box"></span><div><b>龙头拥挤度</b><span>光互连与AI硬件龙头若放量冲高回落，视为拥挤度降级信号。</span></div></div>
+            <div class="check"><span class="box"></span><div><b>成交阈值</b><span>继续观察3万亿上方能否维持；若快速缩量至3万亿以下需警惕退潮。</span></div></div>
+            <div class="check"><span class="box"></span><div><b>新主线承接</b><span>机器人/氟化工次日是否"高开不砸盘"，连板梯队是否延续。</span></div></div>
+            <div class="check"><span class="box"></span><div><b>电子抛压收敛</b><span>电子净流出能否收敛至100亿以内，龙头股是否止跌。</span></div></div>
           </div>
         </article>
       </div>
@@ -1137,17 +1143,22 @@
     <section class="section" id="sources">
       <div class="section-title">
         <h2>来源说明</h2>
-        <span>2026年5月13日收盘后抓取与交叉校验（17:00版）</span>
+        <span>2026年5月15日收盘后抓取与交叉校验（17:00版）</span>
       </div>
       <div class="card source-list">
         <ul>
-          <li><a href="https://www.nbd.com.cn/articles/2026-05-13/4390584.html">每日经济新闻：5月13日A股收盘三大指数点位与主力资金方向（消费电子/IT服务/半导体等）</a></li>
-          <li><a href="https://finance.sina.com.cn/jjxw/2026-05-13/doc-inhxtvfp4522922.shtml">新浪财经/界面新闻：5月13日沪深两市成交额合计3.24万亿元（沪1.45/深1.79）</a></li>
-          <li><a href="https://finance.sina.com.cn/jjxw/2026-05-13/doc-inhxtvfp4561882.shtml">新浪财经/新华财经：5月13日科创50收盘1770.15点、涨2.69%</a></li>
-          <li><a href="https://www.cls.cn/detail/2370006">财联社：5月13日主力资金监控（电子板块净流入163.44亿等）</a></li>
-          <li><a href="https://finance.sina.com.cn/roll/2026-05-13/doc-inhxtkrp7652672.shtml">新浪财经/财联社：盘中主力资金监控（工业富联净买入等）</a></li>
+          <li><a href="https://finance.eastmoney.com/a/202605153738881788.html">东方财富：5月15日A股收评—沪指跌1.02%，深成指跌1.17%，交易额再破3万亿</a></li>
+          <li><a href="https://finance.eastmoney.com/a/202605153738867881.html">东方财富：A股收评—机器人概念逆势爆发</a></li>
+          <li><a href="https://www.cls.cn/detail/2372367">财联社：收评—沪指、深成指均跌超1%，机器人概念逆势爆发</a></li>
+          <li><a href="https://stcn.com/article/detail/3911057.html">证券时报：收评—沪指跌1.02%，机器人概念股逆市走强</a></li>
+          <li><a href="https://www.sohu.com/a/1023106375_115433">证券时报·数据宝：5月15日主力资金流向日报</a></li>
+          <li><a href="https://fund.eastmoney.com/a/202605153739049783.html">东方财富：数据复盘—107股获主力资金净流入超1亿元</a></li>
+          <li><a href="https://fund.eastmoney.com/a/202605153738887949.html">东方财富：科创板收盘播报—科创50指数跌1.67%</a></li>
+          <li><a href="https://www.mrjjxw.com/articles/2026-05-15/4394509.html">每日经济新闻：午后突发！韩国股市跌到熔断，A股再生起伏</a></li>
+          <li><a href="https://www.jwview.com/jingwei/html/05-15/670789.shtml">中新经纬：创指守住3900点！人形机器人板块逆势爆发</a></li>
+          <li><a href="http://stock.stockstar.com/RB2026051500022793.shtml">证券之星：5月15日沪深主板成交额前十大个股（工业富联居首）</a></li>
         </ul>
-        <p>注：沪深300、上证50、中证500、中证1000在本版使用对应高流动性ETF收盘表现作为同步跟踪口径，并已在表格中明确标注。所有内容只用于市场结构观察，不构成买入、卖出、持有、目标价、仓位比例或收益承诺。</p>
+        <p>注：主力资金数据来源为东方财富Choice/证券时报·数据宝公开披露口径，可能与Wind/终端口径存在差异。所有内容只用于市场结构观察，不构成买入、卖出、持有、目标价、仓位比例或收益承诺。</p>
       </div>
     </section>
   </main>

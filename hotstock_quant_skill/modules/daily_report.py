@@ -29,6 +29,39 @@ COLUMN_LABELS = {
     "reason": "入池原因",
 }
 
+REPORT_SLOTS = {
+    "premarket": {
+        "label": "08:00 盘前",
+        "title": "A股盘前资金观察报告",
+        "focus": "隔夜外围市场、前日资金回顾、当日预判",
+        "bullets": [
+            "隔夜外围市场和重点事件是否影响当日风险偏好。",
+            "前一交易日资金流向与强势主题是否具备延续条件。",
+            "当日优先观察主题强度、成交额和开盘后量能承接。",
+        ],
+    },
+    "midday": {
+        "label": "12:30 午间",
+        "title": "A股午间资金观察报告",
+        "focus": "上午半日资金流向、盘中异动、下午展望",
+        "bullets": [
+            "上午主题强度和成交额是否集中在少数主线。",
+            "盘中异动是否由消息催化、资金放量或指数共振驱动。",
+            "下午重点观察量能延续、冲高回落和主题扩散情况。",
+        ],
+    },
+    "close": {
+        "label": "17:00 收盘",
+        "title": "A股收盘资金验证报告",
+        "focus": "全日资金数据、趋势分析、次日观察条件",
+        "bullets": [
+            "全日资金和主题强度是否验证早盘或午间判断。",
+            "核心池和观察池是否出现成交缩量、冲高回落或消息证伪。",
+            "次日按观察条件、风险等级、支撑压力、量能警戒和失效条件复核。",
+        ],
+    },
+}
+
 
 def _table(df: pd.DataFrame, index: bool = False) -> str:
     try:
@@ -62,6 +95,15 @@ def _pool(df: pd.DataFrame, name: str, max_items: int) -> pd.DataFrame:
     if df.empty or "pool" not in df.columns:
         return pd.DataFrame()
     return df[df["pool"] == name].head(max_items)
+
+
+def get_report_slot(slot: str | None) -> dict:
+    if not slot:
+        return REPORT_SLOTS["close"]
+    if slot not in REPORT_SLOTS:
+        allowed = ", ".join(REPORT_SLOTS)
+        raise ValueError(f"Unknown report slot {slot!r}; expected one of: {allowed}")
+    return REPORT_SLOTS[slot]
 
 
 def _daily_summary(theme_strength_df: pd.DataFrame, scored_pool_df: pd.DataFrame) -> list[str]:
@@ -127,7 +169,9 @@ def render_daily_html(
     scored_pool_df: pd.DataFrame,
     catalyst_df: pd.DataFrame,
     max_items: int = 10,
+    slot: str | None = "close",
 ) -> str:
+    slot_meta = get_report_slot(slot)
     top_theme = None if theme_strength_df.empty else theme_strength_df.iloc[0]
     core = _pool(scored_pool_df, "core", max_items)
     watch = _pool(scored_pool_df, "watch", max_items)
@@ -156,12 +200,14 @@ def render_daily_html(
 
     pool_cols = ["symbol", "name", "total_score", "pool", "pct_change", "turnover_million_cny", "market_cap_billion_cny", "reason"]
 
+    tracking_items = "".join(f"<li>{escape(item)}</li>" for item in slot_meta["bullets"])
+
     return f"""<!doctype html>
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>热点催化与量化观察日报 - {escape(trade_date)}</title>
+  <title>{escape(slot_meta["title"])} - {escape(trade_date)}</title>
   <style>
     :root {{
       --bg: #f5f7fb;
@@ -191,6 +237,19 @@ def render_daily_html(
     .wrap {{ max-width: 1180px; margin: 0 auto; }}
     h1 {{ margin: 0 0 8px; font-size: 28px; letter-spacing: 0; }}
     .subtitle {{ color: #cbd5e1; font-size: 14px; }}
+    .slot {{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      padding: 5px 10px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 999px;
+      color: #dbeafe;
+      background: rgba(37,99,235,0.18);
+      font-size: 12px;
+      font-weight: 700;
+    }}
     .grid {{
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -285,6 +344,7 @@ def render_daily_html(
   <header>
     <div class="wrap">
       <h1>热点催化与量化观察日报</h1>
+      <div class="slot">{escape(slot_meta["label"])} · {escape(slot_meta["focus"])}</div>
       <div class="subtitle">{escape(trade_date)} · 研究分析用途 · 非投资建议</div>
       <div class="grid">
         <div class="metric"><div class="metric-label">今日最强主线</div><div class="metric-value">{theme_name}</div></div>
@@ -322,10 +382,9 @@ def render_daily_html(
     </section>
 
     <section>
-      <h2>明日跟踪问题</h2>
+      <h2>分时段观察重点</h2>
       <ul>
-        <li>主题是否继续放量，是否从单点标的扩散到产业链多个环节。</li>
-        <li>核心池和观察池是否出现成交缩量、冲高回落或消息证伪。</li>
+        {tracking_items}
         <li>若数据仍为样例源，优先核验行情、新闻和成交额口径。</li>
       </ul>
     </section>
@@ -357,9 +416,13 @@ def render_daily_markdown(
     scored_pool_df: pd.DataFrame,
     catalyst_df: pd.DataFrame,
     max_items: int = 10,
+    slot: str | None = "close",
 ) -> str:
+    slot_meta = get_report_slot(slot)
     lines = []
-    lines.append(f"# 热点催化与量化观察日报 - {trade_date}")
+    lines.append(f"# {slot_meta['title']} - {trade_date}")
+    lines.append("")
+    lines.append(f"> {slot_meta['label']}：{slot_meta['focus']}")
     lines.append("")
     lines.append("> 仅用于研究和教育，不构成投资建议或交易建议。")
     lines.append("")
@@ -390,7 +453,10 @@ def render_daily_markdown(
         cols = [c for c in ["symbol", "name", "total_score", "pool", "pct_change", "turnover_million_cny", "market_cap_billion_cny", "reason"] if c in watch.columns]
         lines.append(_table(watch[cols], index=False))
     lines.append("")
-    lines.extend(_tracking_questions(scored_pool_df, max_items))
+    lines.append("## 4. 分时段观察重点")
+    for item in slot_meta["bullets"]:
+        lines.append(f"- {item}")
+    lines.append("- 若数据仍为样例源，优先核验行情、新闻和成交额口径。")
     lines.append("")
     lines.append("## 5. 主要催化明细")
     if catalyst_df.empty:

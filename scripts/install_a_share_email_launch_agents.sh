@@ -12,6 +12,7 @@ chmod +x "$PROJECT_ROOT/scripts/send_scheduled_a_share_report.sh"
 
 for plist in \
   com.codex.ashare.premarket.email.plist \
+  com.codex.ashare.midday.email.plist \
   com.codex.ashare.aftermarket.email.plist
 do
   src="$PROJECT_ROOT/launchd/$plist"
@@ -28,4 +29,4 @@ do
   echo "Installed $label"
 done
 
-echo "Done. Premarket email runs on weekdays at 08:45; aftermarket email runs on weekdays at 16:45."
+echo "Done. Premarket email runs on weekdays at 08:45; midday email runs at 12:30; aftermarket email runs at 16:45."

@@ -67,3 +67,18 @@ push:
   channel: webhook
   webhook_url: ""
   secret: ""
+
+email:
+  enabled: true
+  html_template_path: "/Users/wuzehe/Documents/New project/a-share-report-site/index.html"
+  smtp_host: "smtp.qq.com"
+  smtp_port: 465
+  smtp_ports: [465, 587]
+  smtp_user: "240575148@qq.com"
+  smtp_password: ""
+  smtp_password_file: "/Users/wuzehe/Documents/New project/local_secrets/qq_smtp_auth_code.txt"
+  from_addr: "240575148@qq.com"
+  to_addrs: ["240575148@qq.com"]
+  cc_addrs: []
+  use_ssl: true
+  starttls: false

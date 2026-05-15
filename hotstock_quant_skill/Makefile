@@ -3,7 +3,7 @@ VENV ?= .venv
 VENV_PYTHON := $(VENV)/bin/python
 VENV_PIP := $(VENV)/bin/pip
 
-.PHONY: install daily optimize backtest test clean
+.PHONY: install daily daily-premarket daily-midday daily-close email-premarket email-midday email-close optimize backtest test clean
 
 install:
 	$(PYTHON) -m venv $(VENV)
@@ -11,6 +11,24 @@ install:
 
 daily:
 	$(VENV_PYTHON) examples/run_enhanced_daily.py
+
+daily-premarket:
+	$(VENV_PYTHON) examples/run_enhanced_daily.py --slot premarket
+
+daily-midday:
+	$(VENV_PYTHON) examples/run_enhanced_daily.py --slot midday
+
+daily-close:
+	$(VENV_PYTHON) examples/run_enhanced_daily.py --slot close
+
+email-premarket:
+	$(VENV_PYTHON) examples/run_enhanced_daily.py --slot premarket --send-email --attach-excel --require-trading-day
+
+email-midday:
+	$(VENV_PYTHON) examples/run_enhanced_daily.py --slot midday --send-email --attach-excel --require-trading-day
+
+email-close:
+	$(VENV_PYTHON) examples/run_enhanced_daily.py --slot close --send-email --attach-excel --require-trading-day
 
 optimize:
 	$(VENV_PYTHON) examples/run_parameter_optimization.py

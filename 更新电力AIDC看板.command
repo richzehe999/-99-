@@ -39,7 +39,7 @@ diagnose_sources() {
 
 {
 echo "===== $(date '+%Y-%m-%d %H:%M:%S') ====="
-echo "入口版本: command-v6-2026-05-09"
+echo "入口版本: command-v8-2026-05-14"
 echo "工作目录: $(pwd)"
 echo "Node 路径: ${node_bin:-未找到 node}"
 if [ -z "$node_bin" ] || [ ! -x "$node_bin" ]; then
