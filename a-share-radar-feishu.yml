@@ -1,0 +1,54 @@
+name: A-share radar Feishu notification
+
+on:
+  schedule:
+    # 北京时间 08:00 = UTC 00:00 — 盘前
+    - cron: "0 0 * * 1-5"
+    # 北京时间 12:10 = UTC 04:10 — 午间
+    - cron: "10 4 * * 1-5"
+    # 北京时间 16:20 = UTC 08:20 — 盘后
+    - cron: "20 8 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "报告模式"
+        required: true
+        default: "premarket"
+        type: choice
+        options:
+          - premarket
+          - midday
+          - aftermarket
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 确定运行模式
+        id: mode
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "value=${{ inputs.mode }}" >> "$GITHUB_OUTPUT"
+          else
+            HOUR=$(TZ='Asia/Shanghai' date +%H)
+            if [ "$HOUR" -lt 10 ]; then
+              echo "value=premarket" >> "$GITHUB_OUTPUT"
+            elif [ "$HOUR" -lt 14 ]; then
+              echo "value=midday" >> "$GITHUB_OUTPUT"
+            else
+              echo "value=aftermarket" >> "$GITHUB_OUTPUT"
+            fi
+          fi
+
+      - name: 推送飞书
+        env:
+          FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
+        run: python3 scripts/feishu_radar_notify.py --mode ${{ steps.mode.outputs.value }}
