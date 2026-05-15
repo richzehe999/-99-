@@ -274,9 +274,10 @@ def build_followup(mode: str) -> List[Dict[str, Any]]:
     ]
 
 
-def build_card(mode: str, indices: List[Dict[str, Any]], boards_in: List[Dict[str, Any]], boards_out: List[Dict[str, Any]], globals_: List[Dict[str, Any]]) -> str:
+def build_card(mode: str, indices: List[Dict[str, Any]], boards_in: List[Dict[str, Any]], boards_out: List[Dict[str, Any]], globals_: List[Dict[str, Any]], date_override: Optional[str] = None) -> str:
     info = MODE_INFO[mode]
-    now_str = cn_now().strftime("%Y-%m-%d %H:%M")
+    now = cn_now()
+    now_str = date_override if date_override else now.strftime("%Y-%m-%d %H:%M")
 
     elements = []
 
@@ -326,7 +327,7 @@ def build_card(mode: str, indices: List[Dict[str, Any]], boards_in: List[Dict[st
     card = {
         "config": {"wide_screen_mode": True},
         "header": {
-            "title": {"tag": "plain_text", "content": f"{info['title']} {cn_now().strftime('%m/%d')}"},
+            "title": {"tag": "plain_text", "content": f"{info['title']} {now.strftime('%m/%d')}"},
             "template": info["color"],
         },
         "elements": elements,
@@ -353,6 +354,7 @@ def send_feishu(webhook_url: str, payload: str) -> None:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Feishu A-share radar notification")
     parser.add_argument("--mode", choices=["premarket", "midday", "aftermarket"], required=True)
+    parser.add_argument("--date", default=None, help="Date override, e.g. 2026-05-15 08:00")
     parser.add_argument("--webhook-url", default=os.environ.get("FEISHU_WEBHOOK_URL"), help="Feishu webhook URL (or set FEISHU_WEBHOOK_URL)")
     return parser.parse_args()
 
@@ -377,7 +379,7 @@ def main() -> None:
     if not globals_:
         errors.append("外部变量接口不可用")
 
-    payload = build_card(args.mode, indices, boards_in, boards_out, globals_)
+    payload = build_card(args.mode, indices, boards_in, boards_out, globals_, date_override=args.date)
     send_feishu(args.webhook_url, payload)
 
     now = cn_now().strftime("%H:%M")
