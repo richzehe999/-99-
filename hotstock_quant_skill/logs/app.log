@@ -574,3 +574,1092 @@ NVIDIA产业链            18.5          8 AI服务器,光模块,NVIDIA,GPU,算�
 - 数据可能存在延迟、缺失或供应商口径差异，实际使用前请独立核验。
 
 Saved reports/daily/daily_hot_pool_2026-05-10.md, .html, .xlsx and reports/daily/latest.html
+
+[2026-05-12T19:05:57] START run_enhanced_daily
+# A股盘前资金观察报告 - 2026-05-12
+
+> 08:00 盘前：隔夜外围市场、前日资金回顾、当日预判
+
+> 仅用于研究和教育，不构成投资建议或交易建议。
+
+## 0. 今日研究结论
+- 今日最强主线：AMD产业链，主题强度 79.48，样本数量 5。
+- 量化池状态：核心池 1 个，观察池 0 个。
+- 今日用途：用于盘后复盘、次日观察清单整理和数据核验，不作为交易指令。
+
+## 1. 今日主线与催化
+- AMD产业链：强度 79.48，平均涨幅 4.22%，平均成交额 1270.00 百万元，关键词 服务器,GPU,AMD,AI芯片。
+- PCB：强度 74.43，平均涨幅 4.35%，平均成交额 1600.00 百万元，关键词 PCB,HDI,高频高速,服务器PCB。
+- NVIDIA产业链：强度 68.02，平均涨幅 3.20%，平均成交额 769.00 百万元，关键词 AI服务器,光模块,NVIDIA,GPU,算力。
+
+## 2. 主题强度排名
+    theme  theme_strength  stock_count  avg_pct_change  avg_volume_ratio  avg_turnover_million  catalyst_score_norm
+   AMD产业链           79.48            5            4.22              1.54                1270.0                78.38
+      PCB           74.43            2            4.35              1.55                1600.0                48.65
+NVIDIA产业链           68.02           10            3.20              1.12                 769.0               100.00
+      光通信           41.43            5            2.18              0.70                 268.0                72.97
+       液冷            0.00            0            0.00              0.00                   0.0                 0.00
+
+## 3. 研究池
+### 3.1 核心池
+ symbol name  total_score pool  pct_change  turnover_million_cny  market_cap_billion_cny            reason
+ 301205 联特科技    82.545732 core         6.8                 950.0                      95 主题相关性较高；成交/资金强度较高
+
+### 3.2 观察池
+暂无观察池标的。
+
+## 4. 分时段观察重点
+- 隔夜外围市场和重点事件是否影响当日风险偏好。
+- 前一交易日资金流向与强势主题是否具备延续条件。
+- 当日优先观察主题强度、成交额和开盘后量能承接。
+- 若数据仍为样例源，优先核验行情、新闻和成交额口径。
+
+## 5. 主要催化明细
+    theme  catalyst_score  hit_count            top_keywords                                                      top_titles  catalyst_score_norm
+NVIDIA产业链            18.5          8 AI服务器,光模块,NVIDIA,GPU,算力 NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | 数据中心800G与1.6T光模块需求延续               100.00
+   AMD产业链            14.5          5        服务器,GPU,AMD,AI芯片    NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | AI服务器PCB价值量提升受到关注                78.38
+      光通信            13.5          7   光模块,CPO,800G,1.6T,光通信                      NVIDIA相关AI服务器订单热度提升 | 数据中心800G与1.6T光模块需求延续                72.97
+      PCB             9.0          4     PCB,HDI,高频高速,服务器PCB                                               AI服务器PCB价值量提升受到关注                48.65
+
+## 6. 数据状态
+- 当前日报由本地样例数据生成；接入真实数据源前，需要人工核验行情、新闻和成交额口径。
+- 输出目录：`reports/daily/`；运行日志：`logs/app.log`。
+
+## 7. 风险提示
+- 热点题材轮动较快，历史表现不代表未来结果。
+- 小市值标的波动、流动性和回撤风险通常更高。
+- 数据可能存在延迟、缺失或供应商口径差异，实际使用前请独立核验。
+
+Saved reports/daily/daily_hot_pool_2026-05-12_premarket.md, reports/daily/daily_hot_pool_2026-05-12_premarket.html, reports/daily/daily_hot_pool_2026-05-12_premarket.xlsx and reports/daily/latest.html
+Email dry run: subject=A股盘前资金观察报告｜2026-05-12｜08:00 盘前; to=[]; missing=['smtp_host', 'smtp_user', 'smtp_password', 'from_addr', 'to_addrs']
+
+[2026-05-12T19:06:07] START run_enhanced_daily
+[2026-05-12T19:06:07] START run_enhanced_daily
+
+# A股午间资金观察报告 - 2026-05-12
+
+> 12:30 午间：上午半日资金流向、盘中异动、下午展望
+
+> 仅用于研究和教育，不构成投资建议或交易建议。
+
+## 0. 今日研究结论
+- 今日最强主线：AMD产业链，主题强度 79.48，样本数量 5。
+- 量化池状态：核心池 1 个，观察池 0 个。
+- 今日用途：用于盘后复盘、次日观察清单整理和数据核验，不作为交易指令。
+
+## 1. 今日主线与催化
+- AMD产业链：强度 79.48，平均涨幅 4.22%，平均成交额 1270.00 百万元，关键词 服务器,GPU,AMD,AI芯片。
+- PCB：强度 74.43，平均涨幅 4.35%，平均成交额 1600.00 百万元，关键词 PCB,HDI,高频高速,服务器PCB。
+- NVIDIA产业链：强度 68.02，平均涨幅 3.20%，平均成交额 769.00 百万元，关键词 AI服务器,光模块,NVIDIA,GPU,算力。
+
+## 2. 主题强度排名
+    theme  theme_strength  stock_count  avg_pct_change  avg_volume_ratio  avg_turnover_million  catalyst_score_norm
+   AMD产业链           79.48            5            4.22              1.54                1270.0                78.38
+      PCB           74.43            2            4.35              1.55                1600.0                48.65
+NVIDIA产业链           68.02           10            3.20              1.12                 769.0               100.00
+      光通信           41.43            5            2.18              0.70                 268.0                72.97
+       液冷            0.00            0            0.00              0.00                   0.0                 0.00
+
+## 3. 研究池
+### 3.1 核心池
+ symbol name  total_score pool  pct_change  turnover_million_cny  market_cap_billion_cny            reason
+ 301205 联特科技    82.545732 core         6.8                 950.0                      95 主题相关性较高；成交/资金强度较高
+
+### 3.2 观察池
+暂无观察池标的。
+
+## 4. 分时段观察重点
+- 上午主题强度和成交额是否集中在少数主线。
+- 盘中异动是否由消息催化、资金放量或指数共振驱动。
+- 下午重点观察量能延续、冲高回落和主题扩散情况。
+- 若数据仍为样例源，优先核验行情、新闻和成交额口径。
+
+## 5. 主要催化明细
+    theme  catalyst_score  hit_count            top_keywords                                                      top_titles  catalyst_score_norm
+NVIDIA产业链            18.5          8 AI服务器,光模块,NVIDIA,GPU,算力 NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | 数据中心800G与1.6T光模块需求延续               100.00
+   AMD产业链            14.5          5        服务器,GPU,AMD,AI芯片    NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | AI服务器PCB价值量提升受到关注                78.38
+      光通信            13.5          7   光模块,CPO,800G,1.6T,光通信                      NVIDIA相关AI服务器订单热度提升 | 数据中心800G与1.6T光模块需求延续                72.97
+      PCB             9.0          4     PCB,HDI,高频高速,服务器PCB                                               AI服务器PCB价值量提升受到关注                48.65
+
+## 6. 数据状态
+- 当前日报由本地样例数据生成；接入真实数据源前，需要人工核验行情、新闻和成交额口径。
+- 输出目录：`reports/daily/`；运行日志：`logs/app.log`。
+
+## 7. 风险提示
+- 热点题材轮动较快，历史表现不代表未来结果。
+- 小市值标的波动、流动性和回撤风险通常更高。
+- 数据可能存在延迟、缺失或供应商口径差异，实际使用前请独立核验。
+# A股收盘资金验证报告 - 2026-05-12
+
+> 17:00 收盘：全日资金数据、趋势分析、次日观察条件
+
+> 仅用于研究和教育，不构成投资建议或交易建议。
+
+## 0. 今日研究结论
+- 今日最强主线：AMD产业链，主题强度 79.48，样本数量 5。
+- 量化池状态：核心池 1 个，观察池 0 个。
+- 今日用途：用于盘后复盘、次日观察清单整理和数据核验，不作为交易指令。
+
+## 1. 今日主线与催化
+- AMD产业链：强度 79.48，平均涨幅 4.22%，平均成交额 1270.00 百万元，关键词 服务器,GPU,AMD,AI芯片。
+- PCB：强度 74.43，平均涨幅 4.35%，平均成交额 1600.00 百万元，关键词 PCB,HDI,高频高速,服务器PCB。
+- NVIDIA产业链：强度 68.02，平均涨幅 3.20%，平均成交额 769.00 百万元，关键词 AI服务器,光模块,NVIDIA,GPU,算力。
+
+## 2. 主题强度排名
+    theme  theme_strength  stock_count  avg_pct_change  avg_volume_ratio  avg_turnover_million  catalyst_score_norm
+   AMD产业链           79.48            5            4.22              1.54                1270.0                78.38
+      PCB           74.43            2            4.35              1.55                1600.0                48.65
+NVIDIA产业链           68.02           10            3.20              1.12                 769.0               100.00
+      光通信           41.43            5            2.18              0.70                 268.0                72.97
+       液冷            0.00            0            0.00              0.00                   0.0                 0.00
+
+## 3. 研究池
+### 3.1 核心池
+ symbol name  total_score pool  pct_change  turnover_million_cny  market_cap_billion_cny            reason
+ 301205 联特科技    82.545732 core         6.8                 950.0                      95 主题相关性较高；成交/资金强度较高
+
+### 3.2 观察池
+暂无观察池标的。
+
+## 4. 分时段观察重点
+- 全日资金和主题强度是否验证早盘或午间判断。
+- 核心池和观察池是否出现成交缩量、冲高回落或消息证伪。
+- 次日按观察条件、风险等级、支撑压力、量能警戒和失效条件复核。
+- 若数据仍为样例源，优先核验行情、新闻和成交额口径。
+
+## 5. 主要催化明细
+    theme  catalyst_score  hit_count            top_keywords                                                      top_titles  catalyst_score_norm
+NVIDIA产业链            18.5          8 AI服务器,光模块,NVIDIA,GPU,算力 NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | 数据中心800G与1.6T光模块需求延续               100.00
+   AMD产业链            14.5          5        服务器,GPU,AMD,AI芯片    NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | AI服务器PCB价值量提升受到关注                78.38
+      光通信            13.5          7   光模块,CPO,800G,1.6T,光通信                      NVIDIA相关AI服务器订单热度提升 | 数据中心800G与1.6T光模块需求延续                72.97
+      PCB             9.0          4     PCB,HDI,高频高速,服务器PCB                                               AI服务器PCB价值量提升受到关注                48.65
+
+## 6. 数据状态
+- 当前日报由本地样例数据生成；接入真实数据源前，需要人工核验行情、新闻和成交额口径。
+- 输出目录：`reports/daily/`；运行日志：`logs/app.log`。
+
+## 7. 风险提示
+- 热点题材轮动较快，历史表现不代表未来结果。
+- 小市值标的波动、流动性和回撤风险通常更高。
+- 数据可能存在延迟、缺失或供应商口径差异，实际使用前请独立核验。
+
+Saved reports/daily/daily_hot_pool_2026-05-12_midday.md, reports/daily/daily_hot_pool_2026-05-12_midday.html, reports/daily/daily_hot_pool_2026-05-12_midday.xlsx and reports/daily/latest.html
+
+Saved reports/daily/daily_hot_pool_2026-05-12_close.md, reports/daily/daily_hot_pool_2026-05-12_close.html, reports/daily/daily_hot_pool_2026-05-12_close.xlsx and reports/daily/latest.htmlEmail dry run: subject=A股午间资金观察报告｜2026-05-12｜12:30 午间; to=[]; missing=['smtp_host', 'smtp_user', 'smtp_password', 'from_addr', 'to_addrs']
+
+Email dry run: subject=A股收盘资金验证报告｜2026-05-12｜17:00 收盘; to=[]; missing=['smtp_host', 'smtp_user', 'smtp_password', 'from_addr', 'to_addrs']
+
+[2026-05-12T19:08:39] START run_enhanced_daily
+# A股盘前资金观察报告 - 2026-05-12
+
+> 08:00 盘前：隔夜外围市场、前日资金回顾、当日预判
+
+> 仅用于研究和教育，不构成投资建议或交易建议。
+
+## 0. 今日研究结论
+- 今日最强主线：AMD产业链，主题强度 79.48，样本数量 5。
+- 量化池状态：核心池 1 个，观察池 0 个。
+- 今日用途：用于盘后复盘、次日观察清单整理和数据核验，不作为交易指令。
+
+## 1. 今日主线与催化
+- AMD产业链：强度 79.48，平均涨幅 4.22%，平均成交额 1270.00 百万元，关键词 服务器,GPU,AMD,AI芯片。
+- PCB：强度 74.43，平均涨幅 4.35%，平均成交额 1600.00 百万元，关键词 PCB,HDI,高频高速,服务器PCB。
+- NVIDIA产业链：强度 68.02，平均涨幅 3.20%，平均成交额 769.00 百万元，关键词 AI服务器,光模块,NVIDIA,GPU,算力。
+
+## 2. 主题强度排名
+    theme  theme_strength  stock_count  avg_pct_change  avg_volume_ratio  avg_turnover_million  catalyst_score_norm
+   AMD产业链           79.48            5            4.22              1.54                1270.0                78.38
+      PCB           74.43            2            4.35              1.55                1600.0                48.65
+NVIDIA产业链           68.02           10            3.20              1.12                 769.0               100.00
+      光通信           41.43            5            2.18              0.70                 268.0                72.97
+       液冷            0.00            0            0.00              0.00                   0.0                 0.00
+
+## 3. 研究池
+### 3.1 核心池
+ symbol name  total_score pool  pct_change  turnover_million_cny  market_cap_billion_cny            reason
+ 301205 联特科技    82.545732 core         6.8                 950.0                      95 主题相关性较高；成交/资金强度较高
+
+### 3.2 观察池
+暂无观察池标的。
+
+## 4. 分时段观察重点
+- 隔夜外围市场和重点事件是否影响当日风险偏好。
+- 前一交易日资金流向与强势主题是否具备延续条件。
+- 当日优先观察主题强度、成交额和开盘后量能承接。
+- 若数据仍为样例源，优先核验行情、新闻和成交额口径。
+
+## 5. 主要催化明细
+    theme  catalyst_score  hit_count            top_keywords                                                      top_titles  catalyst_score_norm
+NVIDIA产业链            18.5          8 AI服务器,光模块,NVIDIA,GPU,算力 NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | 数据中心800G与1.6T光模块需求延续               100.00
+   AMD产业链            14.5          5        服务器,GPU,AMD,AI芯片    NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | AI服务器PCB价值量提升受到关注                78.38
+      光通信            13.5          7   光模块,CPO,800G,1.6T,光通信                      NVIDIA相关AI服务器订单热度提升 | 数据中心800G与1.6T光模块需求延续                72.97
+      PCB             9.0          4     PCB,HDI,高频高速,服务器PCB                                               AI服务器PCB价值量提升受到关注                48.65
+
+## 6. 数据状态
+- 当前日报由本地样例数据生成；接入真实数据源前，需要人工核验行情、新闻和成交额口径。
+- 输出目录：`reports/daily/`；运行日志：`logs/app.log`。
+
+## 7. 风险提示
+- 热点题材轮动较快，历史表现不代表未来结果。
+- 小市值标的波动、流动性和回撤风险通常更高。
+- 数据可能存在延迟、缺失或供应商口径差异，实际使用前请独立核验。
+
+Saved reports/daily/daily_hot_pool_2026-05-12_premarket.md, reports/daily/daily_hot_pool_2026-05-12_premarket.html, reports/daily/daily_hot_pool_2026-05-12_premarket.xlsx and reports/daily/latest.html
+Email dry run: subject=A股盘前资金观察报告｜2026-05-12｜08:00 盘前; to=[]; template=/Users/wuzehe/Documents/New project/a-share-report-site/index.html; missing=['smtp_host', 'smtp_user', 'smtp_password', 'from_addr', 'to_addrs']
+
+[2026-05-12T19:14:44] START run_enhanced_daily
+
+[2026-05-12T19:14:44] START run_enhanced_daily
+A-share calendar: {'date': '2026-05-12', 'is_trading_day': True, 'reason': '交易日', 'source': 'SSE 2026 holiday schedule plus weekend rule'}A-share calendar: {'date': '2026-05-01', 'is_trading_day': False, 'reason': '沪深交易所节假日休市', 'source': 'SSE 2026 holiday schedule'}
+
+Skip report/email: 2026-05-01 is not an A-share trading day (沪深交易所节假日休市).
+# A股盘前资金观察报告 - 2026-05-12
+
+> 08:00 盘前：隔夜外围市场、前日资金回顾、当日预判
+
+> 仅用于研究和教育，不构成投资建议或交易建议。
+
+## 0. 今日研究结论
+- 今日最强主线：AMD产业链，主题强度 79.48，样本数量 5。
+- 量化池状态：核心池 1 个，观察池 0 个。
+- 今日用途：用于盘后复盘、次日观察清单整理和数据核验，不作为交易指令。
+
+## 1. 今日主线与催化
+- AMD产业链：强度 79.48，平均涨幅 4.22%，平均成交额 1270.00 百万元，关键词 服务器,GPU,AMD,AI芯片。
+- PCB：强度 74.43，平均涨幅 4.35%，平均成交额 1600.00 百万元，关键词 PCB,HDI,高频高速,服务器PCB。
+- NVIDIA产业链：强度 68.02，平均涨幅 3.20%，平均成交额 769.00 百万元，关键词 AI服务器,光模块,NVIDIA,GPU,算力。
+
+## 2. 主题强度排名
+    theme  theme_strength  stock_count  avg_pct_change  avg_volume_ratio  avg_turnover_million  catalyst_score_norm
+   AMD产业链           79.48            5            4.22              1.54                1270.0                78.38
+      PCB           74.43            2            4.35              1.55                1600.0                48.65
+NVIDIA产业链           68.02           10            3.20              1.12                 769.0               100.00
+      光通信           41.43            5            2.18              0.70                 268.0                72.97
+       液冷            0.00            0            0.00              0.00                   0.0                 0.00
+
+## 3. 研究池
+### 3.1 核心池
+ symbol name  total_score pool  pct_change  turnover_million_cny  market_cap_billion_cny            reason
+ 301205 联特科技    82.545732 core         6.8                 950.0                      95 主题相关性较高；成交/资金强度较高
+
+### 3.2 观察池
+暂无观察池标的。
+
+## 4. 分时段观察重点
+- 隔夜外围市场和重点事件是否影响当日风险偏好。
+- 前一交易日资金流向与强势主题是否具备延续条件。
+- 当日优先观察主题强度、成交额和开盘后量能承接。
+- 若数据仍为样例源，优先核验行情、新闻和成交额口径。
+
+## 5. 主要催化明细
+    theme  catalyst_score  hit_count            top_keywords                                                      top_titles  catalyst_score_norm
+NVIDIA产业链            18.5          8 AI服务器,光模块,NVIDIA,GPU,算力 NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | 数据中心800G与1.6T光模块需求延续               100.00
+   AMD产业链            14.5          5        服务器,GPU,AMD,AI芯片    NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | AI服务器PCB价值量提升受到关注                78.38
+      光通信            13.5          7   光模块,CPO,800G,1.6T,光通信                      NVIDIA相关AI服务器订单热度提升 | 数据中心800G与1.6T光模块需求延续                72.97
+      PCB             9.0          4     PCB,HDI,高频高速,服务器PCB                                               AI服务器PCB价值量提升受到关注                48.65
+
+## 6. 数据状态
+- 当前日报由本地样例数据生成；接入真实数据源前，需要人工核验行情、新闻和成交额口径。
+- 输出目录：`reports/daily/`；运行日志：`logs/app.log`。
+
+## 7. 风险提示
+- 热点题材轮动较快，历史表现不代表未来结果。
+- 小市值标的波动、流动性和回撤风险通常更高。
+- 数据可能存在延迟、缺失或供应商口径差异，实际使用前请独立核验。
+
+Saved reports/daily/daily_hot_pool_2026-05-12_premarket.md, reports/daily/daily_hot_pool_2026-05-12_premarket.html, reports/daily/daily_hot_pool_2026-05-12_premarket.xlsx and reports/daily/latest.html
+Email dry run: subject=A股盘前资金观察报告｜2026-05-12｜08:00 盘前; to=[]; template=/Users/wuzehe/Documents/New project/a-share-report-site/index.html; missing=['smtp_host', 'smtp_user', 'smtp_password', 'from_addr', 'to_addrs']
+
+[2026-05-12T19:17:22] START run_enhanced_daily
+A-share calendar: {'date': '2026-05-12', 'is_trading_day': True, 'reason': '交易日', 'source': 'https://www.sse.com.cn/disclosure/announcement/general/c/c_20251222_10802507.shtml'}
+# A股收盘资金验证报告 - 2026-05-12
+
+> 17:00 收盘：全日资金数据、趋势分析、次日观察条件
+
+> 仅用于研究和教育，不构成投资建议或交易建议。
+
+## 0. 今日研究结论
+- 今日最强主线：AMD产业链，主题强度 79.48，样本数量 5。
+- 量化池状态：核心池 1 个，观察池 0 个。
+- 今日用途：用于盘后复盘、次日观察清单整理和数据核验，不作为交易指令。
+
+## 1. 今日主线与催化
+- AMD产业链：强度 79.48，平均涨幅 4.22%，平均成交额 1270.00 百万元，关键词 服务器,GPU,AMD,AI芯片。
+- PCB：强度 74.43，平均涨幅 4.35%，平均成交额 1600.00 百万元，关键词 PCB,HDI,高频高速,服务器PCB。
+- NVIDIA产业链：强度 68.02，平均涨幅 3.20%，平均成交额 769.00 百万元，关键词 AI服务器,光模块,NVIDIA,GPU,算力。
+
+## 2. 主题强度排名
+    theme  theme_strength  stock_count  avg_pct_change  avg_volume_ratio  avg_turnover_million  catalyst_score_norm
+   AMD产业链           79.48            5            4.22              1.54                1270.0                78.38
+      PCB           74.43            2            4.35              1.55                1600.0                48.65
+NVIDIA产业链           68.02           10            3.20              1.12                 769.0               100.00
+      光通信           41.43            5            2.18              0.70                 268.0                72.97
+       液冷            0.00            0            0.00              0.00                   0.0                 0.00
+
+## 3. 研究池
+### 3.1 核心池
+ symbol name  total_score pool  pct_change  turnover_million_cny  market_cap_billion_cny            reason
+ 301205 联特科技    82.545732 core         6.8                 950.0                      95 主题相关性较高；成交/资金强度较高
+
+### 3.2 观察池
+暂无观察池标的。
+
+## 4. 分时段观察重点
+- 全日资金和主题强度是否验证早盘或午间判断。
+- 核心池和观察池是否出现成交缩量、冲高回落或消息证伪。
+- 次日按观察条件、风险等级、支撑压力、量能警戒和失效条件复核。
+- 若数据仍为样例源，优先核验行情、新闻和成交额口径。
+
+## 5. 主要催化明细
+    theme  catalyst_score  hit_count            top_keywords                                                      top_titles  catalyst_score_norm
+NVIDIA产业链            18.5          8 AI服务器,光模块,NVIDIA,GPU,算力 NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | 数据中心800G与1.6T光模块需求延续               100.00
+   AMD产业链            14.5          5        服务器,GPU,AMD,AI芯片    NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | AI服务器PCB价值量提升受到关注                78.38
+      光通信            13.5          7   光模块,CPO,800G,1.6T,光通信                      NVIDIA相关AI服务器订单热度提升 | 数据中心800G与1.6T光模块需求延续                72.97
+      PCB             9.0          4     PCB,HDI,高频高速,服务器PCB                                               AI服务器PCB价值量提升受到关注                48.65
+
+## 6. 数据状态
+- 当前日报由本地样例数据生成；接入真实数据源前，需要人工核验行情、新闻和成交额口径。
+- 输出目录：`reports/daily/`；运行日志：`logs/app.log`。
+
+## 7. 风险提示
+- 热点题材轮动较快，历史表现不代表未来结果。
+- 小市值标的波动、流动性和回撤风险通常更高。
+- 数据可能存在延迟、缺失或供应商口径差异，实际使用前请独立核验。
+
+Saved reports/daily/daily_hot_pool_2026-05-12_close.md, reports/daily/daily_hot_pool_2026-05-12_close.html, reports/daily/daily_hot_pool_2026-05-12_close.xlsx and reports/daily/latest.html
+Email send result: {'ok': False, 'reason': 'missing_settings', 'missing': ['smtp_host', 'smtp_user', 'smtp_password', 'from_addr', 'to_addrs']}
+
+[2026-05-12T19:19:54] START run_enhanced_daily
+A-share calendar: {'date': '2026-05-12', 'is_trading_day': True, 'reason': '交易日', 'source': 'https://www.sse.com.cn/disclosure/announcement/general/c/c_20251222_10802507.shtml'}
+# A股收盘资金验证报告 - 2026-05-12
+
+> 17:00 收盘：全日资金数据、趋势分析、次日观察条件
+
+> 仅用于研究和教育，不构成投资建议或交易建议。
+
+## 0. 今日研究结论
+- 今日最强主线：AMD产业链，主题强度 79.48，样本数量 5。
+- 量化池状态：核心池 1 个，观察池 0 个。
+- 今日用途：用于盘后复盘、次日观察清单整理和数据核验，不作为交易指令。
+
+## 1. 今日主线与催化
+- AMD产业链：强度 79.48，平均涨幅 4.22%，平均成交额 1270.00 百万元，关键词 服务器,GPU,AMD,AI芯片。
+- PCB：强度 74.43，平均涨幅 4.35%，平均成交额 1600.00 百万元，关键词 PCB,HDI,高频高速,服务器PCB。
+- NVIDIA产业链：强度 68.02，平均涨幅 3.20%，平均成交额 769.00 百万元，关键词 AI服务器,光模块,NVIDIA,GPU,算力。
+
+## 2. 主题强度排名
+    theme  theme_strength  stock_count  avg_pct_change  avg_volume_ratio  avg_turnover_million  catalyst_score_norm
+   AMD产业链           79.48            5            4.22              1.54                1270.0                78.38
+      PCB           74.43            2            4.35              1.55                1600.0                48.65
+NVIDIA产业链           68.02           10            3.20              1.12                 769.0               100.00
+      光通信           41.43            5            2.18              0.70                 268.0                72.97
+       液冷            0.00            0            0.00              0.00                   0.0                 0.00
+
+## 3. 研究池
+### 3.1 核心池
+ symbol name  total_score pool  pct_change  turnover_million_cny  market_cap_billion_cny            reason
+ 301205 联特科技    82.545732 core         6.8                 950.0                      95 主题相关性较高；成交/资金强度较高
+
+### 3.2 观察池
+暂无观察池标的。
+
+## 4. 分时段观察重点
+- 全日资金和主题强度是否验证早盘或午间判断。
+- 核心池和观察池是否出现成交缩量、冲高回落或消息证伪。
+- 次日按观察条件、风险等级、支撑压力、量能警戒和失效条件复核。
+- 若数据仍为样例源，优先核验行情、新闻和成交额口径。
+
+## 5. 主要催化明细
+    theme  catalyst_score  hit_count            top_keywords                                                      top_titles  catalyst_score_norm
+NVIDIA产业链            18.5          8 AI服务器,光模块,NVIDIA,GPU,算力 NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | 数据中心800G与1.6T光模块需求延续               100.00
+   AMD产业链            14.5          5        服务器,GPU,AMD,AI芯片    NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | AI服务器PCB价值量提升受到关注                78.38
+      光通信            13.5          7   光模块,CPO,800G,1.6T,光通信                      NVIDIA相关AI服务器订单热度提升 | 数据中心800G与1.6T光模块需求延续                72.97
+      PCB             9.0          4     PCB,HDI,高频高速,服务器PCB                                               AI服务器PCB价值量提升受到关注                48.65
+
+## 6. 数据状态
+- 当前日报由本地样例数据生成；接入真实数据源前，需要人工核验行情、新闻和成交额口径。
+- 输出目录：`reports/daily/`；运行日志：`logs/app.log`。
+
+## 7. 风险提示
+- 热点题材轮动较快，历史表现不代表未来结果。
+- 小市值标的波动、流动性和回撤风险通常更高。
+- 数据可能存在延迟、缺失或供应商口径差异，实际使用前请独立核验。
+
+Saved reports/daily/daily_hot_pool_2026-05-12_close.md, reports/daily/daily_hot_pool_2026-05-12_close.html, reports/daily/daily_hot_pool_2026-05-12_close.xlsx and reports/daily/latest.html
+Traceback (most recent call last):
+  File "/Users/wuzehe/Documents/New project/hotstock_quant_skill/examples/run_enhanced_daily.py", line 91, in <module>
+    main()
+  File "/Users/wuzehe/Documents/New project/hotstock_quant_skill/examples/run_enhanced_daily.py", line 86, in main
+    result = send_html_email(settings, subject, email_html, md, attachments=attachments)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/wuzehe/Documents/New project/hotstock_quant_skill/modules/email_notifier.py", line 97, in send_html_email
+    with smtplib.SMTP_SSL(settings["smtp_host"], settings["smtp_port"], context=context) as server:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/wuzehe/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/smtplib.py", line 1022, in __init__
+    SMTP.__init__(self, host, port, local_hostname, timeout,
+  File "/Users/wuzehe/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/smtplib.py", line 255, in __init__
+    (code, msg) = self.connect(host, port)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/wuzehe/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/smtplib.py", line 341, in connect
+    self.sock = self._get_socket(host, port, self.timeout)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/wuzehe/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/smtplib.py", line 1028, in _get_socket
+    new_socket = super()._get_socket(host, port, timeout)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/wuzehe/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/smtplib.py", line 312, in _get_socket
+    return socket.create_connection((host, port), timeout,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/wuzehe/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py", line 841, in create_connection
+    for res in getaddrinfo(host, port, 0, SOCK_STREAM):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/wuzehe/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/socket.py", line 978, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+socket.gaierror: [Errno 8] nodename nor servname provided, or not known
+
+[2026-05-12T19:21:07] START run_enhanced_daily
+A-share calendar: {'date': '2026-05-12', 'is_trading_day': True, 'reason': '交易日', 'source': 'https://www.sse.com.cn/disclosure/announcement/general/c/c_20251222_10802507.shtml'}
+# A股收盘资金验证报告 - 2026-05-12
+
+> 17:00 收盘：全日资金数据、趋势分析、次日观察条件
+
+> 仅用于研究和教育，不构成投资建议或交易建议。
+
+## 0. 今日研究结论
+- 今日最强主线：AMD产业链，主题强度 79.48，样本数量 5。
+- 量化池状态：核心池 1 个，观察池 0 个。
+- 今日用途：用于盘后复盘、次日观察清单整理和数据核验，不作为交易指令。
+
+## 1. 今日主线与催化
+- AMD产业链：强度 79.48，平均涨幅 4.22%，平均成交额 1270.00 百万元，关键词 服务器,GPU,AMD,AI芯片。
+- PCB：强度 74.43，平均涨幅 4.35%，平均成交额 1600.00 百万元，关键词 PCB,HDI,高频高速,服务器PCB。
+- NVIDIA产业链：强度 68.02，平均涨幅 3.20%，平均成交额 769.00 百万元，关键词 AI服务器,光模块,NVIDIA,GPU,算力。
+
+## 2. 主题强度排名
+    theme  theme_strength  stock_count  avg_pct_change  avg_volume_ratio  avg_turnover_million  catalyst_score_norm
+   AMD产业链           79.48            5            4.22              1.54                1270.0                78.38
+      PCB           74.43            2            4.35              1.55                1600.0                48.65
+NVIDIA产业链           68.02           10            3.20              1.12                 769.0               100.00
+      光通信           41.43            5            2.18              0.70                 268.0                72.97
+       液冷            0.00            0            0.00              0.00                   0.0                 0.00
+
+## 3. 研究池
+### 3.1 核心池
+ symbol name  total_score pool  pct_change  turnover_million_cny  market_cap_billion_cny            reason
+ 301205 联特科技    82.545732 core         6.8                 950.0                      95 主题相关性较高；成交/资金强度较高
+
+### 3.2 观察池
+暂无观察池标的。
+
+## 4. 分时段观察重点
+- 全日资金和主题强度是否验证早盘或午间判断。
+- 核心池和观察池是否出现成交缩量、冲高回落或消息证伪。
+- 次日按观察条件、风险等级、支撑压力、量能警戒和失效条件复核。
+- 若数据仍为样例源，优先核验行情、新闻和成交额口径。
+
+## 5. 主要催化明细
+    theme  catalyst_score  hit_count            top_keywords                                                      top_titles  catalyst_score_norm
+NVIDIA产业链            18.5          8 AI服务器,光模块,NVIDIA,GPU,算力 NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | 数据中心800G与1.6T光模块需求延续               100.00
+   AMD产业链            14.5          5        服务器,GPU,AMD,AI芯片    NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | AI服务器PCB价值量提升受到关注                78.38
+      光通信            13.5          7   光模块,CPO,800G,1.6T,光通信                      NVIDIA相关AI服务器订单热度提升 | 数据中心800G与1.6T光模块需求延续                72.97
+      PCB             9.0          4     PCB,HDI,高频高速,服务器PCB                                               AI服务器PCB价值量提升受到关注                48.65
+
+## 6. 数据状态
+- 当前日报由本地样例数据生成；接入真实数据源前，需要人工核验行情、新闻和成交额口径。
+- 输出目录：`reports/daily/`；运行日志：`logs/app.log`。
+
+## 7. 风险提示
+- 热点题材轮动较快，历史表现不代表未来结果。
+- 小市值标的波动、流动性和回撤风险通常更高。
+- 数据可能存在延迟、缺失或供应商口径差异，实际使用前请独立核验。
+
+Saved reports/daily/daily_hot_pool_2026-05-12_close.md, reports/daily/daily_hot_pool_2026-05-12_close.html, reports/daily/daily_hot_pool_2026-05-12_close.xlsx and reports/daily/latest.html
+Email send result: {'ok': False, 'reason': 'smtp_send_failed', 'error': 'gaierror: [Errno 8] nodename nor servname provided, or not known', 'host': 'smtp.qq.com', 'port': 465}
+
+[2026-05-12T20:14:33] START run_enhanced_daily
+A-share calendar: {'date': '2026-05-12', 'is_trading_day': True, 'reason': '交易日', 'source': 'https://www.sse.com.cn/disclosure/announcement/general/c/c_20251222_10802507.shtml'}
+# A股收盘资金验证报告 - 2026-05-12
+
+> 17:00 收盘：全日资金数据、趋势分析、次日观察条件
+
+> 仅用于研究和教育，不构成投资建议或交易建议。
+
+## 0. 今日研究结论
+- 今日最强主线：AMD产业链，主题强度 79.48，样本数量 5。
+- 量化池状态：核心池 1 个，观察池 0 个。
+- 今日用途：用于盘后复盘、次日观察清单整理和数据核验，不作为交易指令。
+
+## 1. 今日主线与催化
+- AMD产业链：强度 79.48，平均涨幅 4.22%，平均成交额 1270.00 百万元，关键词 服务器,GPU,AMD,AI芯片。
+- PCB：强度 74.43，平均涨幅 4.35%，平均成交额 1600.00 百万元，关键词 PCB,HDI,高频高速,服务器PCB。
+- NVIDIA产业链：强度 68.02，平均涨幅 3.20%，平均成交额 769.00 百万元，关键词 AI服务器,光模块,NVIDIA,GPU,算力。
+
+## 2. 主题强度排名
+    theme  theme_strength  stock_count  avg_pct_change  avg_volume_ratio  avg_turnover_million  catalyst_score_norm
+   AMD产业链           79.48            5            4.22              1.54                1270.0                78.38
+      PCB           74.43            2            4.35              1.55                1600.0                48.65
+NVIDIA产业链           68.02           10            3.20              1.12                 769.0               100.00
+      光通信           41.43            5            2.18              0.70                 268.0                72.97
+       液冷            0.00            0            0.00              0.00                   0.0                 0.00
+
+## 3. 研究池
+### 3.1 核心池
+ symbol name  total_score pool  pct_change  turnover_million_cny  market_cap_billion_cny            reason
+ 301205 联特科技    82.545732 core         6.8                 950.0                      95 主题相关性较高；成交/资金强度较高
+
+### 3.2 观察池
+暂无观察池标的。
+
+## 4. 分时段观察重点
+- 全日资金和主题强度是否验证早盘或午间判断。
+- 核心池和观察池是否出现成交缩量、冲高回落或消息证伪。
+- 次日按观察条件、风险等级、支撑压力、量能警戒和失效条件复核。
+- 若数据仍为样例源，优先核验行情、新闻和成交额口径。
+
+## 5. 主要催化明细
+    theme  catalyst_score  hit_count            top_keywords                                                      top_titles  catalyst_score_norm
+NVIDIA产业链            18.5          8 AI服务器,光模块,NVIDIA,GPU,算力 NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | 数据中心800G与1.6T光模块需求延续               100.00
+   AMD产业链            14.5          5        服务器,GPU,AMD,AI芯片    NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | AI服务器PCB价值量提升受到关注                78.38
+      光通信            13.5          7   光模块,CPO,800G,1.6T,光通信                      NVIDIA相关AI服务器订单热度提升 | 数据中心800G与1.6T光模块需求延续                72.97
+      PCB             9.0          4     PCB,HDI,高频高速,服务器PCB                                               AI服务器PCB价值量提升受到关注                48.65
+
+## 6. 数据状态
+- 当前日报由本地样例数据生成；接入真实数据源前，需要人工核验行情、新闻和成交额口径。
+- 输出目录：`reports/daily/`；运行日志：`logs/app.log`。
+
+## 7. 风险提示
+- 热点题材轮动较快，历史表现不代表未来结果。
+- 小市值标的波动、流动性和回撤风险通常更高。
+- 数据可能存在延迟、缺失或供应商口径差异，实际使用前请独立核验。
+
+Saved reports/daily/daily_hot_pool_2026-05-12_close.md, reports/daily/daily_hot_pool_2026-05-12_close.html, reports/daily/daily_hot_pool_2026-05-12_close.xlsx and reports/daily/latest.html
+Email send result: {'ok': False, 'reason': 'smtp_send_failed', 'error': 'SMTPServerDisconnected: Connection unexpectedly closed', 'host': 'smtp.qq.com', 'port': 465}
+
+[2026-05-12T20:26:27] START run_enhanced_daily
+A-share calendar: {'date': '2026-05-12', 'is_trading_day': True, 'reason': '交易日', 'source': 'https://www.sse.com.cn/disclosure/announcement/general/c/c_20251222_10802507.shtml'}
+# A股收盘资金验证报告 - 2026-05-12
+
+> 17:00 收盘：全日资金数据、趋势分析、次日观察条件
+
+> 仅用于研究和教育，不构成投资建议或交易建议。
+
+## 0. 今日研究结论
+- 今日最强主线：AMD产业链，主题强度 79.48，样本数量 5。
+- 量化池状态：核心池 1 个，观察池 0 个。
+- 今日用途：用于盘后复盘、次日观察清单整理和数据核验，不作为交易指令。
+
+## 1. 今日主线与催化
+- AMD产业链：强度 79.48，平均涨幅 4.22%，平均成交额 1270.00 百万元，关键词 服务器,GPU,AMD,AI芯片。
+- PCB：强度 74.43，平均涨幅 4.35%，平均成交额 1600.00 百万元，关键词 PCB,HDI,高频高速,服务器PCB。
+- NVIDIA产业链：强度 68.02，平均涨幅 3.20%，平均成交额 769.00 百万元，关键词 AI服务器,光模块,NVIDIA,GPU,算力。
+
+## 2. 主题强度排名
+    theme  theme_strength  stock_count  avg_pct_change  avg_volume_ratio  avg_turnover_million  catalyst_score_norm
+   AMD产业链           79.48            5            4.22              1.54                1270.0                78.38
+      PCB           74.43            2            4.35              1.55                1600.0                48.65
+NVIDIA产业链           68.02           10            3.20              1.12                 769.0               100.00
+      光通信           41.43            5            2.18              0.70                 268.0                72.97
+       液冷            0.00            0            0.00              0.00                   0.0                 0.00
+
+## 3. 研究池
+### 3.1 核心池
+ symbol name  total_score pool  pct_change  turnover_million_cny  market_cap_billion_cny            reason
+ 301205 联特科技    82.545732 core         6.8                 950.0                      95 主题相关性较高；成交/资金强度较高
+
+### 3.2 观察池
+暂无观察池标的。
+
+## 4. 分时段观察重点
+- 全日资金和主题强度是否验证早盘或午间判断。
+- 核心池和观察池是否出现成交缩量、冲高回落或消息证伪。
+- 次日按观察条件、风险等级、支撑压力、量能警戒和失效条件复核。
+- 若数据仍为样例源，优先核验行情、新闻和成交额口径。
+
+## 5. 主要催化明细
+    theme  catalyst_score  hit_count            top_keywords                                                      top_titles  catalyst_score_norm
+NVIDIA产业链            18.5          8 AI服务器,光模块,NVIDIA,GPU,算力 NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | 数据中心800G与1.6T光模块需求延续               100.00
+   AMD产业链            14.5          5        服务器,GPU,AMD,AI芯片    NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | AI服务器PCB价值量提升受到关注                78.38
+      光通信            13.5          7   光模块,CPO,800G,1.6T,光通信                      NVIDIA相关AI服务器订单热度提升 | 数据中心800G与1.6T光模块需求延续                72.97
+      PCB             9.0          4     PCB,HDI,高频高速,服务器PCB                                               AI服务器PCB价值量提升受到关注                48.65
+
+## 6. 数据状态
+- 当前日报由本地样例数据生成；接入真实数据源前，需要人工核验行情、新闻和成交额口径。
+- 输出目录：`reports/daily/`；运行日志：`logs/app.log`。
+
+## 7. 风险提示
+- 热点题材轮动较快，历史表现不代表未来结果。
+- 小市值标的波动、流动性和回撤风险通常更高。
+- 数据可能存在延迟、缺失或供应商口径差异，实际使用前请独立核验。
+
+Saved reports/daily/daily_hot_pool_2026-05-12_close.md, reports/daily/daily_hot_pool_2026-05-12_close.html, reports/daily/daily_hot_pool_2026-05-12_close.xlsx and reports/daily/latest.html
+
+[2026-05-12T20:27:09] START run_enhanced_daily
+A-share calendar: {'date': '2026-05-12', 'is_trading_day': True, 'reason': '交易日', 'source': 'https://www.sse.com.cn/disclosure/announcement/general/c/c_20251222_10802507.shtml'}
+# A股收盘资金验证报告 - 2026-05-12
+
+> 17:00 收盘：全日资金数据、趋势分析、次日观察条件
+
+> 仅用于研究和教育，不构成投资建议或交易建议。
+
+## 0. 今日研究结论
+- 今日最强主线：AMD产业链，主题强度 79.48，样本数量 5。
+- 量化池状态：核心池 1 个，观察池 0 个。
+- 今日用途：用于盘后复盘、次日观察清单整理和数据核验，不作为交易指令。
+
+## 1. 今日主线与催化
+- AMD产业链：强度 79.48，平均涨幅 4.22%，平均成交额 1270.00 百万元，关键词 服务器,GPU,AMD,AI芯片。
+- PCB：强度 74.43，平均涨幅 4.35%，平均成交额 1600.00 百万元，关键词 PCB,HDI,高频高速,服务器PCB。
+- NVIDIA产业链：强度 68.02，平均涨幅 3.20%，平均成交额 769.00 百万元，关键词 AI服务器,光模块,NVIDIA,GPU,算力。
+
+## 2. 主题强度排名
+    theme  theme_strength  stock_count  avg_pct_change  avg_volume_ratio  avg_turnover_million  catalyst_score_norm
+   AMD产业链           79.48            5            4.22              1.54                1270.0                78.38
+      PCB           74.43            2            4.35              1.55                1600.0                48.65
+NVIDIA产业链           68.02           10            3.20              1.12                 769.0               100.00
+      光通信           41.43            5            2.18              0.70                 268.0                72.97
+       液冷            0.00            0            0.00              0.00                   0.0                 0.00
+
+## 3. 研究池
+### 3.1 核心池
+ symbol name  total_score pool  pct_change  turnover_million_cny  market_cap_billion_cny            reason
+ 301205 联特科技    82.545732 core         6.8                 950.0                      95 主题相关性较高；成交/资金强度较高
+
+### 3.2 观察池
+暂无观察池标的。
+
+## 4. 分时段观察重点
+- 全日资金和主题强度是否验证早盘或午间判断。
+- 核心池和观察池是否出现成交缩量、冲高回落或消息证伪。
+- 次日按观察条件、风险等级、支撑压力、量能警戒和失效条件复核。
+- 若数据仍为样例源，优先核验行情、新闻和成交额口径。
+
+## 5. 主要催化明细
+    theme  catalyst_score  hit_count            top_keywords                                                      top_titles  catalyst_score_norm
+NVIDIA产业链            18.5          8 AI服务器,光模块,NVIDIA,GPU,算力 NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | 数据中心800G与1.6T光模块需求延续               100.00
+   AMD产业链            14.5          5        服务器,GPU,AMD,AI芯片    NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | AI服务器PCB价值量提升受到关注                78.38
+      光通信            13.5          7   光模块,CPO,800G,1.6T,光通信                      NVIDIA相关AI服务器订单热度提升 | 数据中心800G与1.6T光模块需求延续                72.97
+      PCB             9.0          4     PCB,HDI,高频高速,服务器PCB                                               AI服务器PCB价值量提升受到关注                48.65
+
+## 6. 数据状态
+- 当前日报由本地样例数据生成；接入真实数据源前，需要人工核验行情、新闻和成交额口径。
+- 输出目录：`reports/daily/`；运行日志：`logs/app.log`。
+
+## 7. 风险提示
+- 热点题材轮动较快，历史表现不代表未来结果。
+- 小市值标的波动、流动性和回撤风险通常更高。
+- 数据可能存在延迟、缺失或供应商口径差异，实际使用前请独立核验。
+
+Saved reports/daily/daily_hot_pool_2026-05-12_close.md, reports/daily/daily_hot_pool_2026-05-12_close.html, reports/daily/daily_hot_pool_2026-05-12_close.xlsx and reports/daily/latest.html
+Email send result: {'ok': False, 'reason': 'smtp_send_failed', 'error': 'SSLEOFError: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)', 'host': 'smtp.qq.com', 'port': 465}
+
+[2026-05-12T20:27:17] START run_enhanced_daily
+A-share calendar: {'date': '2026-05-12', 'is_trading_day': True, 'reason': '交易日', 'source': 'https://www.sse.com.cn/disclosure/announcement/general/c/c_20251222_10802507.shtml'}
+# A股收盘资金验证报告 - 2026-05-12
+
+> 17:00 收盘：全日资金数据、趋势分析、次日观察条件
+
+> 仅用于研究和教育，不构成投资建议或交易建议。
+
+## 0. 今日研究结论
+- 今日最强主线：AMD产业链，主题强度 79.48，样本数量 5。
+- 量化池状态：核心池 1 个，观察池 0 个。
+- 今日用途：用于盘后复盘、次日观察清单整理和数据核验，不作为交易指令。
+
+## 1. 今日主线与催化
+- AMD产业链：强度 79.48，平均涨幅 4.22%，平均成交额 1270.00 百万元，关键词 服务器,GPU,AMD,AI芯片。
+- PCB：强度 74.43，平均涨幅 4.35%，平均成交额 1600.00 百万元，关键词 PCB,HDI,高频高速,服务器PCB。
+- NVIDIA产业链：强度 68.02，平均涨幅 3.20%，平均成交额 769.00 百万元，关键词 AI服务器,光模块,NVIDIA,GPU,算力。
+
+## 2. 主题强度排名
+    theme  theme_strength  stock_count  avg_pct_change  avg_volume_ratio  avg_turnover_million  catalyst_score_norm
+   AMD产业链           79.48            5            4.22              1.54                1270.0                78.38
+      PCB           74.43            2            4.35              1.55                1600.0                48.65
+NVIDIA产业链           68.02           10            3.20              1.12                 769.0               100.00
+      光通信           41.43            5            2.18              0.70                 268.0                72.97
+       液冷            0.00            0            0.00              0.00                   0.0                 0.00
+
+## 3. 研究池
+### 3.1 核心池
+ symbol name  total_score pool  pct_change  turnover_million_cny  market_cap_billion_cny            reason
+ 301205 联特科技    82.545732 core         6.8                 950.0                      95 主题相关性较高；成交/资金强度较高
+
+### 3.2 观察池
+暂无观察池标的。
+
+## 4. 分时段观察重点
+- 全日资金和主题强度是否验证早盘或午间判断。
+- 核心池和观察池是否出现成交缩量、冲高回落或消息证伪。
+- 次日按观察条件、风险等级、支撑压力、量能警戒和失效条件复核。
+- 若数据仍为样例源，优先核验行情、新闻和成交额口径。
+
+## 5. 主要催化明细
+    theme  catalyst_score  hit_count            top_keywords                                                      top_titles  catalyst_score_norm
+NVIDIA产业链            18.5          8 AI服务器,光模块,NVIDIA,GPU,算力 NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | 数据中心800G与1.6T光模块需求延续               100.00
+   AMD产业链            14.5          5        服务器,GPU,AMD,AI芯片    NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | AI服务器PCB价值量提升受到关注                78.38
+      光通信            13.5          7   光模块,CPO,800G,1.6T,光通信                      NVIDIA相关AI服务器订单热度提升 | 数据中心800G与1.6T光模块需求延续                72.97
+      PCB             9.0          4     PCB,HDI,高频高速,服务器PCB                                               AI服务器PCB价值量提升受到关注                48.65
+
+## 6. 数据状态
+- 当前日报由本地样例数据生成；接入真实数据源前，需要人工核验行情、新闻和成交额口径。
+- 输出目录：`reports/daily/`；运行日志：`logs/app.log`。
+
+## 7. 风险提示
+- 热点题材轮动较快，历史表现不代表未来结果。
+- 小市值标的波动、流动性和回撤风险通常更高。
+- 数据可能存在延迟、缺失或供应商口径差异，实际使用前请独立核验。
+
+Saved reports/daily/daily_hot_pool_2026-05-12_close.md, reports/daily/daily_hot_pool_2026-05-12_close.html, reports/daily/daily_hot_pool_2026-05-12_close.xlsx and reports/daily/latest.html
+Email send result: {'ok': False, 'reason': 'smtp_send_failed', 'error': 'SSLEOFError: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010)', 'host': 'smtp.qq.com', 'port': 465}
+
+[2026-05-12T20:29:12] START run_enhanced_daily
+A-share calendar: {'date': '2026-05-12', 'is_trading_day': True, 'reason': '交易日', 'source': 'https://www.sse.com.cn/disclosure/announcement/general/c/c_20251222_10802507.shtml'}
+# A股收盘资金验证报告 - 2026-05-12
+
+> 17:00 收盘：全日资金数据、趋势分析、次日观察条件
+
+> 仅用于研究和教育，不构成投资建议或交易建议。
+
+## 0. 今日研究结论
+- 今日最强主线：AMD产业链，主题强度 79.48，样本数量 5。
+- 量化池状态：核心池 1 个，观察池 0 个。
+- 今日用途：用于盘后复盘、次日观察清单整理和数据核验，不作为交易指令。
+
+## 1. 今日主线与催化
+- AMD产业链：强度 79.48，平均涨幅 4.22%，平均成交额 1270.00 百万元，关键词 服务器,GPU,AMD,AI芯片。
+- PCB：强度 74.43，平均涨幅 4.35%，平均成交额 1600.00 百万元，关键词 PCB,HDI,高频高速,服务器PCB。
+- NVIDIA产业链：强度 68.02，平均涨幅 3.20%，平均成交额 769.00 百万元，关键词 AI服务器,光模块,NVIDIA,GPU,算力。
+
+## 2. 主题强度排名
+    theme  theme_strength  stock_count  avg_pct_change  avg_volume_ratio  avg_turnover_million  catalyst_score_norm
+   AMD产业链           79.48            5            4.22              1.54                1270.0                78.38
+      PCB           74.43            2            4.35              1.55                1600.0                48.65
+NVIDIA产业链           68.02           10            3.20              1.12                 769.0               100.00
+      光通信           41.43            5            2.18              0.70                 268.0                72.97
+       液冷            0.00            0            0.00              0.00                   0.0                 0.00
+
+## 3. 研究池
+### 3.1 核心池
+ symbol name  total_score pool  pct_change  turnover_million_cny  market_cap_billion_cny            reason
+ 301205 联特科技    82.545732 core         6.8                 950.0                      95 主题相关性较高；成交/资金强度较高
+
+### 3.2 观察池
+暂无观察池标的。
+
+## 4. 分时段观察重点
+- 全日资金和主题强度是否验证早盘或午间判断。
+- 核心池和观察池是否出现成交缩量、冲高回落或消息证伪。
+- 次日按观察条件、风险等级、支撑压力、量能警戒和失效条件复核。
+- 若数据仍为样例源，优先核验行情、新闻和成交额口径。
+
+## 5. 主要催化明细
+    theme  catalyst_score  hit_count            top_keywords                                                      top_titles  catalyst_score_norm
+NVIDIA产业链            18.5          8 AI服务器,光模块,NVIDIA,GPU,算力 NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | 数据中心800G与1.6T光模块需求延续               100.00
+   AMD产业链            14.5          5        服务器,GPU,AMD,AI芯片    NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | AI服务器PCB价值量提升受到关注                78.38
+      光通信            13.5          7   光模块,CPO,800G,1.6T,光通信                      NVIDIA相关AI服务器订单热度提升 | 数据中心800G与1.6T光模块需求延续                72.97
+      PCB             9.0          4     PCB,HDI,高频高速,服务器PCB                                               AI服务器PCB价值量提升受到关注                48.65
+
+## 6. 数据状态
+- 当前日报由本地样例数据生成；接入真实数据源前，需要人工核验行情、新闻和成交额口径。
+- 输出目录：`reports/daily/`；运行日志：`logs/app.log`。
+
+## 7. 风险提示
+- 热点题材轮动较快，历史表现不代表未来结果。
+- 小市值标的波动、流动性和回撤风险通常更高。
+- 数据可能存在延迟、缺失或供应商口径差异，实际使用前请独立核验。
+
+Saved reports/daily/daily_hot_pool_2026-05-12_close.md, reports/daily/daily_hot_pool_2026-05-12_close.html, reports/daily/daily_hot_pool_2026-05-12_close.xlsx and reports/daily/latest.html
+Email send result: {'ok': False, 'reason': 'smtp_send_failed', 'error': '465: SSLEOFError: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1010) | 587: SMTPServerDisconnected: Connection unexpectedly closed', 'host': 'smtp.qq.com', 'ports': [465, 587]}
+
+[2026-05-12T20:36:45] START run_enhanced_daily
+A-share calendar: {'date': '2026-05-12', 'is_trading_day': True, 'reason': '交易日', 'source': 'https://www.sse.com.cn/disclosure/announcement/general/c/c_20251222_10802507.shtml'}
+# A股收盘资金验证报告 - 2026-05-12
+
+> 17:00 收盘：全日资金数据、趋势分析、次日观察条件
+
+> 仅用于研究和教育，不构成投资建议或交易建议。
+
+## 0. 今日研究结论
+- 今日最强主线：AMD产业链，主题强度 79.48，样本数量 5。
+- 量化池状态：核心池 1 个，观察池 0 个。
+- 今日用途：用于盘后复盘、次日观察清单整理和数据核验，不作为交易指令。
+
+## 1. 今日主线与催化
+- AMD产业链：强度 79.48，平均涨幅 4.22%，平均成交额 1270.00 百万元，关键词 服务器,GPU,AMD,AI芯片。
+- PCB：强度 74.43，平均涨幅 4.35%，平均成交额 1600.00 百万元，关键词 PCB,HDI,高频高速,服务器PCB。
+- NVIDIA产业链：强度 68.02，平均涨幅 3.20%，平均成交额 769.00 百万元，关键词 AI服务器,光模块,NVIDIA,GPU,算力。
+
+## 2. 主题强度排名
+    theme  theme_strength  stock_count  avg_pct_change  avg_volume_ratio  avg_turnover_million  catalyst_score_norm
+   AMD产业链           79.48            5            4.22              1.54                1270.0                78.38
+      PCB           74.43            2            4.35              1.55                1600.0                48.65
+NVIDIA产业链           68.02           10            3.20              1.12                 769.0               100.00
+      光通信           41.43            5            2.18              0.70                 268.0                72.97
+       液冷            0.00            0            0.00              0.00                   0.0                 0.00
+
+## 3. 研究池
+### 3.1 核心池
+ symbol name  total_score pool  pct_change  turnover_million_cny  market_cap_billion_cny            reason
+ 301205 联特科技    82.545732 core         6.8                 950.0                      95 主题相关性较高；成交/资金强度较高
+
+### 3.2 观察池
+暂无观察池标的。
+
+## 4. 分时段观察重点
+- 全日资金和主题强度是否验证早盘或午间判断。
+- 核心池和观察池是否出现成交缩量、冲高回落或消息证伪。
+- 次日按观察条件、风险等级、支撑压力、量能警戒和失效条件复核。
+- 若数据仍为样例源，优先核验行情、新闻和成交额口径。
+
+## 5. 主要催化明细
+    theme  catalyst_score  hit_count            top_keywords                                                      top_titles  catalyst_score_norm
+NVIDIA产业链            18.5          8 AI服务器,光模块,NVIDIA,GPU,算力 NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | 数据中心800G与1.6T光模块需求延续               100.00
+   AMD产业链            14.5          5        服务器,GPU,AMD,AI芯片    NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | AI服务器PCB价值量提升受到关注                78.38
+      光通信            13.5          7   光模块,CPO,800G,1.6T,光通信                      NVIDIA相关AI服务器订单热度提升 | 数据中心800G与1.6T光模块需求延续                72.97
+      PCB             9.0          4     PCB,HDI,高频高速,服务器PCB                                               AI服务器PCB价值量提升受到关注                48.65
+
+## 6. 数据状态
+- 当前日报由本地样例数据生成；接入真实数据源前，需要人工核验行情、新闻和成交额口径。
+- 输出目录：`reports/daily/`；运行日志：`logs/app.log`。
+
+## 7. 风险提示
+- 热点题材轮动较快，历史表现不代表未来结果。
+- 小市值标的波动、流动性和回撤风险通常更高。
+- 数据可能存在延迟、缺失或供应商口径差异，实际使用前请独立核验。
+
+Saved reports/daily/daily_hot_pool_2026-05-12_close.md, reports/daily/daily_hot_pool_2026-05-12_close.html, reports/daily/daily_hot_pool_2026-05-12_close.xlsx and reports/daily/latest.html
+Email send result: {'ok': False, 'reason': 'smtp_send_failed', 'error': '465: SMTPServerDisconnected: Connection unexpectedly closed | 587: SMTPServerDisconnected: Connection unexpectedly closed', 'host': 'smtp.qq.com', 'ports': [465, 587]}
+
+[2026-05-13T17:08:02] START run_enhanced_daily
+A-share calendar: {'date': '2026-05-13', 'is_trading_day': True, 'reason': '交易日', 'source': 'https://www.sse.com.cn/disclosure/announcement/general/c/c_20251222_10802507.shtml'}
+# A股收盘资金验证报告 - 2026-05-13
+
+> 17:00 收盘：全日资金数据、趋势分析、次日观察条件
+
+> 仅用于研究和教育，不构成投资建议或交易建议。
+
+## 0. 今日研究结论
+- 今日最强主线：AMD产业链，主题强度 79.48，样本数量 5。
+- 量化池状态：核心池 1 个，观察池 0 个。
+- 今日用途：用于盘后复盘、次日观察清单整理和数据核验，不作为交易指令。
+
+## 1. 今日主线与催化
+- AMD产业链：强度 79.48，平均涨幅 4.22%，平均成交额 1270.00 百万元，关键词 服务器,GPU,AMD,AI芯片。
+- PCB：强度 74.43，平均涨幅 4.35%，平均成交额 1600.00 百万元，关键词 PCB,HDI,高频高速,服务器PCB。
+- NVIDIA产业链：强度 68.02，平均涨幅 3.20%，平均成交额 769.00 百万元，关键词 AI服务器,光模块,NVIDIA,GPU,算力。
+
+## 2. 主题强度排名
+    theme  theme_strength  stock_count  avg_pct_change  avg_volume_ratio  avg_turnover_million  catalyst_score_norm
+   AMD产业链           79.48            5            4.22              1.54                1270.0                78.38
+      PCB           74.43            2            4.35              1.55                1600.0                48.65
+NVIDIA产业链           68.02           10            3.20              1.12                 769.0               100.00
+      光通信           41.43            5            2.18              0.70                 268.0                72.97
+       液冷            0.00            0            0.00              0.00                   0.0                 0.00
+
+## 3. 研究池
+### 3.1 核心池
+ symbol name  total_score pool  pct_change  turnover_million_cny  market_cap_billion_cny            reason
+ 301205 联特科技    82.545732 core         6.8                 950.0                      95 主题相关性较高；成交/资金强度较高
+
+### 3.2 观察池
+暂无观察池标的。
+
+## 4. 分时段观察重点
+- 全日资金和主题强度是否验证早盘或午间判断。
+- 核心池和观察池是否出现成交缩量、冲高回落或消息证伪。
+- 次日按观察条件、风险等级、支撑压力、量能警戒和失效条件复核。
+- 若数据仍为样例源，优先核验行情、新闻和成交额口径。
+
+## 5. 主要催化明细
+    theme  catalyst_score  hit_count            top_keywords                                                      top_titles  catalyst_score_norm
+NVIDIA产业链            18.5          8 AI服务器,光模块,NVIDIA,GPU,算力 NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | 数据中心800G与1.6T光模块需求延续               100.00
+   AMD产业链            14.5          5        服务器,GPU,AMD,AI芯片    NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | AI服务器PCB价值量提升受到关注                78.38
+      光通信            13.5          7   光模块,CPO,800G,1.6T,光通信                      NVIDIA相关AI服务器订单热度提升 | 数据中心800G与1.6T光模块需求延续                72.97
+      PCB             9.0          4     PCB,HDI,高频高速,服务器PCB                                               AI服务器PCB价值量提升受到关注                48.65
+
+## 6. 数据状态
+- 当前日报由本地样例数据生成；接入真实数据源前，需要人工核验行情、新闻和成交额口径。
+- 输出目录：`reports/daily/`；运行日志：`logs/app.log`。
+
+## 7. 风险提示
+- 热点题材轮动较快，历史表现不代表未来结果。
+- 小市值标的波动、流动性和回撤风险通常更高。
+- 数据可能存在延迟、缺失或供应商口径差异，实际使用前请独立核验。
+
+Saved reports/daily/daily_hot_pool_2026-05-13_close.md, reports/daily/daily_hot_pool_2026-05-13_close.html, reports/daily/daily_hot_pool_2026-05-13_close.xlsx and reports/daily/latest.html
+Email send result: {'ok': False, 'reason': 'smtp_send_failed', 'error': '465: gaierror: [Errno 8] nodename nor servname provided, or not known | 587: gaierror: [Errno 8] nodename nor servname provided, or not known', 'host': 'smtp.qq.com', 'ports': [465, 587]}
+
+[2026-05-13T17:16:56] START run_enhanced_daily
+A-share calendar: {'date': '2026-05-13', 'is_trading_day': True, 'reason': '交易日', 'source': 'https://www.sse.com.cn/disclosure/announcement/general/c/c_20251222_10802507.shtml'}
+# A股收盘资金验证报告 - 2026-05-13
+
+> 17:00 收盘：全日资金数据、趋势分析、次日观察条件
+
+> 仅用于研究和教育，不构成投资建议或交易建议。
+
+## 0. 今日研究结论
+- 今日最强主线：AMD产业链，主题强度 79.48，样本数量 5。
+- 量化池状态：核心池 1 个，观察池 0 个。
+- 今日用途：用于盘后复盘、次日观察清单整理和数据核验，不作为交易指令。
+
+## 1. 今日主线与催化
+- AMD产业链：强度 79.48，平均涨幅 4.22%，平均成交额 1270.00 百万元，关键词 服务器,GPU,AMD,AI芯片。
+- PCB：强度 74.43，平均涨幅 4.35%，平均成交额 1600.00 百万元，关键词 PCB,HDI,高频高速,服务器PCB。
+- NVIDIA产业链：强度 68.02，平均涨幅 3.20%，平均成交额 769.00 百万元，关键词 AI服务器,光模块,NVIDIA,GPU,算力。
+
+## 2. 主题强度排名
+    theme  theme_strength  stock_count  avg_pct_change  avg_volume_ratio  avg_turnover_million  catalyst_score_norm
+   AMD产业链           79.48            5            4.22              1.54                1270.0                78.38
+      PCB           74.43            2            4.35              1.55                1600.0                48.65
+NVIDIA产业链           68.02           10            3.20              1.12                 769.0               100.00
+      光通信           41.43            5            2.18              0.70                 268.0                72.97
+       液冷            0.00            0            0.00              0.00                   0.0                 0.00
+
+## 3. 研究池
+### 3.1 核心池
+ symbol name  total_score pool  pct_change  turnover_million_cny  market_cap_billion_cny            reason
+ 301205 联特科技    82.545732 core         6.8                 950.0                      95 主题相关性较高；成交/资金强度较高
+
+### 3.2 观察池
+暂无观察池标的。
+
+## 4. 分时段观察重点
+- 全日资金和主题强度是否验证早盘或午间判断。
+- 核心池和观察池是否出现成交缩量、冲高回落或消息证伪。
+- 次日按观察条件、风险等级、支撑压力、量能警戒和失效条件复核。
+- 若数据仍为样例源，优先核验行情、新闻和成交额口径。
+
+## 5. 主要催化明细
+    theme  catalyst_score  hit_count            top_keywords                                                      top_titles  catalyst_score_norm
+NVIDIA产业链            18.5          8 AI服务器,光模块,NVIDIA,GPU,算力 NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | 数据中心800G与1.6T光模块需求延续               100.00
+   AMD产业链            14.5          5        服务器,GPU,AMD,AI芯片    NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | AI服务器PCB价值量提升受到关注                78.38
+      光通信            13.5          7   光模块,CPO,800G,1.6T,光通信                      NVIDIA相关AI服务器订单热度提升 | 数据中心800G与1.6T光模块需求延续                72.97
+      PCB             9.0          4     PCB,HDI,高频高速,服务器PCB                                               AI服务器PCB价值量提升受到关注                48.65
+
+## 6. 数据状态
+- 当前日报由本地样例数据生成；接入真实数据源前，需要人工核验行情、新闻和成交额口径。
+- 输出目录：`reports/daily/`；运行日志：`logs/app.log`。
+
+## 7. 风险提示
+- 热点题材轮动较快，历史表现不代表未来结果。
+- 小市值标的波动、流动性和回撤风险通常更高。
+- 数据可能存在延迟、缺失或供应商口径差异，实际使用前请独立核验。
+
+Saved reports/daily/daily_hot_pool_2026-05-13_close.md, reports/daily/daily_hot_pool_2026-05-13_close.html, reports/daily/daily_hot_pool_2026-05-13_close.xlsx and reports/daily/latest.html
+Email send result: {'ok': False, 'reason': 'smtp_send_failed', 'error': '465: gaierror: [Errno 8] nodename nor servname provided, or not known | 587: gaierror: [Errno 8] nodename nor servname provided, or not known', 'host': 'smtp.qq.com', 'ports': [465, 587]}
+
+[2026-05-14T08:38:05] START run_enhanced_daily
+A-share calendar: {'date': '2026-05-14', 'is_trading_day': True, 'reason': '交易日', 'source': 'https://www.sse.com.cn/disclosure/announcement/general/c/c_20251222_10802507.shtml'}
+# A股盘前资金观察报告 - 2026-05-14
+
+> 08:00 盘前：隔夜外围市场、前日资金回顾、当日预判
+
+> 仅用于研究和教育，不构成投资建议或交易建议。
+
+## 0. 今日研究结论
+- 今日最强主线：AMD产业链，主题强度 79.48，样本数量 5。
+- 量化池状态：核心池 1 个，观察池 0 个。
+- 今日用途：用于盘后复盘、次日观察清单整理和数据核验，不作为交易指令。
+
+## 1. 今日主线与催化
+- AMD产业链：强度 79.48，平均涨幅 4.22%，平均成交额 1270.00 百万元，关键词 服务器,GPU,AMD,AI芯片。
+- PCB：强度 74.43，平均涨幅 4.35%，平均成交额 1600.00 百万元，关键词 PCB,HDI,高频高速,服务器PCB。
+- NVIDIA产业链：强度 68.02，平均涨幅 3.20%，平均成交额 769.00 百万元，关键词 AI服务器,光模块,NVIDIA,GPU,算力。
+
+## 2. 主题强度排名
+    theme  theme_strength  stock_count  avg_pct_change  avg_volume_ratio  avg_turnover_million  catalyst_score_norm
+   AMD产业链           79.48            5            4.22              1.54                1270.0                78.38
+      PCB           74.43            2            4.35              1.55                1600.0                48.65
+NVIDIA产业链           68.02           10            3.20              1.12                 769.0               100.00
+      光通信           41.43            5            2.18              0.70                 268.0                72.97
+       液冷            0.00            0            0.00              0.00                   0.0                 0.00
+
+## 3. 研究池
+### 3.1 核心池
+ symbol name  total_score pool  pct_change  turnover_million_cny  market_cap_billion_cny            reason
+ 301205 联特科技    82.545732 core         6.8                 950.0                      95 主题相关性较高；成交/资金强度较高
+
+### 3.2 观察池
+暂无观察池标的。
+
+## 4. 分时段观察重点
+- 隔夜外围市场和重点事件是否影响当日风险偏好。
+- 前一交易日资金流向与强势主题是否具备延续条件。
+- 当日优先观察主题强度、成交额和开盘后量能承接。
+- 若数据仍为样例源，优先核验行情、新闻和成交额口径。
+
+## 5. 主要催化明细
+    theme  catalyst_score  hit_count            top_keywords                                                      top_titles  catalyst_score_norm
+NVIDIA产业链            18.5          8 AI服务器,光模块,NVIDIA,GPU,算力 NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | 数据中心800G与1.6T光模块需求延续               100.00
+   AMD产业链            14.5          5        服务器,GPU,AMD,AI芯片    NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | AI服务器PCB价值量提升受到关注                78.38
+      光通信            13.5          7   光模块,CPO,800G,1.6T,光通信                      NVIDIA相关AI服务器订单热度提升 | 数据中心800G与1.6T光模块需求延续                72.97
+      PCB             9.0          4     PCB,HDI,高频高速,服务器PCB                                               AI服务器PCB价值量提升受到关注                48.65
+
+## 6. 数据状态
+- 当前日报由本地样例数据生成；接入真实数据源前，需要人工核验行情、新闻和成交额口径。
+- 输出目录：`reports/daily/`；运行日志：`logs/app.log`。
+
+## 7. 风险提示
+- 热点题材轮动较快，历史表现不代表未来结果。
+- 小市值标的波动、流动性和回撤风险通常更高。
+- 数据可能存在延迟、缺失或供应商口径差异，实际使用前请独立核验。
+
+Saved reports/daily/daily_hot_pool_2026-05-14_premarket.md, reports/daily/daily_hot_pool_2026-05-14_premarket.html, reports/daily/daily_hot_pool_2026-05-14_premarket.xlsx and reports/daily/latest.html
+
+[2026-05-14T08:40:17] START run_enhanced_daily
+A-share calendar: {'date': '2026-05-14', 'is_trading_day': True, 'reason': '交易日', 'source': 'https://www.sse.com.cn/disclosure/announcement/general/c/c_20251222_10802507.shtml'}
+# A股盘前资金观察报告 - 2026-05-14
+
+> 08:00 盘前：隔夜外围市场、前日资金回顾、当日预判
+
+> 仅用于研究和教育，不构成投资建议或交易建议。
+
+## 0. 今日研究结论
+- 今日最强主线：AMD产业链，主题强度 79.48，样本数量 5。
+- 量化池状态：核心池 1 个，观察池 0 个。
+- 今日用途：用于盘后复盘、次日观察清单整理和数据核验，不作为交易指令。
+
+## 1. 今日主线与催化
+- AMD产业链：强度 79.48，平均涨幅 4.22%，平均成交额 1270.00 百万元，关键词 服务器,GPU,AMD,AI芯片。
+- PCB：强度 74.43，平均涨幅 4.35%，平均成交额 1600.00 百万元，关键词 PCB,HDI,高频高速,服务器PCB。
+- NVIDIA产业链：强度 68.02，平均涨幅 3.20%，平均成交额 769.00 百万元，关键词 AI服务器,光模块,NVIDIA,GPU,算力。
+
+## 2. 主题强度排名
+    theme  theme_strength  stock_count  avg_pct_change  avg_volume_ratio  avg_turnover_million  catalyst_score_norm
+   AMD产业链           79.48            5            4.22              1.54                1270.0                78.38
+      PCB           74.43            2            4.35              1.55                1600.0                48.65
+NVIDIA产业链           68.02           10            3.20              1.12                 769.0               100.00
+      光通信           41.43            5            2.18              0.70                 268.0                72.97
+       液冷            0.00            0            0.00              0.00                   0.0                 0.00
+
+## 3. 研究池
+### 3.1 核心池
+ symbol name  total_score pool  pct_change  turnover_million_cny  market_cap_billion_cny            reason
+ 301205 联特科技    82.545732 core         6.8                 950.0                      95 主题相关性较高；成交/资金强度较高
+
+### 3.2 观察池
+暂无观察池标的。
+
+## 4. 分时段观察重点
+- 隔夜外围市场和重点事件是否影响当日风险偏好。
+- 前一交易日资金流向与强势主题是否具备延续条件。
+- 当日优先观察主题强度、成交额和开盘后量能承接。
+- 若数据仍为样例源，优先核验行情、新闻和成交额口径。
+
+## 5. 主要催化明细
+    theme  catalyst_score  hit_count            top_keywords                                                      top_titles  catalyst_score_norm
+NVIDIA产业链            18.5          8 AI服务器,光模块,NVIDIA,GPU,算力 NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | 数据中心800G与1.6T光模块需求延续               100.00
+   AMD产业链            14.5          5        服务器,GPU,AMD,AI芯片    NVIDIA相关AI服务器订单热度提升 | AMD新一代AI芯片产业链关注度升温 | AI服务器PCB价值量提升受到关注                78.38
+      光通信            13.5          7   光模块,CPO,800G,1.6T,光通信                      NVIDIA相关AI服务器订单热度提升 | 数据中心800G与1.6T光模块需求延续                72.97
+      PCB             9.0          4     PCB,HDI,高频高速,服务器PCB                                               AI服务器PCB价值量提升受到关注                48.65
+
+## 6. 数据状态
+- 当前日报由本地样例数据生成；接入真实数据源前，需要人工核验行情、新闻和成交额口径。
+- 输出目录：`reports/daily/`；运行日志：`logs/app.log`。
+
+## 7. 风险提示
+- 热点题材轮动较快，历史表现不代表未来结果。
+- 小市值标的波动、流动性和回撤风险通常更高。
+- 数据可能存在延迟、缺失或供应商口径差异，实际使用前请独立核验。
+
+Saved reports/daily/daily_hot_pool_2026-05-14_premarket.md, reports/daily/daily_hot_pool_2026-05-14_premarket.html, reports/daily/daily_hot_pool_2026-05-14_premarket.xlsx and reports/daily/latest.html
+Email send result: {'ok': False, 'reason': 'smtp_send_failed', 'error': '465: gaierror: [Errno 8] nodename nor servname provided, or not known | 587: gaierror: [Errno 8] nodename nor servname provided, or not known', 'host': 'smtp.qq.com', 'ports': [465, 587]}

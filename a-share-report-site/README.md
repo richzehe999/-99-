@@ -10,7 +10,7 @@
 
 ## 内容口径
 
-当前版本为 2026-05-08 盘后验证版，用真实盘面校验此前科技、能源、量能和板块轮动判断，并新增买方下一步判断维度。
+当前版本为 2026-05-12 盘后验证版，用真实盘面校验此前科技、能源、量能和板块轮动判断，并保留买方下一步判断维度。
 
 ## 邮件推送
 
@@ -18,10 +18,10 @@
 
 当前采用两层链路：
 
-- 正式链路：GitHub Actions 在工作日 08:30 / 16:30 生成邮件安全 HTML 并发送。
-- 备用链路：macOS launchd 在工作日 08:45 / 16:45 用本机网络环境发送。
+- 正式链路：GitHub Actions 在工作日 08:30 / 12:30 / 16:30 生成邮件安全 HTML 并发送。
+- 备用链路：macOS launchd 在工作日 08:45 / 12:30 / 16:45 用本机网络环境发送。
 
-邮件正文由 `scripts/cloud_a_share_radar_email.py` 生成，不直接发送完整 `index.html`，不把 ZIP 附件作为主要交付。
+邮件正文由 `scripts/cloud_a_share_radar_email.py` 参考 `a-share-report-site/index.html` 生成，不直接发送完整 `index.html`，不把 ZIP 附件作为主要交付。三档任务暂时共用同一个模板，只在发送前更新运行时指数、板块资金和外部变量数据。
 
 本地授权码文件：
 
@@ -36,11 +36,12 @@ cd "/Users/wuzehe/Documents/New project"
 ./scripts/install_a_share_email_launch_agents.sh
 ```
 
-手动测试盘前/盘后邮件：
+手动测试盘前/午间/盘后邮件：
 
 ```bash
 cd "/Users/wuzehe/Documents/New project"
 ./scripts/send_scheduled_a_share_report.sh premarket
+./scripts/send_scheduled_a_share_report.sh midday
 ./scripts/send_scheduled_a_share_report.sh aftermarket
 ```
 
@@ -49,5 +50,6 @@ cd "/Users/wuzehe/Documents/New project"
 ```bash
 /Users/wuzehe/Documents/New project/logs/email-dispatch.log
 /Users/wuzehe/Documents/New project/logs/premarket-email.err.log
+/Users/wuzehe/Documents/New project/logs/midday-email.err.log
 /Users/wuzehe/Documents/New project/logs/aftermarket-email.err.log
 ```

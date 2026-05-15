@@ -7,7 +7,7 @@
 - 收件地址保持 `240575148@qq.com`。
 - 每次运行前刷新数据，不复用旧报告。
 - 云端 GitHub Actions 是正式发送链路；本机 launchd 只作为备用验证链路。
-- 邮件正文由 `scripts/cloud_a_share_radar_email.py` 生成，不直接复用静态站点 `index.html`，也不把 ZIP 作为主要交付。
+- 邮件正文由 `scripts/cloud_a_share_radar_email.py` 从 `a-share-report-site/index.html` 抽取核心结构后生成 email-safe inline HTML；发送前只做运行时数据抓取更新，不改写网页模板文件，也不把完整网页、脚本或 CSS 直接塞进邮件。
 
 ## 需要的 GitHub Secrets
 
@@ -33,6 +33,7 @@ Gmail 不能使用登录密码。需要在 Google 账号中开启两步验证，
 
 - `.github/workflows/a-share-radar-email.yml`
 - `scripts/cloud_a_share_radar_email.py`
+- `a-share-report-site/index.html`
 - `.gitignore`
 
 不要上传：
@@ -49,7 +50,10 @@ Gmail 不能使用登录密码。需要在 Google 账号中开启两步验证，
 GitHub Actions 使用 UTC，已换算为中国时间：
 
 - 工作日 08:30 中国时间：盘前邮件
+- 工作日 12:30 中国时间：午间邮件
 - 工作日 16:30 中国时间：盘后邮件
+
+三档任务暂时共用同一个模板文件：`a-share-report-site/index.html`。区别只在邮件标题、任务口径和发送前抓取的数据快照。
 
 工作流文件：
 
@@ -60,6 +64,8 @@ GitHub Actions 使用 UTC，已换算为中国时间：
 ## 邮件格式约束
 
 - 正文必须打开即可读，顶部显示报告日期和数据口径。
+- 使用 `a-share-report-site/index.html` 作为内容模板，但发送前会转换为邮件安全的行内 HTML。
+- 三档邮件不维护三份独立网页模板；统一参考 `a-share-report-site/index.html`，只在发送前更新指数、板块资金和外部变量等运行时数据。
 - 禁止发送 `<style>`、`<script>`、`<head>`、完整网页结构或 CSS 代码块。
 - 附件和站点包只能作为补充，不作为主要阅读入口。
 
@@ -72,6 +78,7 @@ GitHub Actions 使用 UTC，已换算为中国时间：
 选择：
 
 - `premarket`：盘前报告
+- `midday`：午间报告
 - `aftermarket`：盘后报告
 
 运行完成后检查 QQ 邮箱。
@@ -83,6 +90,7 @@ GitHub Actions 使用 UTC，已换算为中国时间：
 ```bash
 python3 scripts/cloud_a_share_radar_email.py \
   --mode premarket \
+  --template-html a-share-report-site/index.html \
   --output-html radar-email-preview.html
 ```
 

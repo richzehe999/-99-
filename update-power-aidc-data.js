@@ -12,7 +12,7 @@ const dataDir = path.join(__dirname, "data");
 const logsDir = path.join(__dirname, "logs");
 const snapshotPath = path.join(dataDir, "quotes.json");
 const updateLogPath = path.join(logsDir, "update.log");
-const VERSION = "quotes-eastmoney-v6-2026-05-09";
+const VERSION = "quotes-eastmoney-v8-2026-05-14";
 const EASTMONEY_UT = "fa5fd1943c7b386f172d6893dbfba10b";
 
 const stocks = [
@@ -268,18 +268,9 @@ async function requestTencent() {
 }
 
 async function getQuoteData() {
-  try {
-    const data = await requestEastmoney();
-    const market = await getMarketSnapshot();
-    return { source: "东方财富", data, market };
-  } catch (error) {
-    const cachedPath = path.join(__dirname, "power-aidc-raw-response-eastmoney.txt");
-    if (fs.existsSync(cachedPath)) {
-      appendLog(`quote fallback used cached eastmoney raw reason=${error.message}`);
-      return { source: "东方财富", data: parseEastmoney(fs.readFileSync(cachedPath, "utf8")), market: { source: null, error: error.message, indices: [] } };
-    }
-    throw error;
-  }
+  const data = await requestEastmoney();
+  const market = await getMarketSnapshot();
+  return { source: "东方财富", data, market };
 }
 
 async function getMarketSnapshot() {
@@ -306,6 +297,46 @@ async function getLatestTradingDate() {
   const latest = rows[rows.length - 1].split(",")[0];
   if (!/^\d{4}-\d{2}-\d{2}$/.test(latest)) throw new Error(`最近交易日格式异常：${latest}`);
   return latest;
+}
+
+async function requestMarginBalances() {
+  const byCode = {};
+  const raw = [];
+  const errors = [];
+  for (const stock of stocks) {
+    const filter = encodeURIComponent(`(scode=${stock.code})`);
+    const url = `https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPTA_WEB_RZRQ_GGMX&columns=ALL&source=WEB&sortColumns=DATE&sortTypes=-1&pageNumber=1&pageSize=1&filter=${filter}&client=WEB&_=${Date.now()}`;
+    try {
+      const text = await requestText(url);
+      raw.push(`--- ${stock.code} ${stock.name} ---\n${text}`);
+      const row = parseMarginBalance(text, stock);
+      if (row) byCode[stock.code] = row;
+    } catch (error) {
+      errors.push(`${stock.code}: ${error.message}`);
+    }
+  }
+  fs.writeFileSync(path.join(__dirname, "power-aidc-raw-response-eastmoney-margin.txt"), raw.join("\n"));
+  if (errors.length) appendLog(`margin partial errors ${errors.join(" | ")}`);
+  if (!Object.keys(byCode).length) throw new Error(errors.join(" | ") || "融资余额接口无返回");
+  return byCode;
+}
+
+function parseMarginBalance(text, stock) {
+  const payload = JSON.parse(extractJson(text));
+  if (!payload || payload.success === false) {
+    throw new Error(payload && payload.message ? payload.message : "融资余额接口返回失败");
+  }
+  const rows = payload.result && Array.isArray(payload.result.data) ? payload.result.data : [];
+  if (!rows.length) throw new Error("融资余额为空");
+  const item = rows[0];
+  return {
+    code: item.SCODE || stock.code,
+    name: item.SECNAME || stock.name,
+    date: String(item.DATE || "").slice(0, 10),
+    marginBalance: firstFinite(item.RZYE),
+    marginNetBuy: firstFinite(item.RZJME),
+    marginRatio: firstFinite(item.RZYEZB)
+  };
 }
 
 function parseEastmoney(text) {
@@ -443,6 +474,7 @@ function latestWeekdayLabel(date = new Date()) {
 function buildSnapshot(result, dateLabel) {
   const items = stocks.map(stock => {
     const row = result.data[stock.code] || {};
+    const margin = result.margin && result.margin[stock.code] ? result.margin[stock.code] : {};
     const pnlPct = Number.isFinite(row.last) ? (row.last - stock.cost) / stock.cost * 100 : NaN;
     return {
       code: stock.code,
@@ -457,6 +489,10 @@ function buildSnapshot(result, dateLabel) {
       prevClose: finiteOrNull(row.prevClose),
       mainNet: finiteOrNull(row.mainNet),
       mainRatio: finiteOrNull(row.mainRatio),
+      marginDate: margin.date || null,
+      marginBalance: finiteOrNull(margin.marginBalance),
+      marginNetBuy: finiteOrNull(margin.marginNetBuy),
+      marginRatio: finiteOrNull(margin.marginRatio),
       pnlPct: finiteOrNull(pnlPct),
       opinion: opinionFor(stock, row)
     };
@@ -502,6 +538,10 @@ function replaceStockLast(html, code, last) {
 }
 
 function replaceDefaultFunds(html, code, row, dateLabel) {
+  return replaceDefaultFundsWithMargin(html, code, row, dateLabel, null);
+}
+
+function replaceDefaultFundsWithMargin(html, code, row, dateLabel, margin) {
   if (!row) return html;
   const hasFund = Number.isFinite(row.mainNet);
   const net = hasFund ? formatCapital(row.mainNet) : "资金源未返回";
@@ -511,6 +551,10 @@ function replaceDefaultFunds(html, code, row, dateLabel) {
   if (currentMatch) {
     const cells = Array.from(currentMatch[1].matchAll(/"([^"]*)"/g)).map(match => match[1]);
     if (cells.length >= 5) preserved = cells.slice(1, 4);
+  }
+  if (margin && margin.date && Number.isFinite(margin.marginBalance)) {
+    const netBuy = Number.isFinite(margin.marginNetBuy) ? `，融资净买入 ${formatCapital(margin.marginNetBuy)}` : "";
+    preserved[2] = `${margin.date} 融资余额 ${formatAmount(margin.marginBalance)}${netBuy}`;
   }
   const next = `"${code}": ["${dateLabel} 主力净流入 ${net}${ratio}", "${preserved[0]}", "${preserved[1]}", "${preserved[2]}", "${opinionFor(stocks.find(item => item.code === code), row)}"]`;
   const pattern = new RegExp(`"${code}": \\[[^\\n]+\\]`);
@@ -550,6 +594,12 @@ async function main() {
   } catch (error) {
     appendLog(`latest trading date fallback=${dateLabel} reason=${error.message}`);
   }
+  try {
+    result.margin = await requestMarginBalances();
+  } catch (error) {
+    result.margin = {};
+    appendLog(`margin update failed ${error.message}`);
+  }
   const snapshot = buildSnapshot(result, dateLabel);
   writeSnapshot(snapshot);
   let html = fs.readFileSync(dashboardPath, "utf8");
@@ -557,7 +607,7 @@ async function main() {
   for (const stock of stocks) {
     const row = data[stock.code];
     html = replaceStockLast(html, stock.code, row.last);
-    html = replaceDefaultFunds(html, stock.code, row, dateLabel);
+    html = replaceDefaultFundsWithMargin(html, stock.code, row, dateLabel, result.margin[stock.code]);
     html = replaceDailyRow(html, stock, row, dateLabel);
   }
   html = embedSnapshot(html, snapshot);
@@ -582,6 +632,16 @@ async function main() {
   for (const stock of stocks) {
     const row = data[stock.code];
     console.log(`${stock.name} ${stock.code}: price=${row.last} pct=${formatPct(row.pct)} amount=${formatAmount(row.amount)} main=${formatCapital(row.mainNet)}`);
+  }
+  const marginRows = stocks.map(stock => result.margin[stock.code]).filter(Boolean);
+  if (marginRows.length) {
+    console.log(`融资余额: 东方财富 ${marginRows.length}/${stocks.length} 项`);
+    for (const stock of stocks) {
+      const margin = result.margin[stock.code];
+      if (margin) console.log(`${stock.name} ${stock.code}: marginDate=${margin.date} balance=${formatAmount(margin.marginBalance)} net=${formatCapital(margin.marginNetBuy)}`);
+    }
+  } else {
+    console.log("融资余额: 未更新，保留页面旧值");
   }
 }
 

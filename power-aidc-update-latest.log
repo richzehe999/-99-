@@ -1,28 +1,36 @@
-===== 2026-05-09 22:30:50 =====
-入口版本: command-v6-2026-05-09
+===== 2026-05-14 17:47:10 =====
+入口版本: command-v8-2026-05-14
 工作目录: /Users/wuzehe/Documents/New project
 Node 路径: /Users/wuzehe/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node
 v24.14.0
 更新脚本: /Users/wuzehe/Documents/New project/update-power-aidc-data.js
-更新脚本时间: May  9 22:09:39 2026
+更新脚本时间: May 14 13:23:51 2026
 
 正在检查更新脚本...
 
 正在更新电力 / AIDC 看板...
-脚本版本: quotes-eastmoney-v6-2026-05-09
+脚本版本: quotes-eastmoney-v8-2026-05-14
 Updated /Users/wuzehe/Documents/New project/power-aidc-dashboard.html
 Snapshot /Users/wuzehe/Documents/New project/data/quotes.json
 Log /Users/wuzehe/Documents/New project/logs/update.log
 行情源: 东方财富
-大盘指数: 未更新；node: getaddrinfo ENOTFOUND push2.eastmoney.com; curl: curl: (6) Could not resolve host: push2.eastmoney.com
-协鑫能科 002015: price=20.38 pct=-1.02% amount=30.12 亿元 main=-2.00 亿元
-阳光电源 300274: price=139.85 pct=+0.25% amount=86.80 亿元 main=+9770.81 万元
-南网数字 301638: price=30.09 pct=-1.44% amount=11.14 亿元 main=-1.01 亿元
-润泽科技 300442: price=98.08 pct=+0.65% amount=65.11 亿元 main=+1.65 亿元
-中芯国际 688981: price=120.31 pct=-4.01% amount=85.96 亿元 main=-12.21 亿元
-光环新网 300383: price=17.22 pct=-1.82% amount=17.21 亿元 main=-1.43 亿元
+大盘指数: 未更新；eastmoney market rc=102 data=null
+协鑫能科 002015: price=23.5 pct=+0.47% amount=84.00 亿元 main=-4.44 亿元
+阳光电源 300274: price=135.03 pct=-5.34% amount=112.91 亿元 main=-14.79 亿元
+南网数字 301638: price=29.6 pct=-6.45% amount=14.91 亿元 main=-1.15 亿元
+润泽科技 300442: price=99.67 pct=-1.92% amount=86.25 亿元 main=-5.47 亿元
+中芯国际 688981: price=117.9 pct=-3.25% amount=94.51 亿元 main=-3.31 亿元
+光环新网 300383: price=17.04 pct=-4.27% amount=26.11 亿元 main=-2.34 亿元
+融资余额: 东方财富 6/6 项
+协鑫能科 002015: marginDate=2026-05-13 balance=8.97 亿元 net=-9461.48 万元
+阳光电源 300274: marginDate=2026-05-13 balance=102.07 亿元 net=-1.85 亿元
+南网数字 301638: marginDate=2026-05-13 balance=5.06 亿元 net=-135.82 万元
+润泽科技 300442: marginDate=2026-05-13 balance=41.69 亿元 net=-1.47 亿元
+中芯国际 688981: marginDate=2026-05-13 balance=130.83 亿元 net=+2.22 亿元
+光环新网 300383: marginDate=2026-05-13 balance=16.63 亿元 net=-2965.76 万元
 
 更新完成，正在打开看板。
 No application knows how to open URL file:///Users/wuzehe/Documents/New%20project/power-aidc-dashboard.html (Error Domain=NSOSStatusErrorDomain Code=-10661 "kLSExecutableIncorrectFormat: No compatible executable was found" UserInfo={_LSLine=1970, _LSFunction=runEvaluator, _LSFile=LSBindingEvaluator.mm, _LSErrorMessage=kLSExecutableIncorrectFormat}).
+看板已更新，但当前环境未能自动打开；请手动打开 power-aidc-dashboard.html。
 
 退出码: 0

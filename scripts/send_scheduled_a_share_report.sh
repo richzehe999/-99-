@@ -16,7 +16,7 @@ log() {
 
 trap 'rc=$?; log "ERROR send $REPORT_KIND failed with exit code $rc"; exit $rc' ERR
 
-if [[ "$REPORT_KIND" != "premarket" && "$REPORT_KIND" != "aftermarket" ]]; then
+if [[ "$REPORT_KIND" != "premarket" && "$REPORT_KIND" != "midday" && "$REPORT_KIND" != "aftermarket" ]]; then
   log "ERROR invalid report kind: $REPORT_KIND"
   exit 2
 fi
@@ -36,6 +36,9 @@ case "$REPORT_KIND" in
   premarket)
     MODE="premarket"
     ;;
+  midday)
+    MODE="midday"
+    ;;
   aftermarket)
     MODE="aftermarket"
     ;;
@@ -45,6 +48,7 @@ cd "$PROJECT_ROOT"
 
 python3 "$PROJECT_ROOT/scripts/cloud_a_share_radar_email.py" \
   --mode "$MODE" \
+  --template-html "$PROJECT_ROOT/a-share-report-site/index.html" \
   --output-html "$EMAIL_PREVIEW" \
   --send
 

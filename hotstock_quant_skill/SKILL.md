@@ -119,15 +119,23 @@ The enhanced edition adds the following research workflows:
 6. Daily report generation
    - Creates Markdown and Excel reports.
    - Includes theme strength, core/watch pools, catalysts, and risk warnings.
+   - Supports premarket, midday, and close report slots.
 
 7. Push notification template
    - Provides webhook-based push messaging.
    - Can be adapted to Enterprise WeChat, Feishu, DingTalk, Telegram, or custom webhook services.
 
+8. Email automation
+   - Sends the generated HTML report as the email body through SMTP.
+   - Uses 08:00, 12:30, and 17:00 macOS LaunchAgent schedules when installed.
+   - Checks the A-share trading calendar before sending; non-trading days are skipped.
+
 ## Enhanced Edition Commands
 
 ```bash
 python examples/run_enhanced_daily.py
+python examples/run_enhanced_daily.py --slot premarket --send-email --attach-excel
+python scripts/install_email_launchd.py
 python examples/run_parameter_optimization.py
 python examples/run_batch_backtest.py
 ```

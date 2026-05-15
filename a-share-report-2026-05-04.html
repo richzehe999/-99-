@@ -3,41 +3,43 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>A股盘后验证雷达｜2026-05-08</title>
+  <title>A股盘后验证雷达</title>
   <style>
     :root {
-      --ink: #17202a;
-      --muted: #657180;
-      --line: #d9e0e7;
-      --paper: #f7f8f9;
-      --panel: #ffffff;
-      --blue: #2f6feb;
-      --green: #178a5a;
-      --red: #c64a45;
-      --amber: #b7791f;
-      --cyan: #087ea4;
-      --slate: #2d3642;
-      --soft-blue: #eaf1ff;
-      --soft-green: #eaf7f1;
-      --soft-red: #fff0ef;
-      --soft-amber: #fff6e5;
-      --shadow: 0 14px 40px rgba(23, 32, 42, 0.08);
+      --bg: #08121a;
+      --panel: #102333;
+      --panel-2: #142b3d;
+      --line: #25445a;
+      --ink: #eaf4ff;
+      --muted: #9cb0bf;
+      --yellow: #ffd400;
+      --green: #62cf3a;
+      --red: #ff6870;
+      --blue: #35a2ff;
+      --orange: #f0a735;
+      --cyan: #49d4d8;
+      --white: #ffffff;
+      --shadow: 0 16px 42px rgba(0, 0, 0, 0.28);
     }
 
     * {
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
       color: var(--ink);
-      background: var(--paper);
+      background: var(--bg);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
-      line-height: 1.5;
+      line-height: 1.45;
     }
 
     a {
-      color: var(--blue);
+      color: #8ad3ff;
       text-decoration: none;
     }
 
@@ -45,256 +47,340 @@
       text-decoration: underline;
     }
 
-    .app {
-      min-height: 100vh;
+    .page {
+      width: min(1880px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 22px 0 44px;
+    }
+
+    .hero {
+      min-height: 150px;
       display: grid;
-      grid-template-columns: 248px minmax(0, 1fr);
-    }
-
-    aside {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      padding: 22px 18px;
-      color: #eef4f8;
-      background: #1d2733;
-      overflow-y: auto;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 26px;
-    }
-
-    .brand-mark {
-      width: 32px;
-      height: 32px;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 20px;
+      align-items: start;
+      padding: 24px 26px 22px;
+      border: 1px solid var(--line);
       border-radius: 8px;
-      background:
-        linear-gradient(135deg, #4eb1cb 0 48%, transparent 48%),
-        linear-gradient(315deg, #f0b84f 0 48%, #2f6feb 48%);
-      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.22);
+      background: linear-gradient(180deg, #102535 0%, #0d1c28 100%);
+      box-shadow: var(--shadow);
     }
 
-    .brand h1 {
+    h1 {
+      margin: 0 0 10px;
+      color: var(--yellow);
+      font-size: clamp(28px, 2.7vw, 44px);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      max-width: 980px;
       margin: 0;
-      font-size: 16px;
-      font-weight: 700;
-    }
-
-    .brand span {
-      display: block;
-      margin-top: 1px;
-      color: #9eb0c0;
-      font-size: 12px;
-    }
-
-    nav {
-      display: grid;
-      gap: 6px;
-    }
-
-    .nav-link {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      padding: 10px 10px;
-      border: 1px solid transparent;
-      border-radius: 8px;
-      color: #dbe7ee;
+      color: #c7d5de;
       font-size: 14px;
     }
 
-    .nav-link:hover {
-      background: rgba(255, 255, 255, 0.07);
-      text-decoration: none;
-    }
-
-    .dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--green);
-    }
-
-    .dot.blue { background: var(--blue); }
-    .dot.amber { background: var(--amber); }
-    .dot.red { background: var(--red); }
-    .dot.cyan { background: var(--cyan); }
-
-    .side-note {
-      margin-top: 24px;
-      padding: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 8px;
-      color: #b7c6d1;
-      font-size: 12px;
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    main {
-      min-width: 0;
-      padding: 28px;
-    }
-
-    .topbar {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 18px;
-      margin-bottom: 22px;
-    }
-
-    .title-block h2 {
-      margin: 0 0 6px;
-      font-size: clamp(28px, 4vw, 46px);
-      line-height: 1.08;
-    }
-
-    .title-block p {
-      max-width: 820px;
-      margin: 0;
-      color: var(--muted);
-      font-size: 15px;
-    }
-
     .status-pill {
-      flex: 0 0 auto;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 8px 11px;
-      border: 1px solid #cbd6e1;
+      gap: 7px;
+      min-height: 30px;
+      padding: 6px 11px;
+      border: 1px solid #355368;
       border-radius: 999px;
-      background: var(--panel);
-      color: var(--slate);
-      font-size: 13px;
+      color: #d9e8f0;
+      background: rgba(255, 255, 255, 0.06);
+      font-size: 12px;
       white-space: nowrap;
     }
 
     .pulse {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: var(--amber);
-      box-shadow: 0 0 0 5px rgba(183, 121, 31, 0.16);
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--yellow);
+      box-shadow: 0 0 0 5px rgba(255, 212, 0, 0.14);
     }
 
-    .mode-toolbar {
+    .toolbar {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       margin-top: 18px;
     }
 
-    .mode-button {
-      min-height: 38px;
-      padding: 8px 13px;
-      border: 1px solid #cdd7e1;
-      border-radius: 8px;
-      background: #fff;
-      color: var(--slate);
+    .mode-button,
+    .filter {
+      min-height: 34px;
+      padding: 7px 13px;
+      border: 1px solid #28495f;
+      border-radius: 6px;
+      background: #0b1a25;
+      color: #d4e2ea;
       font: inherit;
-      font-size: 14px;
+      font-size: 13px;
+      font-weight: 700;
       cursor: pointer;
     }
 
-    .mode-button.active {
-      border-color: var(--blue);
-      background: var(--soft-blue);
-      color: #174ea6;
-      font-weight: 750;
+    .mode-button.active,
+    .filter.active {
+      border-color: var(--yellow);
+      background: #172a24;
+      color: var(--yellow);
     }
 
-    .mode-panel[hidden] {
+    .mode-panel[hidden],
+    .theme-card[hidden] {
       display: none;
     }
 
-    section {
-      scroll-margin-top: 20px;
-      margin-bottom: 22px;
+    .section {
+      margin-top: 18px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 0 0 9px;
+      padding-left: 12px;
+      border-left: 4px solid var(--yellow);
+    }
+
+    .section-title h2 {
+      margin: 0;
+      color: var(--yellow);
+      font-size: 18px;
+      line-height: 1.1;
+    }
+
+    .section-title span {
+      color: var(--muted);
+      font-size: 12px;
+      text-align: right;
     }
 
     .grid {
       display: grid;
-      gap: 14px;
+      gap: 12px;
     }
 
-    .grid.kpi {
-      grid-template-columns: repeat(5, minmax(130px, 1fr));
+    .kpi-grid {
+      grid-template-columns: repeat(5, minmax(150px, 1fr));
     }
 
-    .grid.two {
-      grid-template-columns: minmax(0, 1.05fr) minmax(360px, 0.95fr);
+    .two {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     }
 
-    .grid.three {
+    .three {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
-    .panel,
-    .kpi-card,
-    .theme-card,
-    .source-list {
+    .four {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .card {
       border: 1px solid var(--line);
       border-radius: 8px;
       background: var(--panel);
       box-shadow: var(--shadow);
     }
 
-    .panel {
-      padding: 18px;
+    .kpi {
+      min-height: 92px;
+      padding: 15px 16px;
+      text-align: center;
     }
 
-    .kpi-card {
-      padding: 14px;
-      min-height: 104px;
-      box-shadow: none;
-    }
-
-    .eyebrow {
-      margin: 0 0 7px;
+    .kpi small {
+      display: block;
+      margin-bottom: 8px;
       color: var(--muted);
       font-size: 12px;
     }
 
-    .kpi-value {
-      margin: 0;
-      font-size: 24px;
-      font-weight: 750;
-      line-height: 1.1;
+    .kpi strong {
+      display: block;
+      color: var(--yellow);
+      font-size: 26px;
+      line-height: 1.05;
     }
 
-    .kpi-card strong {
+    .kpi em {
       display: block;
-      margin-top: 7px;
+      margin-top: 8px;
+      color: var(--muted);
+      font-style: normal;
+      font-size: 12px;
+    }
+
+    .up {
+      color: var(--green) !important;
+    }
+
+    .down {
+      color: var(--red) !important;
+    }
+
+    .flat {
+      color: var(--blue) !important;
+    }
+
+    .chart-card {
+      min-height: 300px;
+      padding: 16px 16px 18px;
+    }
+
+    .chart-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+      color: var(--yellow);
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .chart-title span {
       color: var(--muted);
       font-size: 12px;
       font-weight: 500;
     }
 
-    .up { color: var(--green); }
-    .down { color: var(--red); }
-    .flat { color: var(--slate); }
+    .hbar-list {
+      display: grid;
+      gap: 11px;
+    }
 
-    .section-title {
-      display: flex;
+    .hbar-row {
+      display: grid;
+      grid-template-columns: 92px minmax(0, 1fr) 86px;
+      gap: 10px;
       align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 12px;
+      color: #dcebf3;
+      font-size: 12px;
     }
 
-    .section-title h3 {
-      margin: 0;
-      font-size: 20px;
+    .track {
+      height: 14px;
+      border-radius: 4px;
+      background: #0a1721;
+      overflow: hidden;
     }
 
-    .section-title span {
+    .hbar {
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--green), var(--blue));
+    }
+
+    .hbar.out {
+      margin-left: auto;
+      background: linear-gradient(90deg, var(--orange), var(--red));
+    }
+
+    .hbar-row .value {
+      color: #e9f4fa;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .perf-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .perf-row {
+      display: grid;
+      grid-template-columns: 92px minmax(0, 1fr) 74px;
+      gap: 10px;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    .zero-line {
+      position: relative;
+      height: 12px;
+      border-radius: 999px;
+      background: #0a1721;
+      overflow: hidden;
+    }
+
+    .zero-line::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 1px;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .perf {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      border-radius: 999px;
+    }
+
+    .perf.pos {
+      left: 50%;
+      background: var(--green);
+    }
+
+    .perf.neg {
+      right: 50%;
+      background: var(--red);
+    }
+
+    .waterfall {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      align-items: end;
+      min-height: 210px;
+      padding: 12px 10px 0;
+      border-bottom: 1px solid #2b485d;
+    }
+
+    .water-item {
+      display: grid;
+      align-content: end;
+      justify-items: center;
+      min-height: 210px;
       color: var(--muted);
-      font-size: 13px;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .water-bar {
+      width: min(120px, 80%);
+      min-height: 10px;
+      border-radius: 4px 4px 0 0;
+      background: var(--green);
+    }
+
+    .water-bar.red {
+      background: var(--red);
+    }
+
+    .water-bar.orange {
+      background: var(--orange);
+    }
+
+    .water-value {
+      margin-bottom: 6px;
+      color: var(--white);
+      font-weight: 800;
+    }
+
+    .panel {
+      padding: 18px;
     }
 
     .summary {
@@ -304,11 +390,12 @@
 
     .summary-row {
       display: grid;
-      grid-template-columns: 128px minmax(0, 1fr);
-      gap: 12px;
-      align-items: start;
+      grid-template-columns: 112px minmax(0, 1fr);
+      gap: 14px;
       padding-bottom: 12px;
       border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
     }
 
     .summary-row:last-child {
@@ -317,59 +404,7 @@
     }
 
     .summary-row b {
-      font-size: 14px;
-    }
-
-    .summary-row p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .risk-meter {
-      display: grid;
-      gap: 12px;
-    }
-
-    .brief-grid,
-    .scenario-grid,
-    .risk-grid {
-      display: grid;
-      gap: 12px;
-    }
-
-    .brief-grid {
-      grid-template-columns: 1.1fr 0.9fr;
-    }
-
-    .scenario-grid,
-    .risk-grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-
-    .brief-card,
-    .scenario-card,
-    .risk-card {
-      min-height: 142px;
-      padding: 14px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fbfcfd;
-    }
-
-    .brief-card h4,
-    .scenario-card h4,
-    .risk-card h4 {
-      margin: 0 0 8px;
-      font-size: 15px;
-    }
-
-    .brief-card p,
-    .scenario-card p,
-    .risk-card p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 13px;
+      color: var(--ink);
     }
 
     .mini-list {
@@ -384,186 +419,108 @@
 
     .mini-list li {
       display: grid;
-      grid-template-columns: 84px minmax(0, 1fr);
-      gap: 8px;
-      align-items: start;
+      grid-template-columns: 88px minmax(0, 1fr);
+      gap: 10px;
     }
 
     .mini-list b {
-      color: var(--slate);
+      color: var(--ink);
     }
 
-    .meter {
-      display: grid;
-      gap: 6px;
-    }
-
-    .meter-head {
-      display: flex;
-      justify-content: space-between;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .bar {
-      height: 10px;
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 22px;
+      padding: 3px 8px;
       border-radius: 999px;
-      background: #edf1f5;
-      overflow: hidden;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
     }
 
-    .fill {
-      height: 100%;
-      border-radius: inherit;
-      background: var(--blue);
+    .tag.positive {
+      color: #103c22;
+      background: #91e676;
     }
 
-    .fill.green { background: var(--green); }
-    .fill.amber { background: var(--amber); }
-    .fill.red { background: var(--red); }
-    .fill.cyan { background: var(--cyan); }
-
-    .filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 14px;
+    .tag.negative {
+      color: #4a1419;
+      background: #ff8b91;
     }
 
-    button.filter {
-      min-height: 34px;
-      padding: 6px 12px;
-      border: 1px solid #cdd7e1;
-      border-radius: 8px;
-      background: #fff;
-      color: var(--slate);
-      font: inherit;
-      font-size: 13px;
-      cursor: pointer;
+    .tag.watch {
+      color: #422c00;
+      background: #ffd663;
     }
 
-    button.filter.active {
-      border-color: var(--blue);
-      background: var(--soft-blue);
-      color: #174ea6;
-      font-weight: 700;
+    .tag.neutral {
+      color: #082d47;
+      background: #8bd4ff;
     }
 
     .theme-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
     }
 
     .theme-card {
+      min-height: 172px;
       padding: 16px;
-      box-shadow: none;
-      transition: transform 0.18s ease, border-color 0.18s ease;
-    }
-
-    .theme-card[hidden] {
-      display: none;
-    }
-
-    .theme-card:hover {
-      transform: translateY(-2px);
-      border-color: #b7c6d1;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
     }
 
     .theme-head {
       display: flex;
+      align-items: start;
       justify-content: space-between;
-      align-items: center;
       gap: 10px;
       margin-bottom: 10px;
     }
 
-    .theme-head h4 {
+    .theme-head h3 {
       margin: 0;
-      font-size: 17px;
+      color: var(--yellow);
+      font-size: 16px;
+      line-height: 1.25;
     }
-
-    .tag {
-      flex: 0 0 auto;
-      padding: 4px 8px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .tag.positive { color: #0f6842; background: var(--soft-green); }
-    .tag.negative { color: #9a302c; background: var(--soft-red); }
-    .tag.watch { color: #865a13; background: var(--soft-amber); }
-    .tag.neutral { color: #36516e; background: var(--soft-blue); }
 
     .theme-card p {
       margin: 0 0 12px;
       color: var(--muted);
-      font-size: 14px;
-    }
-
-    .buyer-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .buyer-card {
-      min-height: 154px;
-      padding: 14px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fbfcfd;
-    }
-
-    .buyer-card h4 {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin: 0 0 8px;
-      font-size: 15px;
-    }
-
-    .buyer-card p {
-      margin: 0 0 10px;
-      color: var(--muted);
       font-size: 13px;
-    }
-
-    .buyer-signal {
-      display: block;
-      color: var(--slate);
-      font-size: 13px;
-      font-weight: 700;
     }
 
     .chain {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
-      gap: 7px;
-      color: var(--slate);
-      font-size: 13px;
+      gap: 6px;
+      color: #cfdee6;
+      font-size: 12px;
     }
 
     .node {
-      padding: 6px 8px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fbfcfd;
+      padding: 5px 7px;
+      border: 1px solid #31556d;
+      border-radius: 6px;
+      background: #0b1b27;
     }
 
     .arrow {
-      color: #98a6b3;
+      color: var(--yellow);
       font-weight: 800;
     }
 
     .matrix {
       width: 100%;
       border-collapse: collapse;
-      font-size: 14px;
+      color: #dcebf3;
+      font-size: 13px;
     }
 
     .matrix th,
@@ -575,58 +532,40 @@
     }
 
     .matrix th {
-      color: var(--muted);
+      color: var(--yellow);
       font-size: 12px;
-      font-weight: 700;
+      font-weight: 800;
     }
 
     .matrix tr:last-child td {
       border-bottom: 0;
     }
 
-    .map-wrap {
+    .risk-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 220px;
-      gap: 14px;
-      align-items: center;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
     }
 
-    .network {
-      width: 100%;
-      min-height: 300px;
+    .risk-card {
+      min-height: 142px;
+      padding: 15px;
       border: 1px solid var(--line);
       border-radius: 8px;
-      background:
-        linear-gradient(#edf1f5 1px, transparent 1px),
-        linear-gradient(90deg, #edf1f5 1px, transparent 1px),
-        #fbfcfd;
-      background-size: 26px 26px;
+      background: #0e2030;
     }
 
-    .legend {
-      display: grid;
-      gap: 9px;
+    .risk-card h3 {
+      margin: 0 0 8px;
+      color: var(--yellow);
+      font-size: 15px;
+    }
+
+    .risk-card p {
+      margin: 0;
       color: var(--muted);
       font-size: 13px;
     }
-
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .swatch {
-      width: 12px;
-      height: 12px;
-      border-radius: 3px;
-      background: var(--blue);
-    }
-
-    .swatch.green { background: var(--green); }
-    .swatch.red { background: var(--red); }
-    .swatch.amber { background: var(--amber); }
-    .swatch.cyan { background: var(--cyan); }
 
     .checklist {
       display: grid;
@@ -641,31 +580,30 @@
       padding: 10px;
       border: 1px solid var(--line);
       border-radius: 8px;
-      background: #fbfcfd;
+      background: #0e2030;
     }
 
     .box {
-      width: 18px;
-      height: 18px;
-      border: 2px solid #9fb0bd;
-      border-radius: 5px;
+      width: 16px;
+      height: 16px;
       margin-top: 2px;
+      border: 2px solid var(--yellow);
+      border-radius: 4px;
     }
 
     .check b {
       display: block;
-      margin-bottom: 2px;
-      font-size: 14px;
+      color: var(--ink);
+      font-size: 13px;
     }
 
     .check span {
       color: var(--muted);
-      font-size: 13px;
+      font-size: 12px;
     }
 
     .source-list {
       padding: 16px;
-      box-shadow: none;
     }
 
     .source-list ul {
@@ -673,7 +611,7 @@
       margin: 0;
       padding-left: 18px;
       color: var(--muted);
-      font-size: 13px;
+      font-size: 12px;
     }
 
     .source-list li {
@@ -681,85 +619,47 @@
       margin-bottom: 8px;
     }
 
-    .mobile-tabs {
-      display: none;
-      position: sticky;
-      top: 0;
-      z-index: 3;
-      padding: 8px;
-      gap: 8px;
-      overflow-x: auto;
-      background: rgba(247, 248, 249, 0.96);
-      border-bottom: 1px solid var(--line);
+    .source-list p {
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 12px;
     }
 
-    .mobile-tabs a {
-      flex: 0 0 auto;
-      padding: 7px 10px;
-      border: 1px solid var(--line);
-      border-radius: 8px;
-      background: #fff;
-      color: var(--slate);
-      font-size: 13px;
-    }
-
-    @media (max-width: 1120px) {
-      .grid.kpi {
-        grid-template-columns: repeat(3, minmax(130px, 1fr));
+    @media (max-width: 1180px) {
+      .kpi-grid,
+      .four {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
-      .grid.two,
-      .grid.three,
-      .map-wrap {
-        grid-template-columns: 1fr;
-      }
-
+      .two,
+      .three,
       .theme-grid,
-      .buyer-grid,
-      .brief-grid,
-      .scenario-grid,
       .risk-grid {
         grid-template-columns: 1fr;
       }
     }
 
     @media (max-width: 760px) {
-      .app {
-        display: block;
+      .page {
+        width: min(100% - 20px, 1880px);
+        padding-top: 10px;
       }
 
-      aside {
-        display: none;
-      }
-
-      .mobile-tabs {
-        display: flex;
-      }
-
-      main {
-        padding: 18px 12px 30px;
-      }
-
-      .topbar {
-        display: grid;
-      }
-
-      .status-pill {
-        width: fit-content;
-      }
-
-      .grid.kpi {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .summary-row {
+      .hero,
+      .kpi-grid,
+      .four {
         grid-template-columns: 1fr;
-        gap: 5px;
       }
 
-      .mini-list li {
+      .hero {
+        padding: 18px;
+      }
+
+      .summary-row,
+      .mini-list li,
+      .hbar-row,
+      .perf-row {
         grid-template-columns: 1fr;
-        gap: 2px;
       }
 
       .matrix {
@@ -775,459 +675,324 @@
   </style>
 </head>
 <body>
-  <div class="app">
-    <aside>
-      <div class="brand">
-        <div class="brand-mark" aria-hidden="true"></div>
-        <div>
-          <h1>A股消息雷达</h1>
-          <span>2026-05-08 盘后验证版</span>
+  <main class="page">
+    <header class="hero">
+      <div>
+        <h1>A股盘后验证雷达</h1>
+        <p>区间：2026年5月15日收盘后（17:00版）。今日是A股交易日，使用当日收盘数据。核心变化：三大指数集体收跌，上证-1.02%至4135.39点，深证-1.17%至15561.37点，创业板-0.56%至3929.06点；科创50跌1.67%至1696.26点。沪深两市成交额合计约3.34万亿元、连续第8个交易日突破3万亿但较前日缩量约179亿元。结构层面"新老切换"信号明显：电子(-361.59亿)、通信、有色遭主力大幅抛售，而人形机器人、氟化工、机械设备逆势获资金净流入。午后韩国KOSPI暴跌6.12%触发熔断，对A股情绪形成额外拖累。</p>
+        <div class="toolbar" role="group" aria-label="雷达模式切换">
+          <button class="mode-button active" data-mode="signal" type="button">强信号样式</button>
+          <button class="mode-button" data-mode="condition" type="button">观察条件样式</button>
         </div>
       </div>
-      <nav aria-label="报告导航">
-        <a class="nav-link" href="#overview"><span class="dot blue"></span>市场基准</a>
-        <a class="nav-link" href="#preopen"><span class="dot green"></span>盘前预案</a>
-        <a class="nav-link" href="#signals"><span class="dot green"></span>核心消息</a>
-        <a class="nav-link" href="#chains"><span class="dot amber"></span>传导链</a>
-        <a class="nav-link" href="#external"><span class="dot red"></span>外部风险</a>
-        <a class="nav-link" href="#map"><span class="dot cyan"></span>联动地图</a>
-        <a class="nav-link" href="#buyer"><span class="dot blue"></span>买方维度</a>
-        <a class="nav-link" href="#email"><span class="dot amber"></span>邮件摘要</a>
-        <a class="nav-link" href="#watch"><span class="dot red"></span>后续验证</a>
-        <a class="nav-link" href="#sources"><span class="dot"></span>来源</a>
-      </nav>
-      <div class="side-note">
-        本页把前一交易日的验证结论，与5月8日A股真实收盘表现逐项对照，区分延续、分化、切换和需要继续观察的链条。
+      <div class="status-pill"><span class="pulse"></span>已接入5月15日收盘数据（17:00版）</div>
+    </header>
+
+    <section class="section" id="overview">
+      <div class="section-title">
+        <h2>市场总览</h2>
+        <span>指数、成交、资金方向</span>
       </div>
-    </aside>
+      <div class="grid kpi-grid">
+        <article class="card kpi">
+          <small>上证指数</small>
+          <strong class="down">4135.39</strong>
+          <em>-1.02%，高开低走午后加速下行</em>
+        </article>
+        <article class="card kpi">
+          <small>深证成指</small>
+          <strong class="down">15561.37</strong>
+          <em>-1.17%，科技链回落拖累</em>
+        </article>
+        <article class="card kpi">
+          <small>创业板指</small>
+          <strong class="down">3929.06</strong>
+          <em>-0.56%，盘中一度跌2%后回拉</em>
+        </article>
+        <article class="card kpi">
+          <small>科创50</small>
+          <strong class="down">1696.26</strong>
+          <em>-1.67%，半导体冲高回落振幅5.79%</em>
+        </article>
+        <article class="card kpi">
+          <small>沪深京成交额</small>
+          <strong class="flat">33400亿</strong>
+          <em>连续第8日破3万亿；较前日缩量约179亿</em>
+        </article>
+      </div>
+    </section>
 
-    <div class="mobile-tabs" aria-label="移动端导航">
-      <a href="#overview">市场</a>
-      <a href="#preopen">盘前</a>
-      <a href="#signals">消息</a>
-      <a href="#chains">传导</a>
-      <a href="#external">风险</a>
-      <a href="#map">联动</a>
-      <a href="#buyer">买方</a>
-      <a href="#email">邮件</a>
-      <a href="#watch">验证</a>
-      <a href="#sources">来源</a>
-    </div>
-
-    <main>
-      <header class="topbar">
-        <div class="title-block">
-          <h2>A股盘后验证雷达</h2>
-          <p>区间：2026年5月8日收盘后。核心变化是指数高位震荡、全市场仍有赚钱效应，但前期AI硬件高位分化；军工、通信和机器人执行器成为承接方向，能源冲击仍未形成A股主线。</p>
-          <div class="mode-toolbar" role="group" aria-label="雷达模式切换">
-            <button class="mode-button active" data-mode="post" type="button">盘后验证</button>
-            <button class="mode-button" data-mode="pre" type="button">盘前预案</button>
+    <section class="section mode-panel" data-mode-panel="signal">
+      <div class="grid two">
+        <article class="card chart-card">
+          <div class="chart-title">行业板块主力资金净流入 TOP <span>申万一级，亿元</span></div>
+          <div class="hbar-list">
+            <div class="hbar-row"><span>机械设备</span><div class="track"><div class="hbar" style="width:100%"></div></div><span class="value">30.00亿</span></div>
+            <div class="hbar-row"><span>家用电器</span><div class="track"><div class="hbar" style="width:50.2%"></div></div><span class="value">15.05亿</span></div>
+            <div class="hbar-row"><span>传媒</span><div class="track"><div class="hbar" style="width:46.8%"></div></div><span class="value">14.03亿</span></div>
+            <div class="hbar-row"><span>基础化工</span><div class="track"><div class="hbar" style="width:45.4%"></div></div><span class="value">13.61亿</span></div>
+            <div class="hbar-row"><span>汽车</span><div class="track"><div class="hbar" style="width:44.4%"></div></div><span class="value">13.32亿</span></div>
+            <div class="hbar-row"><span>轻工制造</span><div class="track"><div class="hbar" style="width:13.1%"></div></div><span class="value">3.94亿</span></div>
+            <div class="hbar-row"><span>石油石化</span><div class="track"><div class="hbar" style="width:6.9%"></div></div><span class="value">2.07亿</span></div>
+            <div class="hbar-row"><span>煤炭</span><div class="track"><div class="hbar" style="width:5.7%"></div></div><span class="value">1.70亿</span></div>
           </div>
-        </div>
-        <div class="status-pill"><span class="pulse"></span>已接入5月8日盘后数据</div>
-      </header>
+        </article>
 
-      <section id="overview">
-        <div class="section-title">
-          <h3>市场验证盘</h3>
-          <span>5月8日收盘</span>
-        </div>
-        <div class="grid kpi">
-          <article class="kpi-card">
-            <p class="eyebrow">上证指数</p>
-            <p class="kpi-value down">4179.95</p>
-            <strong>基本平盘，尾盘收回跌幅</strong>
-          </article>
-          <article class="kpi-card">
-            <p class="eyebrow">深证成指</p>
-            <p class="kpi-value down">约15563.68</p>
-            <strong>-0.50%，高位震荡回落</strong>
-          </article>
-          <article class="kpi-card">
-            <p class="eyebrow">创业板指</p>
-            <p class="kpi-value down">3796.13</p>
-            <strong>-0.96%，成长权重回调</strong>
-          </article>
-          <article class="kpi-card">
-            <p class="eyebrow">科创50</p>
-            <p class="kpi-value down">约1640.44</p>
-            <strong>-2.29%，硬科技高位分化</strong>
-          </article>
-          <article class="kpi-card">
-            <p class="eyebrow">全市场成交额</p>
-            <p class="kpi-value up">3.08万亿</p>
-            <strong>仍破3万亿，较前一日继续缩量</strong>
-          </article>
-        </div>
-      </section>
-
-      <section class="mode-panel panel" data-mode-panel="post">
-        <div class="section-title">
-          <h3>盘后模式摘要</h3>
-          <span>先验证，再决定下一交易日观察点</span>
-        </div>
-        <div class="brief-grid">
-          <article class="brief-card">
-            <h4>本轮主线</h4>
-            <ul class="mini-list">
-              <li><b>确认项</b><span>科技主线未被完全证伪，但从强势推进转为高位分化。</span></li>
-              <li><b>扩散项</b><span>资金从AI硬件高位股，轮动到通信、军工、机器人执行器。</span></li>
-              <li><b>降级项</b><span>半导体、AI芯片、电池链回撤，能源线仍未获得资金确认。</span></li>
-            </ul>
-          </article>
-          <article class="brief-card">
-            <h4>盘后处理规则</h4>
-            <ul class="mini-list">
-              <li><b>延续</b><span>下一交易日成交继续站上3万亿，通信/军工能承接科技回撤。</span></li>
-              <li><b>切换</b><span>红利、能源、消费或地产放量走强，科技继续缩量走弱。</span></li>
-              <li><b>证伪</b><span>高位AI硬件补跌，军工/通信轮动失败，成交跌破3万亿。</span></li>
-            </ul>
-          </article>
-        </div>
-      </section>
-
-      <section id="preopen" class="mode-panel panel" data-mode-panel="pre" hidden>
-        <div class="section-title">
-          <h3>盘前预案层</h3>
-          <span>用于下一交易日08:30邮件报告</span>
-        </div>
-        <div class="scenario-grid">
-          <article class="scenario-card">
-            <h4>外盘风险偏好</h4>
-            <p>先看纳指、费半、中概、美元和美债。若科技外盘强于大盘，A股优先验证半导体、算力、光通信。</p>
-          </article>
-          <article class="scenario-card">
-            <h4>商品价格冲击</h4>
-            <p>原油、黄金、铜、铁矿和煤炭分开看。商品上涨只有同步映射到A股成交和板块强度，才提升权重。</p>
-          </article>
-          <article class="scenario-card">
-            <h4>国内消息催化</h4>
-            <p>政策、监管、产业会议、公司公告和业绩预告按“消息强度 -> 受益板块 -> 竞价确认”处理。</p>
-          </article>
-          <article class="scenario-card">
-            <h4>开盘15分钟验证</h4>
-            <p>观察主线龙头、补涨分支、指数权重和成交节奏。没有成交确认的消息，盘前只保留为观察项。</p>
-          </article>
-        </div>
-        <table class="matrix" style="margin-top: 14px;">
-          <thead>
-            <tr>
-              <th>触发变量</th>
-              <th>影响资产/行业</th>
-              <th>A股映射板块</th>
-              <th>开盘观察点</th>
-              <th>盘中确认条件</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>AI基础设施消息</td>
-              <td>算力、光互连、数据中心</td>
-              <td>CPO、PCB、光模块、液冷、电源</td>
-              <td>核心龙头竞价强弱与开盘成交</td>
-              <td>板块成交放大，补涨分支跟随，指数不被权重拖累</td>
-            </tr>
-            <tr>
-              <td>原油/地缘波动</td>
-              <td>能源、航运、航空、化工成本</td>
-              <td>油气、油服、航运、航空、化工</td>
-              <td>油气是否高开高走，航空是否承压</td>
-              <td>油气链放量强于市场，且不只是个股脉冲</td>
-            </tr>
-            <tr>
-              <td>极端天气/灾害</td>
-              <td>农业、电力、水利、保险</td>
-              <td>种植、食品、电力设备、水利基建、保险</td>
-              <td>相关板块是否主动放量</td>
-              <td>从事件股扩散到产业链，且持续超过半日</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-      <section class="grid two">
-        <div class="panel">
-          <div class="section-title">
-            <h3>验证结论</h3>
-            <span>推演到盘面的校验</span>
+        <article class="card chart-card">
+          <div class="chart-title">行业板块主力资金净流出 TOP <span>申万一级，亿元</span></div>
+          <div class="hbar-list">
+            <div class="hbar-row"><span>电子</span><div class="track"><div class="hbar out" style="width:100%"></div></div><span class="value">-361.59亿</span></div>
+            <div class="hbar-row"><span>有色金属</span><div class="track"><div class="hbar out" style="width:41.7%"></div></div><span class="value">-150.96亿</span></div>
+            <div class="hbar-row"><span>通信</span><div class="track"><div class="hbar out" style="width:34.5%"></div></div><span class="value">-124.79亿</span></div>
+            <div class="hbar-row"><span>电力设备</span><div class="track"><div class="hbar out" style="width:23.2%"></div></div><span class="value">-83.94亿</span></div>
+            <div class="hbar-row"><span>国防军工</span><div class="track"><div class="hbar out" style="width:15.9%"></div></div><span class="value">-57.48亿</span></div>
+            <div class="hbar-row"><span>计算机</span><div class="track"><div class="hbar out" style="width:15.8%"></div></div><span class="value">-57.10亿</span></div>
+            <div class="hbar-row"><span>非银金融</span><div class="track"><div class="hbar out" style="width:15.0%"></div></div><span class="value">-54.08亿</span></div>
+            <div class="hbar-row"><span>全市场主力</span><div class="track"><div class="hbar out" style="width:100%"></div></div><span class="value">-996.58亿</span></div>
           </div>
+        </article>
+
+        <article class="card chart-card">
+          <div class="chart-title">指数强弱幅 <span>以公开收盘口径为准</span></div>
+          <div class="perf-list">
+            <div class="perf-row"><span>创业板指</span><div class="zero-line"><div class="perf neg" style="width:21%"></div></div><span class="down">-0.56%</span></div>
+            <div class="perf-row"><span>上证指数</span><div class="zero-line"><div class="perf neg" style="width:39%"></div></div><span class="down">-1.02%</span></div>
+            <div class="perf-row"><span>深证成指</span><div class="zero-line"><div class="perf neg" style="width:45%"></div></div><span class="down">-1.17%</span></div>
+            <div class="perf-row"><span>科创50</span><div class="zero-line"><div class="perf neg" style="width:64%"></div></div><span class="down">-1.67%</span></div>
+          </div>
+        </article>
+
+        <article class="card chart-card">
+          <div class="chart-title">概念板块资金亮点 <span>活跃方向合计</span></div>
+          <div class="waterfall">
+            <div class="water-item">
+              <div class="water-value up">+36.51亿</div>
+              <div class="water-bar" style="height:96px"></div>
+              <span>人形机器人（主力）</span>
+            </div>
+            <div class="water-item">
+              <div class="water-value up">+25.49亿</div>
+              <div class="water-bar" style="height:72px"></div>
+              <span>汽车零部件</span>
+            </div>
+            <div class="water-item">
+              <div class="water-value up">+21.99亿</div>
+              <div class="water-bar" style="height:60px"></div>
+              <span>氟化工</span>
+            </div>
+            <div class="water-item">
+              <div class="water-value down">33400亿</div>
+              <div class="water-bar" style="height:120px; background: var(--blue);"></div>
+              <span>全市场成交（缩量179亿）</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section mode-panel" data-mode-panel="condition" hidden>
+      <div class="grid three">
+        <article class="card panel">
+          <div class="chart-title">明日开盘验证 <span>15分钟</span></div>
+          <ul class="mini-list">
+            <li><b>人形机器人</b><span>高开标的（巨轮智能/三丰智能等）是否继续放量封板，避免开盘冲高回落。</span></li>
+            <li><b>氟化工</b><span>多氟多、中巨芯等高辨识度标的是否延续强势，能否带动板块内扩散。</span></li>
+            <li><b>电子/通信</b><span>抛压是否延续，中际旭创、工业富联等是否止跌企稳。</span></li>
+          </ul>
+        </article>
+        <article class="card panel">
+          <div class="chart-title">量能阈值 <span>3.3万亿和3万亿</span></div>
+          <ul class="mini-list">
+            <li><b>延续</b><span>成交维持3.3万亿以上，且机器人/氟化工主线方向不明显收敛。</span></li>
+            <li><b>降级</b><span>成交跌向3万亿附近，且新主线同步冲高回落、电子继续下探。</span></li>
+            <li><b>证伪</b><span>机器人/氟化工集体高开低走，资金重回防御无方向切换。</span></li>
+          </ul>
+        </article>
+        <article class="card panel">
+          <div class="chart-title">外部变量 <span>只进观察池</span></div>
+          <ul class="mini-list">
+            <li><b>韩国熔断</b><span>KOSPI暴跌6.12%后是否企稳，若持续动荡会影响亚太风险偏好。</span></li>
+            <li><b>贵金属</b><span>国际期货大跌后是否修复，映射A股贵金属/有色板块的企稳信号。</span></li>
+            <li><b>地缘</b><span>霍尔木兹影响油气、航运、贵金属——5/15贵金属领跌，映射链待修复。</span></li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="capital">
+      <div class="section-title">
+        <h2>资金验证</h2>
+        <span>从"成交"到"净流入方向"</span>
+      </div>
+      <div class="grid two">
+        <article class="card panel">
           <div class="summary">
-            <div class="summary-row">
-              <b>核心判断</b>
-              <p>5月8日盘面没有彻底否定科技主线，但已经从“强验证”进入“高位分化”。指数跌多涨少，个股仍涨多跌少，说明资金在做结构轮动而不是全面撤退。</p>
-            </div>
-            <div class="summary-row">
-              <b>已验证</b>
-              <p>“AI硬件景气 → 通信链承接”仍有部分验证。通信板块继续强，8只通信个股涨停；但半导体、AI芯片、电力设备等前期强势方向明显回撤。</p>
-            </div>
-            <div class="summary-row">
-              <b>被降级</b>
-              <p>“霍尔木兹/高油价 → A股油气煤炭走强”仍未被确认。5月8日煤炭、石油石化仍偏弱，能源线只保留为外部风险，不列为主线。</p>
-            </div>
-            <div class="summary-row">
-              <b>下一步</b>
-              <p>重点从“主线是否存在”切到“轮动是否健康”：看军工、通信、机器人能否承接高位科技兑现，同时看成交额能否继续守住3万亿。</p>
-            </div>
+            <div class="summary-row"><b>成交</b><span>沪深京成交额合计约3.34万亿元，连续第8个交易日突破3万亿；较前日缩量约179亿元。</span></div>
+            <div class="summary-row"><b>流入</b><span>申万一级口径：机械设备净流入30.00亿、家用电器15.05亿、传媒14.03亿、基础化工13.61亿、汽车13.32亿。概念板块：人形机器人净流入36.51亿、氟化工21.99亿、汽车零部件25.49亿。</span></div>
+            <div class="summary-row"><b>流出</b><span>电子净流出361.59亿（全市场最大）、有色金属150.96亿、通信124.79亿、电力设备83.94亿。全市场主力净流出996.58亿元。</span></div>
+            <div class="summary-row"><b>个股</b><span>沪深主板成交额第一：工业富联237.97亿（-1.43%，主力净流出9.44亿）。净流入居前：阳光电源22.23亿（+13.27%）、多氟多21.69亿（涨停）、N维通利19.27亿（首日涨297%）。</span></div>
+            <div class="summary-row"><b>缺口</b><span>北向资金全天成交4353.39亿（占两市13.02%），精准全天净买卖数据需Wind/终端口径复核。</span></div>
           </div>
-        </div>
+        </article>
+        <article class="card panel">
+          <div class="chart-title">结构结论 <span>强弱不是看指数红绿</span></div>
+          <ul class="mini-list">
+            <li><b>主线切换</b><span>5/13的"电子/消费电子/半导体"主线发生系统性兑现：电子单日净流出361.59亿，高位科技链遭大面积获利了结。</span></li>
+            <li><b>新主线</b><span>人形机器人（特斯拉Optimus V3量产+宇树科技+政策落地）和氟化工（韩国转采购+涨价40%）成为当日最强逆势方向。</span></li>
+            <li><b>风格</b><span>5/13"龙头拥挤度升高"的风险在5/15兑现：中际旭创、工业富联、立讯精密等AI硬件龙头遭抛售。</span></li>
+            <li><b>风险</b><span>指数下跌+超3500只个股下跌+全市场主力净流出996亿，不属于结构性调整而是明显的获利回吐。</span></li>
+          </ul>
+        </article>
+      </div>
+    </section>
 
-        <div class="panel">
-          <div class="section-title">
-            <h3>验证强度</h3>
-            <span>基于5月8日收盘数据</span>
-          </div>
-          <div class="risk-meter">
-            <div class="meter">
-              <div class="meter-head"><span>AI硬件连续性</span><b>分化</b></div>
-              <div class="bar"><div class="fill green" style="width: 58%"></div></div>
-            </div>
-            <div class="meter">
-              <div class="meter-head"><span>能源冲击盘面确认</span><b>低</b></div>
-              <div class="bar"><div class="fill red" style="width: 18%"></div></div>
-            </div>
-            <div class="meter">
-              <div class="meter-head"><span>市场量能确认</span><b>高位缩量</b></div>
-              <div class="bar"><div class="fill blue" style="width: 72%"></div></div>
-            </div>
-            <div class="meter">
-              <div class="meter-head"><span>热点轮动速度</span><b>偏快</b></div>
-              <div class="bar"><div class="fill amber" style="width: 86%"></div></div>
-            </div>
-            <div class="meter">
-              <div class="meter-head"><span>低位承接质量</span><b>待确认</b></div>
-              <div class="bar"><div class="fill cyan" style="width: 54%"></div></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="buyer" class="panel">
-        <div class="section-title">
-          <h3>买方决策看板</h3>
-          <span>用于下一交易日判断，不做事后解释</span>
-        </div>
-        <div class="buyer-grid">
-          <article class="buyer-card">
-            <h4>资金连续性 <span class="tag watch">连续缩量</span></h4>
-            <p>看成交额、主线成交占比、ETF/主动资金是否继续流入。</p>
-            <span class="buyer-signal">下一交易日信号：成交额继续站上3万亿，且通信/军工成交占比不塌。</span>
-          </article>
-          <article class="buyer-card">
-            <h4>拥挤度与位置 <span class="tag negative">升高</span></h4>
-            <p>看涨停数量、龙头连板、历史新高股数量和高位股回撤。</p>
-            <span class="buyer-signal">下一交易日信号：寒武纪、新易盛、海光等高位股不能继续集中补跌。</span>
-          </article>
-          <article class="buyer-card">
-            <h4>扩散质量 <span class="tag watch">轮动扩散</span></h4>
-            <p>看主线是否从单点消息扩散到产业链上下游。</p>
-            <span class="buyer-signal">下一交易日信号：通信、军工、机器人能否从一天轮动变成两天以上承接。</span>
-          </article>
-          <article class="buyer-card">
-            <h4>催化兑现 <span class="tag watch">兑现压力</span></h4>
-            <p>看海外AI基础设施、订单、业绩预告、产业链价格是否继续强化。</p>
-            <span class="buyer-signal">下一交易日信号：AI硬件必须有订单、业绩或价格接力，否则高位事件交易继续兑现。</span>
-          </article>
-          <article class="buyer-card">
-            <h4>风格切换 <span class="tag watch">局部切换</span></h4>
-            <p>看红利、能源、地产、消费是否从科技手中分流资金。</p>
-            <span class="buyer-signal">下一交易日信号：若红利、消费、地产同步放量，科技仓位需要继续降敏感度。</span>
-          </article>
-          <article class="buyer-card">
-            <h4>证伪条件 <span class="tag neutral">预设规则</span></h4>
-            <p>提前定义什么情况说明主线不成立，避免只做事后解释。</p>
-            <span class="buyer-signal">下一交易日信号：成交跌破3万亿，高位AI补跌，低位轮动失败，主线降级。</span>
-          </article>
-        </div>
+    <section class="section" id="structure">
+      <div class="section-title">
+        <h2>热点结构</h2>
+        <span>主线切换、新方向承接、防御补涨</span>
+      </div>
+      <div class="card panel">
         <table class="matrix">
           <thead>
             <tr>
-              <th>维度</th>
-              <th>5月8日客观读数</th>
-              <th>下一步判断用途</th>
+              <th>层级</th>
+              <th>方向</th>
+              <th>盘面证据</th>
+              <th>传导判断</th>
+              <th>状态</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>资金连续性</td>
-              <td>沪深京三市成交约3.08万亿元，仍高于3万亿但连续缩量</td>
-              <td>判断主线是健康换手，还是高位缩量兑现</td>
+              <td>主线切换</td>
+              <td>电子→机器人/氟化工</td>
+              <td>电子单日净流出361.59亿（全市场第一），通信净流出124.79亿，计算机净流出57.10亿。人形机器人主力净流入36.51亿+14只涨停，氟化工净流入21.99亿+9只涨停。</td>
+              <td>5/13的"硬件链主线"在5/15出现系统性获利回吐，资金切换至机器人（AI量产叙事）和氟化工（供应链转移+涨价）。切换是否持续取决于次日机器人/氟化工的承接力度。</td>
+              <td><span class="tag negative">主线切换确认</span></td>
             </tr>
             <tr>
-              <td>拥挤度与位置</td>
-              <td>上涨3637只、涨停126只，但前期强势AI/半导体个股出现回撤</td>
-              <td>判断追高风险是否开始从点扩散到面</td>
+              <td>新主线</td>
+              <td>人形机器人</td>
+              <td>巨轮智能、雷赛智能、科力尔、中马传动等涨停；三瑞智能/纽威数控20%涨停；绿的谐波涨超15%突破300元；三花智控涨8%。</td>
+              <td>特斯拉Optimus V3年中量产+宇树科技载人变形机甲+杭州具身智能法规落地，三重催化驱动。次日看连板梯队能否维持。</td>
+              <td><span class="tag positive">强信号</span></td>
             </tr>
             <tr>
-              <td>扩散质量</td>
-              <td>从AI硬件高位分支轮动到通信、国防军工、机器人执行器</td>
-              <td>判断轮动是主线扩散，还是资金避高就低</td>
+              <td>新主线</td>
+              <td>氟化工</td>
+              <td>中巨芯20%涨停，滨化股份、多氟多、中欣氟材、金石资源涨停。无水氢氟酸价格较年初涨40%，韩国厂商转向中国采购。</td>
+              <td>供应链转移逻辑（韩国半导体厂→中国氢氟酸）叠加价格上行周期。电子级氢氟酸需求5年CAGR 25.7%，中期景气逻辑强。</td>
+              <td><span class="tag positive">强验证</span></td>
             </tr>
             <tr>
-              <td>催化兑现</td>
-              <td>海外AI基础设施催化仍在，但A股高位科技开始兑现</td>
-              <td>判断催化是否还能被业绩、订单和价格继续验证</td>
+              <td>补涨</td>
+              <td>机械设备/工业母机</td>
+              <td>机械设备板块主力净流入30.00亿（全行业第一），工业母机5只个股涨停。</td>
+              <td>资金寻找低位替代板块，工业母机受机器人产业链拉动逻辑清晰，但持续性仍需量能验证。</td>
+              <td><span class="tag watch">补涨观察</span></td>
             </tr>
             <tr>
-              <td>风格切换</td>
-              <td>军工、通信、交通运输、房地产等低位方向表现强于电子、电力设备</td>
-              <td>判断科技内部轮动，还是跨风格分流</td>
-            </tr>
-            <tr>
-              <td>证伪条件</td>
-              <td>未完全证伪，但已从强验证降为分化验证</td>
-              <td>若低位承接失败且成交跌破3万亿，则降低主线权重</td>
+              <td>拖累</td>
+              <td>贵金属/有色/通信</td>
+              <td>有色金属跌4.10%，贵金属跌5.88%（国际期货大跌）；通信净流出124.79亿（光互连龙头集体回调）。</td>
+              <td>贵金属/有色属于外部定价（国际期货驱动），通信/电子属于前期获利盘回吐。两类拖累性质不同，需分别跟踪修复条件。</td>
+              <td><span class="tag negative">集体承压</span></td>
             </tr>
           </tbody>
         </table>
-      </section>
+      </div>
+    </section>
 
-      <section id="signals">
-        <div class="section-title">
-          <h3>验证条目</h3>
-          <span>点击筛选状态</span>
-        </div>
-        <div class="filters" role="group" aria-label="消息筛选">
-          <button class="filter active" data-filter="all">全部</button>
-          <button class="filter" data-filter="positive">已验证</button>
-          <button class="filter" data-filter="negative">未确认</button>
-          <button class="filter" data-filter="watch">继续观察</button>
-        </div>
-        <div class="theme-grid">
-          <article class="theme-card" data-kind="positive">
-            <div class="theme-head">
-              <h4>通信链仍有承接</h4>
-              <span class="tag positive">部分验证</span>
-            </div>
-            <p>5月8日通信板块领涨，8只通信个股涨停，说明AI硬件链中的通信方向仍有资金承接。但这已不是全面科技普涨，而是分支轮动。</p>
-            <div class="chain"><span class="node">AI硬件</span><span class="arrow">→</span><span class="node">通信设备</span><span class="arrow">→</span><span class="node">低位承接</span></div>
-          </article>
+    <section class="section" id="style">
+      <div class="section-title">
+        <h2>表达样式</h2>
+        <span>把结论说清楚，不把新闻等同主线</span>
+      </div>
+      <div class="grid two">
+        <article class="card panel">
+          <div class="chart-title">今天一句话 <span>市场结构</span></div>
+          <p class="summary-row" style="display:block; border-bottom:0; padding:0;">三大指数集体收跌，全市场主力净流出996亿——但"科技退潮"与"新方向承接"同步上演：电子、通信、有色遭抛售，人形机器人和氟化工逆势涨停潮。韩国KOSPI熔断加剧午后情绪走弱。次日关键看新主线承接力和电子抛压是否收敛。</p>
+        </article>
+        <article class="card panel">
+          <div class="chart-title">避免误读 <span>不要只看指数</span></div>
+          <p class="summary-row" style="display:block; border-bottom:0; padding:0;">不要把"新主线涨停潮"等同于市场转强——当日超3500只个股下跌，结构分化极其剧烈。重点看：次日机器人/氟化工的连板延续性，以及电子/通信抛压是否出现企稳信号。</p>
+        </article>
+      </div>
+    </section>
 
-          <article class="theme-card" data-kind="negative">
-            <div class="theme-head">
-              <h4>高位科技开始兑现</h4>
-              <span class="tag negative">风险确认</span>
-            </div>
-            <p>寒武纪、新易盛、海光信息等前期强势科技股回撤，半导体、AI芯片、电源设备等方向下跌，说明高位拥挤度已经开始释放。</p>
-            <div class="chain"><span class="node">前期强势</span><span class="arrow">→</span><span class="node">获利兑现</span><span class="arrow">→</span><span class="node">高位降温</span></div>
-          </article>
+    <section class="section" id="buyer">
+      <div class="section-title">
+        <h2>买方维度</h2>
+        <span>用于下一交易日判断，不做事后解释</span>
+      </div>
+      <div class="grid three">
+        <article class="card panel">
+          <div class="chart-title">资金连续性 <span class="tag watch">切换中</span></div>
+          <p class="summary-row" style="display:block; border-bottom:0; padding:0;">全市场成交3.34万亿（连续第8日>3万亿），但主力净卖出996亿。下一信号：机器人+氟化工合计净买入能否延续到50亿+，且电子净流出收敛至100亿以内，否则切换只是单日脉冲。</p>
+        </article>
+        <article class="card panel">
+          <div class="chart-title">拥挤度与位置 <span class="tag negative">高位兑现</span></div>
+          <p class="summary-row" style="display:block; border-bottom:0; padding:0;">5/13提示"光互连龙头拥挤度升高"风险在5/15兑现：中际旭创（5/13成交靠前→5/15净流出居前）、工业富联（成交237亿但主力净流出9.44亿）。下一信号：电子净流出是否收窄、机器人/氟化工是否出现新的拥挤征兆。</p>
+        </article>
+        <article class="card panel">
+          <div class="chart-title">扩散质量 <span class="tag watch">待验证</span></div>
+          <p class="summary-row" style="display:block; border-bottom:0; padding:0;">今日结构更偏"新主线涨停潮+老主线清仓式卖出"。下一信号：人形机器人能否从龙头扩散到减速器/伺服电机/传感器等细分领域，氟化工能否从无水氢氟酸扩散到萤石/制冷剂/含氟聚合物。</p>
+        </article>
+      </div>
+    </section>
 
-          <article class="theme-card" data-kind="positive">
-            <div class="theme-head">
-              <h4>军工与机器人承接</h4>
-              <span class="tag positive">轮动验证</span>
-            </div>
-            <p>国防军工、北斗导航、机器人执行器走强，说明资金没有撤出市场，而是在高位科技分化后寻找低位弹性方向。</p>
-            <div class="chain"><span class="node">科技分化</span><span class="arrow">→</span><span class="node">低位弹性</span><span class="arrow">→</span><span class="node">军工/机器人</span></div>
-          </article>
+    <section class="section" id="signals">
+      <div class="section-title">
+        <h2>验证条目</h2>
+        <span>点击筛选状态</span>
+      </div>
+      <div class="toolbar" role="group" aria-label="验证条目筛选">
+        <button class="filter active" data-filter="all" type="button">全部</button>
+        <button class="filter" data-filter="positive" type="button">已验证</button>
+        <button class="filter" data-filter="negative" type="button">未确认</button>
+        <button class="filter" data-filter="watch" type="button">继续观察</button>
+      </div>
+      <div class="theme-grid">
+        <article class="theme-card" data-kind="positive">
+          <div class="theme-head"><h3>人形机器人概念逆势爆发</h3><span class="tag positive">强信号</span></div>
+          <p>特斯拉Optimus V3年中量产+宇树科技量产版载人变形机甲GD01（售价390万起）+杭州具身智能法规施行，三重催化驱动。当日14只个股涨停，主力净流入36.51亿。次日看连板梯队是否维持。</p>
+          <div class="chain"><span class="node">Optimus量产</span><span class="arrow">-></span><span class="node">机器人板块</span><span class="arrow">-></span><span class="node">涨停潮</span></div>
+        </article>
+        <article class="theme-card" data-kind="positive">
+          <div class="theme-head"><h3>氟化工概念集体大涨</h3><span class="tag positive">强验证</span></div>
+          <p>韩国半导体厂转向中国采购无水氢氟酸，价格较年初上涨约40%，电子级氢氟酸5年CAGR 25.7%。当日中巨芯20%涨停，多氟多等涨停。中长期景气逻辑清晰。</p>
+          <div class="chain"><span class="node">韩国转采购</span><span class="arrow">-></span><span class="node">氢氟酸涨价</span><span class="arrow">-></span><span class="node">氟化工涨停潮</span></div>
+        </article>
+        <article class="theme-card" data-kind="negative">
+          <div class="theme-head"><h3>电子板块遭集中抛售</h3><span class="tag negative">主线切换</span></div>
+          <p>5/13电子净流入163.44亿为当日主线，5/15电子净流出361.59亿为全市场最大。中际旭创、工业富联、立讯精密等AI硬件龙头资金集体流出，前期拥挤度风险兑现。</p>
+          <div class="chain"><span class="node">资金兑现</span><span class="arrow">-></span><span class="node">电子抛售</span><span class="arrow">-></span><span class="node">主线切换</span></div>
+        </article>
+        <article class="theme-card" data-kind="negative">
+          <div class="theme-head"><h3>贵金属/有色领跌</h3><span class="tag negative">外部传导</span></div>
+          <p>有色金属跌4.10%、贵金属跌5.88%，受国际期货大跌影响。兴业银锡、山金国际、湖南白银等跌幅居前。商品端因素驱动的回调，与A股内部主线逻辑独立。</p>
+          <div class="chain"><span class="node">国际期货</span><span class="arrow">-></span><span class="node">贵金属/有色</span><span class="arrow">-></span><span class="node">A股映射拖累</span></div>
+        </article>
+        <article class="theme-card" data-kind="watch">
+          <div class="theme-head"><h3>机械设备获逆势加仓</h3><span class="tag watch">补涨观察</span></div>
+          <p>机械设备板块主力净流入30.00亿（全行业第一），工业母机5只涨停。机器人产业链拉动工业母机/设备需求逻辑清晰，但作为独立主线持续性待验证。</p>
+          <div class="chain"><span class="node">机器人拉动</span><span class="arrow">-></span><span class="node">工业母机</span><span class="arrow">-></span><span class="node">补涨扩散</span></div>
+        </article>
+        <article class="theme-card" data-kind="watch">
+          <div class="theme-head"><h3>量能维持但广度收窄</h3><span class="tag watch">继续观察</span></div>
+          <p>成交3.34万亿连续第8日破3万亿，但上涨仅1816家、下跌3584家，涨停73家、跌停45家，赚钱效应明显走弱。次日关注：成交是否仍维持在3万亿以上、赚钱广度是否修复。</p>
+          <div class="chain"><span class="node">量能维持</span><span class="arrow">-></span><span class="node">广度收窄</span><span class="arrow">-></span><span class="node">结构分化</span></div>
+        </article>
+      </div>
+    </section>
 
-          <article class="theme-card" data-kind="watch">
-            <div class="theme-head">
-              <h4>量能仍高但继续缩量</h4>
-              <span class="tag watch">继续观察</span>
-            </div>
-            <p>沪深京三市成交额约3.08万亿元，继续站在高位，但相比前两日继续缩量。成交不破3万亿前，结构机会仍在；跌破后要降风险。</p>
-            <div class="chain"><span class="node">3.08万亿</span><span class="arrow">→</span><span class="node">高位换手</span><span class="arrow">→</span><span class="node">看承接</span></div>
-          </article>
-
-          <article class="theme-card" data-kind="positive">
-            <div class="theme-head">
-              <h4>市场广度仍可用</h4>
-              <span class="tag positive">已验证</span>
-            </div>
-            <p>虽然指数跌多涨少，但仍有3637只个股上涨、126只涨停，北证50上涨。赚钱效应没有熄火，但从核心科技扩散到更多低位方向。</p>
-            <div class="chain"><span class="node">指数震荡</span><span class="arrow">→</span><span class="node">个股占优</span><span class="arrow">→</span><span class="node">结构机会</span></div>
-          </article>
-
-          <article class="theme-card" data-kind="watch">
-            <div class="theme-head">
-              <h4>地缘与商品仍是扰动</h4>
-              <span class="tag watch">继续观察</span>
-            </div>
-            <p>美伊局势和高油价仍影响风险偏好，但5月8日A股没有把能源线交易成主线。除非油气、煤炭、航运放量，否则只作为扰动变量。</p>
-            <div class="chain"><span class="node">美伊/油价</span><span class="arrow">→</span><span class="node">风险偏好</span><span class="arrow">→</span><span class="node">等待A股确认</span></div>
-          </article>
-        </div>
-      </section>
-
-      <section id="chains" class="panel">
-        <div class="section-title">
-          <h3>板块传导矩阵</h3>
-          <span>推演到验证结果</span>
-        </div>
+    <section class="section" id="chains">
+      <div class="section-title">
+        <h2>消息传导</h2>
+        <span>事件/变量 -> 影响资产 -> A股映射 -> 盘面验证 -> 传导强度</span>
+      </div>
+      <div class="card panel">
         <table class="matrix">
-          <thead>
-            <tr>
-              <th>此前推演</th>
-              <th>5月8日盘面证据</th>
-              <th>A股映射</th>
-              <th>验证状态</th>
-              <th>后续处理</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>AI硬件链继续扩散</td>
-              <td>通信板块领涨，8只通信个股涨停；但AI芯片、半导体、电源设备回调</td>
-              <td>通信设备保留，CPO/PCB从强验证降为分化验证</td>
-              <td><span class="tag watch">部分验证</span></td>
-              <td>看下一交易日通信能否继续承接高位AI兑现</td>
-            </tr>
-            <tr>
-              <td>霍尔木兹风险带动能源股</td>
-              <td>煤炭、石油石化仍弱，能源没有成为A股资金主线</td>
-              <td>油气、煤炭、能源金属继续低权重</td>
-              <td><span class="tag negative">连续未确认</span></td>
-              <td>只有油价继续冲高且能源板块放量，才重新上调权重</td>
-            </tr>
-            <tr>
-              <td>英伟达产业链催化</td>
-              <td>海外AI基础设施逻辑仍在，但A股高位硬科技开始兑现</td>
-              <td>光互连、光模块、CPO保留观察，追高权重下调</td>
-              <td><span class="tag watch">兑现观察</span></td>
-              <td>需要订单、业绩或价格继续接力，否则事件催化边际下降</td>
-            </tr>
-            <tr>
-              <td>前日强势科技是否连续</td>
-              <td>科创50跌约2.29%，创业板指跌0.96%，高位科技分化明显</td>
-              <td>半导体、AI芯片、存储、电源设备短线降温</td>
-              <td><span class="tag negative">转弱确认</span></td>
-              <td>重点看高位龙头是否继续补跌，以及低位科技能否承接</td>
-            </tr>
-            <tr>
-              <td>政策、地产、气候等辅助变量</td>
-              <td>房地产、交通运输、社会服务等低位方向表现较强，但尚未接管主线</td>
-              <td>地产、消费、交通、气候农业保留观察</td>
-              <td><span class="tag watch">低位观察</span></td>
-              <td>等待连续性和成交确认，暂不替代科技/通信主线</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-
-      <section id="external" class="panel">
-        <div class="section-title">
-          <h3>外部风险雷达</h3>
-          <span>消息面先进入观察池，再等待盘面验证</span>
-        </div>
-        <div class="risk-grid">
-          <article class="risk-card">
-            <h4>地缘与航道</h4>
-            <p>5月8日美伊局势仍是周末风险变量。处理顺序不变：先看油价、航运、避险资产，再看A股油气、航运和军工映射。</p>
-          </article>
-          <article class="risk-card">
-            <h4>能源与化工</h4>
-            <p>原油、天然气、煤炭影响油气、油服、航运、航空、化工和电力。5月8日能源映射仍弱，不能因为油价消息直接升级。</p>
-          </article>
-          <article class="risk-card">
-            <h4>金属与通胀</h4>
-            <p>高油价带来的通胀担忧会压制高估值科技，但5月8日还没有演化成商品主线。下一步看黄金、有色和化工成交。</p>
-          </article>
-          <article class="risk-card">
-            <h4>气候与灾害</h4>
-            <p>台风、洪涝、寒潮和干旱映射农业、食品、电力、水利、基建与保险。当前仍是备用变量，需要事件强度和成交确认。</p>
-          </article>
-        </div>
-        <table class="matrix" style="margin-top: 14px;">
           <thead>
             <tr>
               <th>事件/变量</th>
@@ -1239,198 +1004,169 @@
           </thead>
           <tbody>
             <tr>
-              <td>霍尔木兹风险反复</td>
-              <td>原油、航运、避险情绪</td>
-              <td>油气、油服、航运、航空、化工</td>
-              <td>5月8日油气/煤炭仍未确认，周末只做风险预案</td>
-              <td><span class="tag negative">弱</span></td>
+              <td>特斯拉Optimus V3年中量产+宇树科技变形机甲+杭州具身智能法规施行</td>
+              <td>人形机器人产业链、伺服电机、减速器、传感器</td>
+              <td>人形机器人、减速器、工业母机、电机</td>
+              <td>当日最强主线：14只涨停、主力净流入36.51亿。标的扩散从整机到零部件（巨轮智能/绿的谐波/三花智控）。</td>
+              <td><span class="tag positive">强传导</span></td>
             </tr>
             <tr>
-              <td>AI基础设施海外催化</td>
-              <td>光互连、数据中心、算力硬件</td>
-              <td>CPO、光模块、PCB、液冷、电源</td>
-              <td>通信方向有承接，高位硬科技分化，强度下调</td>
-              <td><span class="tag watch">中强</span></td>
+              <td>韩国半导体厂转向中国采购无水氢氟酸</td>
+              <td>电子级氢氟酸、氟化工全产业链</td>
+              <td>氟化工、萤石、制冷剂、含氟聚合物</td>
+              <td>中巨芯20%涨停、多氟多等涨停。供应链转移+价格上行周期双重逻辑驱动。</td>
+              <td><span class="tag positive">强传导</span></td>
             </tr>
             <tr>
-              <td>极端天气或灾害</td>
-              <td>农产品、电力负荷、水利需求</td>
-              <td>农业、食品、电力、水利、保险</td>
-              <td>尚未压过科技/通信/军工轮动，等待成交确认</td>
+              <td>韩国KOSPI暴跌6.12%触发熔断</td>
+              <td>亚太股市风险偏好、半导体出口链</td>
+              <td>半导体、电子（情绪面拖累）</td>
+              <td>A股午后加速走低；半导体/电子本就面临获利回吐，韩国熔断加剧盘面恐慌。</td>
+              <td><span class="tag watch">情绪放大</span></td>
+            </tr>
+            <tr>
+              <td>国际贵金属/有色金属期货大跌</td>
+              <td>黄金、白银、铜、铝</td>
+              <td>贵金属、有色金属、工业金属</td>
+              <td>有色金属跌4.10%、贵金属跌5.88%，领跌全市场。</td>
+              <td><span class="tag negative">强传导</span></td>
+            </tr>
+            <tr>
+              <td>霍尔木兹海峡和美伊对峙</td>
+              <td>布伦特/WTI、LPG、航运费率</td>
+              <td>油气、油服、航运、航空、贵金属</td>
+              <td>5/13商品端原油/LPG强但A股未验证。5/15有色/贵金属领跌，油气链表现平淡。</td>
               <td><span class="tag watch">待验证</span></td>
             </tr>
           </tbody>
         </table>
-      </section>
+      </div>
+    </section>
 
-      <section id="map" class="panel">
-        <div class="section-title">
-          <h3>联动地图</h3>
-          <span>高位兑现、低位承接、外部扰动</span>
-        </div>
-        <div class="map-wrap">
-          <svg class="network" viewBox="0 0 760 330" role="img" aria-label="A股板块联动传导地图">
-            <defs>
-              <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
-                <path d="M0,0 L0,6 L9,3 z" fill="#8fa0ae"></path>
-              </marker>
-              <style>
-                .edge { stroke: #8fa0ae; stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
-                .bubble { stroke: #fff; stroke-width: 3; }
-                .label { fill: #17202a; font-size: 15px; font-weight: 700; text-anchor: middle; dominant-baseline: middle; }
-                .small { fill: #657180; font-size: 12px; text-anchor: middle; dominant-baseline: middle; }
-              </style>
-            </defs>
-            <path class="edge" d="M130 92 C230 64, 270 64, 358 95"></path>
-            <path class="edge" d="M130 92 C210 138, 260 160, 350 174"></path>
-            <path class="edge" d="M580 83 C510 92, 470 112, 417 145"></path>
-            <path class="edge" d="M580 83 C566 142, 548 170, 498 216"></path>
-            <path class="edge" d="M376 176 C410 210, 438 230, 482 248"></path>
-            <path class="edge" d="M376 176 C305 222, 260 242, 188 260"></path>
-            <circle class="bubble" cx="130" cy="92" r="58" fill="#eaf7f1"></circle>
-            <text class="label" x="130" y="82">海外AI</text>
-            <text class="small" x="130" y="106">催化钝化</text>
-            <circle class="bubble" cx="382" cy="110" r="52" fill="#eaf1ff"></circle>
-            <text class="label" x="382" y="101">成交高位</text>
-            <text class="small" x="382" y="124">3.08万亿</text>
-            <circle class="bubble" cx="376" cy="176" r="66" fill="#edf6ff"></circle>
-            <text class="label" x="376" y="164">科技分化</text>
-            <text class="small" x="376" y="188">高位兑现</text>
-            <circle class="bubble" cx="580" cy="83" r="59" fill="#fff0ef"></circle>
-            <text class="label" x="580" y="73">美伊/油价</text>
-            <text class="small" x="580" y="98">周末扰动</text>
-            <circle class="bubble" cx="508" cy="235" r="54" fill="#fff6e5"></circle>
-            <text class="label" x="508" y="225">能源未确认</text>
-            <text class="small" x="508" y="249">油气/煤炭偏弱</text>
-            <circle class="bubble" cx="180" cy="266" r="48" fill="#f4f6f8"></circle>
-            <text class="label" x="180" y="257">低位承接</text>
-            <text class="small" x="180" y="279">军工/通信/机器人</text>
-          </svg>
-          <div class="legend">
-            <div class="legend-item"><span class="swatch green"></span>部分验证：通信链仍有资金承接</div>
-            <div class="legend-item"><span class="swatch red"></span>未确认：美伊/高油价到油气煤炭</div>
-            <div class="legend-item"><span class="swatch"></span>核心变化：高位科技兑现，低位方向轮动</div>
-            <div class="legend-item"><span class="swatch amber"></span>轮动方向：军工、通信、机器人执行器</div>
-            <div class="legend-item"><span class="swatch cyan"></span>后续重点：3万亿成交阈值和承接质量</div>
-          </div>
-        </div>
-      </section>
+    <section class="section" id="external">
+      <div class="section-title">
+        <h2>外部风险</h2>
+        <span>地缘、气候、商品到A股映射</span>
+      </div>
+      <div class="risk-grid">
+        <article class="risk-card">
+          <h3>地缘与航道</h3>
+          <p>美伊围绕霍尔木兹海峡的海上角力仍在延续。5/15贵金属领跌来源自国际商品联动而非地缘升级。油气/A股映射仍待盘面确认。</p>
+        </article>
+        <article class="risk-card">
+          <h3>韩国市场动荡</h3>
+          <p>韩国KOSPI暴跌6.12%触发熔断（三星电子-8.61%、SK海力士-7.66%），对亚太半导体/科技股风险偏好形成外溢压力。需关注后续是否企稳。</p>
+        </article>
+        <article class="risk-card">
+          <h3>贵金属与有色</h3>
+          <p>国际贵金属和工业金属期货大跌，A股有色-4.10%、贵金属-5.88%领跌。外部定价类资产波动加大，关注全球宏观预期变化。</p>
+        </article>
+        <article class="risk-card">
+          <h3>高位科技拥挤</h3>
+          <p>5/13拥挤度预警→5/15兑现：电子-361亿、通信-125亿、计算机-57亿。若明日电子抛压不收敛，则5/13以来的"硬件链主线"彻底终结。</p>
+        </article>
+      </div>
+    </section>
 
-      <section id="email" class="panel">
-        <div class="section-title">
-          <h3>邮件摘要版</h3>
-          <span>自动推送正文的推荐结构</span>
-        </div>
-        <div class="brief-grid">
-          <article class="brief-card">
-            <h4>开头三句话</h4>
-            <ul class="mini-list">
-              <li><b>结论</b><span>先给主线、风格和风险偏好，不先堆数据。</span></li>
-              <li><b>验证</b><span>说明哪些推演被盘面确认，哪些被降级。</span></li>
-              <li><b>行动</b><span>列出下一交易日必须观察的3到5个条件。</span></li>
-            </ul>
-          </article>
-          <article class="brief-card">
-            <h4>正文顺序</h4>
-            <ul class="mini-list">
-              <li><b>盘前</b><span>外盘/商品/消息 -> A股映射 -> 开盘验证点。</span></li>
-              <li><b>盘后</b><span>指数/成交/板块资金 -> 传导链验证 -> 下一交易日观察。</span></li>
-              <li><b>风险</b><span>所有外部变量必须落到A股板块和成交确认。</span></li>
-            </ul>
-          </article>
-        </div>
-        <table class="matrix" style="margin-top: 14px;">
+    <section class="section" id="risk-watch">
+      <div class="section-title">
+        <h2>风险观察</h2>
+        <span>不把外部新闻直接等同交易主线</span>
+      </div>
+      <div class="card panel">
+        <table class="matrix">
           <thead>
             <tr>
-              <th>邮件模块</th>
-              <th>必须回答的问题</th>
-              <th>避免的问题</th>
+              <th>风险变量</th>
+              <th>继续跟踪</th>
+              <th>A股验证条件</th>
+              <th>当前判断</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>核心结论</td>
-              <td>今天主线是什么，强度是否延续，资金是否扩散</td>
-              <td>只罗列涨跌幅，没有判断优先级</td>
+              <td>韩国熔断余波</td>
+              <td>KOSPI是否企稳，三星/SK海力士是否止跌，半导体出口链影响</td>
+              <td>若韩国持续动荡，A股半导体/电子链抛压可能加剧；若快速企稳则影响有限</td>
+              <td><span class="tag negative">情绪传导中</span></td>
             </tr>
             <tr>
-              <td>传导链</td>
-              <td>事件如何传到资产，再如何传到A股板块</td>
-              <td>把新闻直接等同于交易主线</td>
+              <td>电子/通信主线终结</td>
+              <td>中际旭创、工业富联、立讯精密、中科曙光等是否继续被大幅净卖出</td>
+              <td>若电子净流出收敛至100亿以内+龙头止跌，则视为正常调整而非终结</td>
+              <td><span class="tag negative">大面积兑现</span></td>
             </tr>
             <tr>
-              <td>验证条件</td>
-              <td>什么情况算确认、降级或证伪</td>
-              <td>盘后强行解释所有波动</td>
+              <td>新主线承接力</td>
+              <td>人形机器人和氟化工的连板梯队、次日溢价、板块扩散情况</td>
+              <td>若次日机器人/氟化工高开低走+量能收缩，切换失败重回混沌</td>
+              <td><span class="tag watch">待确认</span></td>
             </tr>
           </tbody>
         </table>
-      </section>
+      </div>
+    </section>
 
-      <section id="watch" class="grid three">
-        <div class="panel">
-          <div class="section-title">
-            <h3>已验证</h3>
-          </div>
+    <section class="section" id="watch">
+      <div class="section-title">
+        <h2>后续验证</h2>
+        <span>明日必须继续验证的条件</span>
+      </div>
+      <div class="grid three">
+        <article class="card panel">
+          <div class="chart-title">已验证</div>
           <div class="checklist">
-            <div class="check"><span class="box"></span><div><b>通信链仍有承接</b><span>通信板块领涨，8只通信个股涨停。</span></div></div>
-            <div class="check"><span class="box"></span><div><b>低位轮动有效</b><span>国防军工、北斗导航、机器人执行器走强。</span></div></div>
-            <div class="check"><span class="box"></span><div><b>市场广度仍好</b><span>3637只个股上涨，126只涨停。</span></div></div>
+            <div class="check"><span class="box"></span><div><b>人形机器人成为当日最强主线</b><span>三重催化（特斯拉量产+宇树新品+政策）+14只涨停+36.51亿主力净流入。</span></div></div>
+            <div class="check"><span class="box"></span><div><b>氟化工集体大涨</b><span>韩国转采购+涨价40%逻辑，中巨芯20%涨停、多氟多等涨停。</span></div></div>
+            <div class="check"><span class="box"></span><div><b>电子高位兑现</b><span>5/13拥挤度预警在5/15兑现：电子单日净流出361.59亿。</span></div></div>
           </div>
-        </div>
-        <div class="panel">
-          <div class="section-title">
-            <h3>未确认</h3>
-          </div>
+        </article>
+        <article class="card panel">
+          <div class="chart-title">未确认</div>
           <div class="checklist">
-            <div class="check"><span class="box"></span><div><b>高位科技未延续</b><span>科创50和创业板指回调，AI芯片、半导体、电源设备走弱。</span></div></div>
-            <div class="check"><span class="box"></span><div><b>能源线继续未走强</b><span>煤炭、石油石化仍偏弱，油价扰动未映射成A股主线。</span></div></div>
-            <div class="check"><span class="box"></span><div><b>地产仍是低位轮动</b><span>房地产有表现，但连续性和资金地位仍低于科技/通信/军工。</span></div></div>
+            <div class="check"><span class="box"></span><div><b>机器人/氟化工持续性</b><span>今日涨停潮是否只是单日脉冲，次日连板和溢价是验证关键。</span></div></div>
+            <div class="check"><span class="box"></span><div><b>电子/通信止跌信号</b><span>361亿净流出后是否出现企稳，工业富联/中际旭创能否止跌。</span></div></div>
+            <div class="check"><span class="box"></span><div><b>韩国熔断影响消化</b><span>KOSPI能否企稳，亚太风险偏好修复情况。</span></div></div>
           </div>
-        </div>
-        <div class="panel">
-          <div class="section-title">
-            <h3>后续验证</h3>
-          </div>
+        </article>
+        <article class="card panel">
+          <div class="chart-title">明日观察点</div>
           <div class="checklist">
-            <div class="check"><span class="box"></span><div><b>3万亿成交阈值</b><span>成交跌破3万亿且缩量下跌，主线权重下调。</span></div></div>
-            <div class="check"><span class="box"></span><div><b>承接方向连续性</b><span>军工、通信、机器人能否连续两日强于高位科技。</span></div></div>
-            <div class="check"><span class="box"></span><div><b>高位龙头风险</b><span>观察寒武纪、新易盛、海光信息等是否继续拖累情绪。</span></div></div>
+            <div class="check"><span class="box"></span><div><b>成交阈值</b><span>继续观察3万亿上方能否维持；若快速缩量至3万亿以下需警惕退潮。</span></div></div>
+            <div class="check"><span class="box"></span><div><b>新主线承接</b><span>机器人/氟化工次日是否"高开不砸盘"，连板梯队是否延续。</span></div></div>
+            <div class="check"><span class="box"></span><div><b>电子抛压收敛</b><span>电子净流出能否收敛至100亿以内，龙头股是否止跌。</span></div></div>
           </div>
-        </div>
-      </section>
+        </article>
+      </div>
+    </section>
 
-      <section id="sources">
-        <div class="section-title">
-          <h3>数据与消息来源</h3>
-          <span>用于本版报告校验</span>
-        </div>
-        <div class="source-list">
-          <ul>
-            <li><a href="https://www.sse.com.cn/disclosure/announcement/general/c/c_20260423_10816345.shtml">上交所劳动节休市安排</a></li>
-            <li><a href="https://tags.sina.com.cn/A%E8%82%A1">新浪A股滚动：5月8日盘后摘要、成交额、涨跌家数</a></li>
-            <li><a href="https://finance.sina.com.cn/wm/2026-05-08/doc-inhxfhtx4156132.shtml">新浪转载国际金融报：下周A股，追还是撤？</a></li>
-            <li><a href="https://finance.ce.cn/stock/gsgdbd/202605/t20260507_2950051.shtml">中国经济网5月7日指数收盘</a></li>
-            <li><a href="https://finance.sina.com.cn/stock/bxjj/2026-05-07/doc-inhxaaii2876039.shtml">新浪/格隆汇5月7日A股收评</a></li>
-            <li><a href="https://m.cnfin.com/yw-lb/zixun/20260507/4409082_1.html">新华财经科创板5月7日收盘</a></li>
-            <li><a href="https://www.corning.com/worldwide/en/about-us/news-events/news-releases/2026/05/nvidia-and-corning-announce-long-term-partnership-to-strengthen-us-manufacturing-for-ai-infrastructure.html">康宁：英伟达长期合作公告</a></li>
-            <li><a href="https://www.marketscreener.com/news/oil-jumps-stocks-drop-as-iran-tightens-grip-on-strait-of-hormuz-ce7f58dfd880f425">Reuters/MarketScreener油价与霍尔木兹</a></li>
-            <li><a href="https://www.stats.gov.cn/sj/sjjd/202604/t20260430_1963474.html">国家统计局4月PMI解读</a></li>
-            <li><a href="https://www.suzhou.gov.cn/szsrmzf/szyw/202605/b1c1e017426849859456ea8ff8ca72c7.shtml">苏州市稳地产政策</a></li>
-            <li><a href="https://www.caac.gov.cn/XXGK/XXGK/ZCFBJD/202604/t20260421_230620.html">民航局无人机标准解读</a></li>
-            <li><a href="https://www.chinanews.com.cn/sh/2026/05-04/10615463.shtml">中新网广东强降雨</a></li>
-            <li><a href="https://udn.com/news/story/7331/9482302">联合新闻网C-17抵京报道</a></li>
-          </ul>
-          <p>注：5月8日公开报道明确给出上证指数4179.95点、创业板指3796.13点、深证成指跌0.50%、科创50跌2.29%。本页深证成指和科创50点位使用5月7日收盘点位按报道跌幅估算，已用“约”标识，待交易所或行情源释放完整历史数据后可二次复核。</p>
-        </div>
-      </section>
-    </main>
-  </div>
+    <section class="section" id="sources">
+      <div class="section-title">
+        <h2>来源说明</h2>
+        <span>2026年5月15日收盘后抓取与交叉校验（17:00版）</span>
+      </div>
+      <div class="card source-list">
+        <ul>
+          <li><a href="https://finance.eastmoney.com/a/202605153738881788.html">东方财富：5月15日A股收评—沪指跌1.02%，深成指跌1.17%，交易额再破3万亿</a></li>
+          <li><a href="https://finance.eastmoney.com/a/202605153738867881.html">东方财富：A股收评—机器人概念逆势爆发</a></li>
+          <li><a href="https://www.cls.cn/detail/2372367">财联社：收评—沪指、深成指均跌超1%，机器人概念逆势爆发</a></li>
+          <li><a href="https://stcn.com/article/detail/3911057.html">证券时报：收评—沪指跌1.02%，机器人概念股逆市走强</a></li>
+          <li><a href="https://www.sohu.com/a/1023106375_115433">证券时报·数据宝：5月15日主力资金流向日报</a></li>
+          <li><a href="https://fund.eastmoney.com/a/202605153739049783.html">东方财富：数据复盘—107股获主力资金净流入超1亿元</a></li>
+          <li><a href="https://fund.eastmoney.com/a/202605153738887949.html">东方财富：科创板收盘播报—科创50指数跌1.67%</a></li>
+          <li><a href="https://www.mrjjxw.com/articles/2026-05-15/4394509.html">每日经济新闻：午后突发！韩国股市跌到熔断，A股再生起伏</a></li>
+          <li><a href="https://www.jwview.com/jingwei/html/05-15/670789.shtml">中新经纬：创指守住3900点！人形机器人板块逆势爆发</a></li>
+          <li><a href="http://stock.stockstar.com/RB2026051500022793.shtml">证券之星：5月15日沪深主板成交额前十大个股（工业富联居首）</a></li>
+        </ul>
+        <p>注：主力资金数据来源为东方财富Choice/证券时报·数据宝公开披露口径，可能与Wind/终端口径存在差异。所有内容只用于市场结构观察，不构成买入、卖出、持有、目标价、仓位比例或收益承诺。</p>
+      </div>
+    </section>
+  </main>
 
   <script>
     const modeButtons = document.querySelectorAll(".mode-button");
     const modePanels = document.querySelectorAll("[data-mode-panel]");
-    const buttons = document.querySelectorAll(".filter");
+    const filterButtons = document.querySelectorAll(".filter");
     const cards = document.querySelectorAll(".theme-card");
 
     modeButtons.forEach((button) => {
@@ -1444,9 +1180,9 @@
       });
     });
 
-    buttons.forEach((button) => {
+    filterButtons.forEach((button) => {
       button.addEventListener("click", () => {
-        buttons.forEach((item) => item.classList.remove("active"));
+        filterButtons.forEach((item) => item.classList.remove("active"));
         button.classList.add("active");
         const filter = button.dataset.filter;
         cards.forEach((card) => {

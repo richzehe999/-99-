@@ -34,6 +34,33 @@ MODE_CONTEXT = {
     "aftermarket": "盘后验证版：承接最新网页模板结论，用于收盘后复盘主线、资金和次日观察条件。",
 }
 
+TAG_COLORS = {
+    "强验证":    ("#91e676", "#103c22"),
+    "部分验证":   ("#91e676", "#103c22"),
+    "有效但拥挤": ("#ffd663", "#422c00"),
+    "补涨观察":   ("#ffd663", "#422c00"),
+    "继续观察":   ("#ffd663", "#422c00"),
+    "待验证":     ("#8bd4ff", "#082d47"),
+    "中强但偏窄": ("#ffd663", "#422c00"),
+    "弱到中":     ("#ffd663", "#422c00"),
+    "缺口已标注":  ("#8bd4ff", "#082d47"),
+    "拥挤度升高":  ("#ff8b91", "#4a1419"),
+    "接近警戒":   ("#ff8b91", "#4a1419"),
+}
+
+
+def render_tag(text: str) -> str:
+    """如果text匹配已知标签，渲染为彩色badge；否则返回原文本"""
+    for keyword, (bg, fg) in TAG_COLORS.items():
+        if keyword in text:
+            badge = (
+                f'<span style="display:inline-block;border-radius:999px;'
+                f'padding:3px 8px;background:{bg};color:{fg};'
+                f'font-size:12px;font-weight:800;white-space:nowrap;">{keyword}</span>'
+            )
+            return text.replace(keyword, badge)
+    return text
+
 
 @dataclass
 class Quote:
@@ -63,6 +90,8 @@ class SiteTemplateParser(HTMLParser):
         self._current_row: Optional[List[str]] = None
         self._current_cell: Optional[List[str]] = None
         self._source_depth = 0
+        self._section_title_depth = 0
+        self._current_section = ""
 
     @staticmethod
     def _classes(attrs: List[tuple[str, Optional[str]]]) -> set[str]:
@@ -97,9 +126,12 @@ class SiteTemplateParser(HTMLParser):
         elif kind == "theme":
             self.themes.append(text)
         elif kind == "dashboard_card":
-            self.dashboard_cards.append(text)
+            prefix = f"{self._current_section}｜" if self._current_section else ""
+            self.dashboard_cards.append(prefix + text)
         elif kind == "source":
             self.sources.append(text)
+        elif kind == "section_title":
+            self._current_section = text
 
     def handle_starttag(self, tag: str, attrs: List[tuple[str, Optional[str]]]) -> None:
         if tag in {"style", "script", "head"}:
@@ -116,6 +148,8 @@ class SiteTemplateParser(HTMLParser):
 
         if "source-list" in classes:
             self._source_depth += 1
+        if "section-title" in classes:
+            self._section_title_depth += 1
         if tag == "tbody":
             self._in_tbody += 1
         if tag == "tr" and self._in_tbody:
@@ -125,6 +159,8 @@ class SiteTemplateParser(HTMLParser):
 
         if tag == "h1":
             self._start_capture("title", tag)
+        elif tag == "h2" and self._section_title_depth:
+            self._start_capture("section_title", tag)
         elif tag == "p":
             self._start_capture("p", tag)
         elif "status-pill" in classes:
@@ -170,6 +206,8 @@ class SiteTemplateParser(HTMLParser):
 
         if tag == "div" and self._source_depth:
             self._source_depth -= 1
+        if tag == "div" and self._section_title_depth:
+            self._section_title_depth -= 1
 
     def handle_data(self, data: str) -> None:
         if self.skip_depth:
@@ -344,7 +382,7 @@ def html_table(headers: Iterable[str], rows: Iterable[Iterable[str]]) -> str:
     body = []
     for row in rows:
         cells = "".join(
-            f'<td style="padding:11px 8px;border-bottom:1px solid #edf1f5;vertical-align:top;color:#17202a;">{cell}</td>'
+            f'<td style="padding:11px 8px;border-bottom:1px solid #edf1f5;vertical-align:top;color:#17202a;">{render_tag(cell)}</td>'
             for cell in row
         )
         body.append(f"<tr>{cells}</tr>")
@@ -368,19 +406,21 @@ def list_items(items: Iterable[str], limit: int = 8) -> str:
 
 
 def section(title: str, body: str, subtitle: str = "") -> str:
+    title_table = (
+        '<table style="width:100%;border-collapse:collapse;margin-bottom:12px;"><tr>'
+        '<td style="width:4px;background:#0f7a4f;border-radius:2px;padding:0;margin:0;line-height:0;font-size:1px;">&nbsp;</td>'
+        '<td style="padding:0 0 0 12px;vertical-align:bottom;white-space:nowrap;">'
+        f'<h2 style="margin:0;color:#17202a;font-size:20px;line-height:1.2;">{escape(title)}</h2></td>'
+    )
     if subtitle:
-        title_html = (
-            '<table style="width:100%;border-collapse:collapse;margin-bottom:12px;"><tr>'
-            f'<td style="padding:0;vertical-align:bottom;white-space:nowrap;"><h2 style="margin:0;color:#17202a;font-size:20px;line-height:1.2;">{escape(title)}</h2></td>'
-            f'<td style="padding:0 0 0 14px;vertical-align:bottom;text-align:right;width:99%;">'
+        title_table += (
+            '<td style="padding:0 0 0 14px;vertical-align:bottom;text-align:right;width:99%;">'
             f'<span style="color:#657180;font-size:12px;">{escape(subtitle)}</span></td>'
-            '</tr></table>'
         )
-    else:
-        title_html = f'<h2 style="margin:0 0 12px;color:#17202a;font-size:20px;line-height:1.2;">{escape(title)}</h2>'
+    title_table += "</tr></table>"
     return (
         '<div style="margin-top:18px;padding:18px;border:1px solid #d9e0e7;border-radius:8px;background:#ffffff;">'
-        f'{title_html}{body}</div>'
+        f"{title_table}{body}</div>"
     )
 
 
@@ -421,11 +461,12 @@ def dashboard_cards_to_email(cards: List[str], limit: int = 18) -> str:
 def build_kpi_rows_from_quotes(quotes: List[Quote]) -> List[str]:
     rows = []
     for quote in quotes[:5]:
+        price_color = "#178a5a" if (quote.pct is not None and quote.pct > 0) else ("#c64a45" if (quote.pct is not None and quote.pct < 0) else "#17202a")
         rows.append(
             '<td style="width:20%;padding:6px;vertical-align:top;">'
             '<div style="min-height:108px;padding:14px;border:1px solid #d9e0e7;border-radius:8px;background:#ffffff;text-align:center;">'
             f'<div style="font-size:12px;color:#657180;margin-bottom:7px;">{escape(quote.name)}</div>'
-            f'<div style="font-size:24px;font-weight:900;color:{pct_color(quote.pct)};line-height:1.1;">{escape(fmt_num(quote.price))}</div>'
+            f'<div style="font-size:24px;font-weight:900;color:{price_color};line-height:1.1;">{escape(fmt_num(quote.price))}</div>'
             f'<div style="font-size:12px;color:#2d3642;margin-top:8px;">{escape(fmt_pct(quote.pct))}｜成交 {escape(fmt_amount(quote.amount))}</div>'
             "</div></td>"
         )
@@ -439,11 +480,17 @@ def build_kpi_rows_from_template(kpis: List[str]) -> List[str]:
         title = parts[0] if parts else "指标"
         value = parts[1] if len(parts) > 1 else "数据待确认"
         note = " ".join(parts[2:]) if len(parts) > 2 else ""
+        if value.startswith("+") or "涨" in value:
+            value_color = "#178a5a"
+        elif value.startswith("-") or "跌" in value:
+            value_color = "#c64a45"
+        else:
+            value_color = "#17202a"
         rows.append(
             '<td style="width:20%;padding:6px;vertical-align:top;">'
             '<div style="min-height:108px;padding:14px;border:1px solid #d9e0e7;border-radius:8px;background:#ffffff;text-align:center;">'
             f'<div style="font-size:12px;color:#657180;margin-bottom:7px;">{escape(title)}</div>'
-            f'<div style="font-size:24px;font-weight:900;color:#17202a;line-height:1.1;">{escape(value)}</div>'
+            f'<div style="font-size:24px;font-weight:900;color:{value_color};line-height:1.1;">{escape(value)}</div>'
             f'<div style="font-size:12px;color:#2d3642;margin-top:8px;">{escape(note)}</div>'
             "</div></td>"
         )
@@ -509,7 +556,7 @@ def build_html_from_site_template(
         theme_cards.append(
             '<td style="width:33.33%;padding:6px;vertical-align:top;">'
             '<div style="min-height:126px;padding:15px;border:1px solid #d9e0e7;border-radius:8px;background:#fbfcfd;">'
-            f'<h3 style="margin:0 0 8px;color:#17202a;font-size:16px;line-height:1.25;">{escape(title)}</h3>'
+            f'<h3 style="margin:0 0 8px;color:#17202a;font-size:16px;line-height:1.25;">{render_tag(escape(title))}</h3>'
             f'<p style="margin:0;color:#2d3642;font-size:13px;line-height:1.55;">{body}</p>'
             "</div></td>"
         )
@@ -558,9 +605,9 @@ def card(title: str, body: str, tag: str = "", tag_color: str = "#eaf1ff", tag_t
         )
     return (
         '<td style="width:33.33%;padding:6px;vertical-align:top;">'
-        '<div style="min-height:130px;padding:15px;border:1px solid #d9e0e7;border-radius:8px;background:#fbfcfd;">'
-        f"{tag_html}<h3 style=\"margin:0 0 8px;font-size:17px;color:#17202a;\">{escape(title)}</h3>"
-        f'<p style="margin:0;color:#657180;font-size:14px;">{body}</p>'
+        '<div style="min-height:130px;padding:15px;border:1px solid #25445a;border-radius:8px;background:#102333;">'
+        f"{tag_html}<h3 style=\"margin:0 0 8px;font-size:17px;color:#eaf4ff;\">{escape(title)}</h3>"
+        f'<p style="margin:0;color:#9cb0bf;font-size:14px;">{body}</p>'
         "</div></td>"
     )
 
@@ -877,8 +924,8 @@ def main() -> None:
 
     if errors:
         html_body += (
-            '<div style="max-width:1180px;margin:12px auto;padding:14px;border:1px solid #fff6e5;'
-            'background:#fffaf0;color:#865a13;font-family:Arial,sans-serif;">'
+            '<div style="max-width:1180px;margin:12px auto;padding:14px;border:1px solid #ff8b91;'
+            'background:#1e0d0f;color:#ff8b91;font-family:Arial,sans-serif;">'
             + escape("；".join(errors))
             + "</div>"
         )
