@@ -72,6 +72,7 @@ jobs:
           git add a-share-report-site/index.html index.html
           git diff --cached --quiet || git commit -m "auto: update radar report $(TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M')"
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git pull --rebase --autostash origin main || true
           git push origin main
 
       - name: 推送飞书
