@@ -76,8 +76,11 @@ def fetch_indices() -> List[Dict[str, Any]]:
         "https://push2.eastmoney.com/api/qt/ulist.np/get?"
         + urllib.parse.urlencode({"secids": secids, "fields": "f12,f14,f2,f3,f6", "fltt": "2"})
     )
-    data = fetch_json(url)
-    items = data.get("data", {}).get("diff") or []
+    try:
+        data = fetch_json(url)
+        items = data.get("data", {}).get("diff") or []
+    except Exception:
+        items = []
     by_name = {item.get("f14"): item for item in items}
     by_code = {item.get("f12"): item for item in items}
     results = []
@@ -294,7 +297,8 @@ def build_kpi_grid(indices: List[Dict], total_amount: Optional[float], prev_amou
 def build_hbar(name: str, value: float, max_val: float, is_out: bool = False) -> str:
     pct = (abs(value) / max_val * 100) if max_val > 0 else 0
     cls = "hbar out" if is_out else "hbar"
-    val_str = f"{value:+.0f}亿" if value != 0 else "0亿"
+    val_yi = value / 100_000_000
+    val_str = f"{val_yi:+.0f}亿" if value != 0 else "0亿"
     return f'<div class="hbar-row"><span>{name}</span><div class="track"><div class="{cls}" style="width:{pct:.1f}%"></div></div><span class="value">{val_str}</span></div>'
 
 
@@ -326,10 +330,11 @@ def build_signal_panel(boards_in: List[Dict], boards_out: List[Dict], concepts: 
     cmax = max((abs(safe_float(c.get("f62")) or 0) for c in concepts), default=1)
     for c in concepts:
         val = safe_float(c.get("f62")) or 0
+        val_yi = val / 100_000_000
         height = max(10, int(abs(val) / cmax * 120))
         concept_bars += (
             f'<div class="water-item">'
-            f'<div class="water-value up">+{val:.0f}亿</div>'
+            f'<div class="water-value up">+{val_yi:.0f}亿</div>'
             f'<div class="water-bar" style="height:{height}px"></div>'
             f"<span>{c.get('f14','?')}</span>"
             f"</div>"
@@ -433,12 +438,13 @@ def build_theme_cards(boards_in: List[Dict], boards_out: List[Dict], concepts: L
     for c in concepts[:3]:
         name = c.get("f14", "?")
         val = safe_float(c.get("f62")) or 0
+        val_yi = val / 100_000_000
         pct = safe_float(c.get("f3"))
         pct_str = fmt_pct(pct) if pct is not None else ""
         cards += f"""
 <article class="theme-card" data-kind="positive">
   <div class="theme-head"><h3>{name}资金净流入</h3><span class="tag positive">资金信号</span></div>
-  <p>主力资金净流入{val:.0f}亿{pct_str}，成为当日资金聚焦方向。关注次日开盘板块内高辨识度标的的延续性以及板块扩散效应。</p>
+  <p>主力资金净流入{val_yi:.0f}亿{pct_str}，成为当日资金聚焦方向。关注次日开盘板块内高辨识度标的的延续性以及板块扩散效应。</p>
   <div class="chain"><span class="node">资金流入</span><span class="arrow">-></span><span class="node">{name}</span><span class="arrow">-></span><span class="node">板块活跃</span></div>
 </article>"""
 
@@ -447,10 +453,11 @@ def build_theme_cards(boards_in: List[Dict], boards_out: List[Dict], concepts: L
         b = boards_out[0]
         name = b.get("f14", "?")
         val = safe_float(b.get("f62")) or 0
+        val_yi = -val / 100_000_000
         cards += f"""
 <article class="theme-card" data-kind="negative">
   <div class="theme-head"><h3>{name}遭集中抛售</h3><span class="tag negative">资金流出</span></div>
-  <p>主力资金净流出{abs(val):.0f}亿，为当日全市场最大净流出板块。关注后续是否出现企稳信号、前期拥挤度风险是否得到有效释放。</p>
+  <p>主力资金净流出{val_yi:.0f}亿，为当日全市场最大净流出板块。关注后续是否出现企稳信号、前期拥挤度风险是否得到有效释放。</p>
   <div class="chain"><span class="node">资金兑现</span><span class="arrow">-></span><span class="node">{name}</span><span class="arrow">-></span><span class="node">避险观望</span></div>
 </article>"""
 
@@ -513,8 +520,10 @@ def build_checklist(boards_in: List[Dict], boards_out: List[Dict]) -> str:
 </div>"""
 
 
-def build_source_section() -> str:
-    return """
+def build_source_section(extra_note: str = "") -> str:
+    note = extra_note.strip()
+    extra = f"<p><b>运行时提示：</b>{note}</p>" if note else ""
+    return f"""
 <div class="card source-list">
   <ul>
     <li>东方财富行情中心 — 指数实时数据</li>
@@ -522,6 +531,7 @@ def build_source_section() -> str:
     <li>东方财富Choice — 概念板块资金流向</li>
     <li>Yahoo Finance — 全球市场数据</li>
   </ul>
+  {extra}
   <p>注：主力资金数据来源为东方财富Choice公开披露口径，可能与Wind/终端口径存在差异。所有内容只用于市场结构观察，不构成买入、卖出、持有、目标价、仓位比例或收益承诺。</p>
 </div>"""
 
@@ -538,7 +548,7 @@ MODE_TITLES = {
 }
 
 
-def generate_html(indices: List[Dict], boards_in: List[Dict], boards_out: List[Dict], concepts: List[Dict], lhb: Optional[Dict], mode: str = "aftermarket", date_override: Optional[str] = None) -> str:
+def generate_html(indices: List[Dict], boards_in: List[Dict], boards_out: List[Dict], concepts: List[Dict], lhb: Optional[Dict], mode: str = "aftermarket", date_override: Optional[str] = None, runtime_note: str = "") -> str:
     now = cn_now()
     if date_override:
         # Accept "2026-05-15" → format
@@ -550,11 +560,15 @@ def generate_html(indices: List[Dict], boards_in: List[Dict], boards_out: List[D
     else:
         date_str = now.strftime("%Y年%m月%d日")
     time_str = now.strftime("%H:%M")
+    slot_time = "08:00" if mode == "premarket" else time_str
     mode_label = MODE_LABELS.get(mode, MODE_LABELS["aftermarket"])
     title = MODE_TITLES.get(mode, MODE_TITLES["aftermarket"])
-    has_negative = any(idx["pct"] is not None and idx["pct"] < 0 for idx in indices[:3])
-    direction = "集体收跌" if all(idx["pct"] is not None and idx["pct"] < 0 for idx in indices[:3]) else \
-                ("涨跌互现" if has_negative else "集体收涨")
+    pcts = [idx.get("pct") for idx in indices[:3] if idx.get("pct") is not None]
+    if not pcts:
+        direction = "数据暂缺"
+    else:
+        has_negative = any(pct < 0 for pct in pcts)
+        direction = "集体收跌" if len(pcts) == 3 and all(pct < 0 for pct in pcts) else ("涨跌互现" if has_negative else "集体收涨")
     summary = f"今日主要指数{direction}。"
     if boards_in and boards_out:
         top_in = boards_in[0].get("f14", "?")
@@ -567,7 +581,7 @@ def generate_html(indices: List[Dict], boards_in: List[Dict], boards_out: List[D
     capital_verification = build_capital_verification(indices, boards_in, boards_out, concepts, lhb)
     theme_cards = build_theme_cards(boards_in, boards_out, concepts, indices)
     checklist = build_checklist(boards_in, boards_out)
-    source_section = build_source_section()
+    source_section = build_source_section(runtime_note)
 
     return f"""<!doctype html>
 <html lang="zh-CN">
@@ -582,13 +596,13 @@ def generate_html(indices: List[Dict], boards_in: List[Dict], boards_out: List[D
   <header class="hero">
     <div>
       <h1>{title}</h1>
-      <p>区间：{date_str} {mode_label}（{time_str}版）。{summary}</p>
+      <p>区间：{date_str} {mode_label}（{slot_time}版）。{summary}</p>
       <div class="toolbar" role="group" aria-label="雷达模式切换">
         <button class="mode-button active" data-mode="signal" type="button">强信号样式</button>
         <button class="mode-button" data-mode="condition" type="button">观察条件样式</button>
       </div>
     </div>
-    <div class="status-pill"><span class="pulse"></span>已于{time_str}自动生成</div>
+    <div class="status-pill"><span class="pulse"></span>已于{slot_time}自动生成</div>
   </header>
 
   <section class="section" id="overview">
@@ -693,7 +707,10 @@ def main() -> None:
     concepts = fetch_concept_flow(4)
     lhb = fetch_lhb_stats()
 
-    html = generate_html(indices, boards_in, boards_out, concepts, lhb, mode=args.mode, date_override=args.date)
+    note = ""
+    if all(idx.get("pct") is None for idx in indices):
+        note = "本机网络/DNS异常导致无法拉取实时行情接口；页面已生成但关键数值将显示为“--”，请恢复网络后重跑生成。"
+    html = generate_html(indices, boards_in, boards_out, concepts, lhb, mode=args.mode, date_override=args.date, runtime_note=note)
 
     os.makedirs(os.path.dirname(args.output) or ".", exist_ok=True)
     with open(args.output, "w", encoding="utf-8") as f:
