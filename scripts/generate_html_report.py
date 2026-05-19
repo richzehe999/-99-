@@ -70,6 +70,57 @@ def fmt_amount(value: Optional[float]) -> str:
 # ── Data fetching ──────────────────────────────────────────────
 
 
+def fetch_indices_sina() -> Optional[List[Dict[str, Any]]]:
+    """Fetch index data from Sina Finance as fallback."""
+    SINA_MAP = {
+        "上证指数": "s_sh000001",
+        "深证成指": "s_sz399001",
+        "创业板指": "s_sz399006",
+        "科创50": "s_sh000688",
+        "沪深300": "s_sh000300",
+    }
+    codes = ",".join(SINA_MAP.values())
+    url = f"https://hq.sinajs.cn/list={codes}"
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+        "Referer": "https://finance.sina.com.cn",
+    }
+    try:
+        req = urllib.request.Request(url, headers=headers)
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            body = resp.read().decode("gbk", errors="replace")
+    except Exception:
+        return None
+
+    results = []
+    rev_map = {v: k for k, v in SINA_MAP.items()}
+    for line in body.splitlines():
+        line = line.strip()
+        if not line or "=" not in line:
+            continue
+        try:
+            var_part, val_part = line.split("=", 1)
+            var_name = var_part.replace("var hq_str_", "").strip()
+            name = rev_map.get(var_name)
+            if not name:
+                continue
+            val = val_part.strip('";')
+            parts = val.split(",")
+            if len(parts) < 4:
+                continue
+            # Sina amount is in 万元; convert to 元 for consistency with EastMoney
+            raw_amount = safe_float(parts[5]) if len(parts) > 5 else None
+            results.append({
+                "name": name,
+                "price": safe_float(parts[1]) if len(parts) > 1 else None,
+                "pct": safe_float(parts[3]) if len(parts) > 3 else None,
+                "amount": raw_amount * 10_000 if raw_amount is not None else None,
+            })
+        except Exception:
+            continue
+    return results if len(results) == len(INDEX_SECIDS) else None
+
+
 def fetch_indices() -> List[Dict[str, Any]]:
     secids = ",".join(INDEX_SECIDS.values())
     url = (
@@ -81,18 +132,34 @@ def fetch_indices() -> List[Dict[str, Any]]:
         items = data.get("data", {}).get("diff") or []
     except Exception:
         items = []
-    by_name = {item.get("f14"): item for item in items}
-    by_code = {item.get("f12"): item for item in items}
+
     results = []
-    for name, secid in INDEX_SECIDS.items():
-        code = secid.split(".", 1)[1]
-        item = by_name.get(name) or by_code.get(code) or {}
-        results.append({
-            "name": name,
-            "price": safe_float(item.get("f2")),
-            "pct": safe_float(item.get("f3")),
-            "amount": safe_float(item.get("f6")),
-        })
+    if items:
+        by_name = {item.get("f14"): item for item in items}
+        by_code = {item.get("f12"): item for item in items}
+        for name, secid in INDEX_SECIDS.items():
+            code = secid.split(".", 1)[1]
+            item = by_name.get(name) or by_code.get(code) or {}
+            results.append({
+                "name": name,
+                "price": safe_float(item.get("f2")),
+                "pct": safe_float(item.get("f3")),
+                "amount": safe_float(item.get("f6")),
+            })
+
+    # Fallback to Sina if EastMoney returns no data
+    if not results or all(r["pct"] is None for r in results):
+        sina = fetch_indices_sina()
+        if sina:
+            results = sina
+
+    # Ensure all 5 indices are present
+    if len(results) < len(INDEX_SECIDS):
+        existing = {r["name"] for r in results}
+        for name in INDEX_SECIDS:
+            if name not in existing:
+                results.append({"name": name, "price": None, "pct": None, "amount": None})
+
     return results
 
 
@@ -575,7 +642,9 @@ def generate_html(indices: List[Dict], boards_in: List[Dict], boards_out: List[D
         top_out = boards_out[0].get("f14", "?")
         summary += f"资金层面：{top_in}获主力净流入居前，{top_out}遭抛售居前。结构性分化明显，板块轮动加速。"
 
-    kpi_grid = build_kpi_grid(indices, indices[0].get("amount") if indices else None, None)
+    # Sum 上证+深证 amounts as total market turnover proxy
+    total_amt = sum(idx["amount"] for idx in indices[:2] if idx.get("amount")) if indices else None
+    kpi_grid = build_kpi_grid(indices, total_amt, None)
     signal_panel = build_signal_panel(boards_in, boards_out, concepts, indices)
     condition_panel = build_condition_panel(indices, boards_in, boards_out)
     capital_verification = build_capital_verification(indices, boards_in, boards_out, concepts, lhb)
