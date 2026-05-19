@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import sys
 import urllib.parse
 import urllib.request
@@ -95,88 +96,183 @@ def fmt_amount(value: Optional[float]) -> str:
 
 
 def fetch_a_share_indices() -> List[Dict[str, Any]]:
+    # Primary: EastMoney push2
     secids = ",".join(INDEX_SECIDS.values())
     url = (
         "https://push2.eastmoney.com/api/qt/ulist.np/get?"
         + urllib.parse.urlencode({"secids": secids, "fields": "f12,f14,f2,f3,f6", "fltt": "2"})
     )
-    data = fetch_json(url)
-    items = data.get("data", {}).get("diff") or []
-    by_name = {item.get("f14"): item for item in items}
-    by_code = {item.get("f12"): item for item in items}
+    try:
+        data = fetch_json(url)
+        items = data.get("data", {}).get("diff") or []
+        by_name = {item.get("f14"): item for item in items}
+        by_code = {item.get("f12"): item for item in items}
+
+        results = []
+        for name, secid in INDEX_SECIDS.items():
+            code = secid.split(".", 1)[1]
+            item = by_name.get(name) or by_code.get(code) or {}
+            results.append({
+                "name": name,
+                "price": safe_float(item.get("f2")),
+                "pct": safe_float(item.get("f3")),
+                "amount": safe_float(item.get("f6")),
+            })
+        if results and any(r["price"] is not None for r in results):
+            return results
+    except Exception:
+        pass
+
+    # Fallback: Sina Finance
+    sina_codes = {
+        "上证指数": "s_sh000001",
+        "深证成指": "s_sz399001",
+        "创业板指": "s_sz399006",
+        "科创50": "s_sh000688",
+        "沪深300": "s_sh000300",
+    }
+    sina_list = ",".join(sina_codes.values())
+    sina_url = f"https://hq.sinajs.cn/list={sina_list}"
+    try:
+        req = urllib.request.Request(
+            sina_url,
+            headers={"User-Agent": "Mozilla/5.0", "Referer": "https://finance.sina.com.cn/"},
+        )
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            body = resp.read().decode("gbk", errors="replace")
+    except Exception:
+        return []
 
     results = []
-    for name, secid in INDEX_SECIDS.items():
-        code = secid.split(".", 1)[1]
-        item = by_name.get(name) or by_code.get(code) or {}
+    for name, code in sina_codes.items():
+        pattern = re.escape(f'var hq_str_{code}="') + r'([^"]*)"'
+        m = re.search(pattern, body)
+        if not m:
+            results.append({"name": name, "price": None, "pct": None, "amount": None})
+            continue
+        parts = m.group(1).split(",")
+        # parts[1]=current, parts[2]=change, parts[3]=pct(%), parts[4]=volume, parts[5]=turnover(万)
         results.append({
             "name": name,
-            "price": safe_float(item.get("f2")),
-            "pct": safe_float(item.get("f3")),
-            "amount": safe_float(item.get("f6")),
+            "price": safe_float(parts[1]) if len(parts) > 1 else None,
+            "pct": safe_float(parts[3]) if len(parts) > 3 else None,
+            "amount": safe_float(parts[5]) if len(parts) > 5 else None,
         })
     return results
 
 
 def fetch_board_flow(top_n: int = 5) -> List[Dict[str, Any]]:
-    params = {
-        "pn": "1",
-        "pz": str(top_n + 3),
-        "po": "1",
-        "np": "1",
-        "fltt": "2",
-        "invt": "2",
-        "fid": "f62",
-        "fs": "m:90+t:2",
-        "fields": "f12,f14,f62,f184,f3",
-    }
-    url = "https://push2.eastmoney.com/api/qt/clist/get?" + urllib.parse.urlencode(params)
     try:
-        data = fetch_json(url)
+        import akshare as ak
+        df = ak.stock_fund_flow_concept()
+        if df is None or df.empty:
+            return []
+        df = df.sort_values("净额", ascending=False)
+        results = []
+        for _, row in df.head(top_n).iterrows():
+            name = str(row.get("行业", ""))
+            net_yi = safe_float(row.get("净额"))
+            pct = safe_float(row.get("行业-涨跌幅"))
+            results.append({
+                "f14": name,
+                "f62": net_yi * 100_000_000 if net_yi else None,
+                "f3": pct,
+            })
+        return results
     except Exception:
         return []
-    return (data.get("data", {}).get("diff") or [])[:top_n]
 
 
 def fetch_board_outflow(top_n: int = 5) -> List[Dict[str, Any]]:
-    params = {
-        "pn": "1",
-        "pz": str(top_n + 3),
-        "po": "0",
-        "np": "1",
-        "fltt": "2",
-        "invt": "2",
-        "fid": "f62",
-        "fs": "m:90+t:2",
-        "fields": "f12,f14,f62,f184,f3",
-    }
-    url = "https://push2.eastmoney.com/api/qt/clist/get?" + urllib.parse.urlencode(params)
     try:
-        data = fetch_json(url)
+        import akshare as ak
+        df = ak.stock_fund_flow_concept()
+        if df is None or df.empty:
+            return []
+        df = df.sort_values("净额", ascending=True)
+        results = []
+        for _, row in df.head(top_n).iterrows():
+            name = str(row.get("行业", ""))
+            net_yi = safe_float(row.get("净额"))
+            pct = safe_float(row.get("行业-涨跌幅"))
+            results.append({
+                "f14": name,
+                "f62": net_yi * 100_000_000 if net_yi else None,
+                "f3": pct,
+            })
+        return results
     except Exception:
         return []
-    return (data.get("data", {}).get("diff") or [])[:top_n]
 
 
 def fetch_global_quotes() -> List[Dict[str, Any]]:
-    symbols = ",".join(GLOBAL_SYMBOLS.values())
-    url = f"https://query1.finance.yahoo.com/v7/finance/quote?symbols={symbols}"
-    try:
-        data = fetch_json(url)
-    except Exception:
-        return []
-
-    results = data.get("quoteResponse", {}).get("result") or []
-    by_symbol = {item.get("symbol"): item for item in results}
     quotes = []
-    for name, symbol in GLOBAL_SYMBOLS.items():
-        raw = urllib.parse.unquote(symbol)
-        item = by_symbol.get(raw) or by_symbol.get(symbol) or {}
+
+    # ── US indices + commodities via Sina Finance ──
+    sina_symbols = {
+        "纳斯达克": "int_nasdaq",
+        "标普500": "int_sp500",
+        "道琼斯": "int_dji",
+        "COMEX黄金": "hf_GC",
+        "WTI原油": "hf_CL",
+    }
+    sina_list = ",".join(sina_symbols.values())
+    sina_url = f"https://hq.sinajs.cn/list={sina_list}"
+    sina_data = {}
+    try:
+        req = urllib.request.Request(
+            sina_url,
+            headers={"User-Agent": "Mozilla/5.0", "Referer": "https://finance.sina.com.cn/"},
+        )
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            body = resp.read().decode("gbk", errors="replace")
+
+        for name, code in sina_symbols.items():
+            pattern = re.escape(f'var hq_str_{code}="') + r'([^"]*)"'
+            m = re.search(pattern, body)
+            if not m:
+                continue
+            parts = m.group(1).split(",")
+            if code.startswith("hf_"):
+                # Futures: price at [0], prev settlement at [7]
+                price = safe_float(parts[0]) if parts else None
+                prev_close = safe_float(parts[7]) if len(parts) > 7 else None
+                pct = ((price - prev_close) / prev_close * 100) if price and prev_close else None
+            else:
+                # Global indices: name at [0], price at [1], pct at [3]
+                price = safe_float(parts[1]) if len(parts) > 1 else None
+                pct = safe_float(parts[3]) if len(parts) > 3 else None
+            sina_data[name] = {"price": price, "pct": pct}
+    except Exception:
+        pass
+
+    for name in ["纳斯达克", "标普500", "道琼斯", "COMEX黄金", "WTI原油"]:
+        d = sina_data.get(name, {})
         quotes.append({
             "name": name,
-            "price": safe_float(item.get("regularMarketPrice")),
-            "pct": safe_float(item.get("regularMarketChangePercent")),
+            "price": d.get("price"),
+            "pct": d.get("pct"),
         })
+
+    # ── USD/CNH via exchangerate-api ──
+    try:
+        fx_url = "https://api.exchangerate-api.com/v4/latest/USD"
+        req = urllib.request.Request(fx_url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            fx_data = json.loads(resp.read().decode("utf-8"))
+        usdcnh = safe_float(fx_data.get("rates", {}).get("CNH"))
+        quotes.append({
+            "name": "美元/离岸人民币",
+            "price": usdcnh,
+            "pct": None,
+        })
+    except Exception:
+        quotes.append({
+            "name": "美元/离岸人民币",
+            "price": None,
+            "pct": None,
+        })
+
     return quotes
 
 
@@ -329,7 +425,7 @@ def build_card(mode: str, indices: List[Dict[str, Any]], boards_in: List[Dict[st
     # Note
     elements.append({
         "tag": "note",
-        "elements": [{"tag": "plain_text", "content": "数据源：东方财富行情接口 / Yahoo Finance | 仅供市场结构观察，不构成投资建议"}],
+        "elements": [{"tag": "plain_text", "content": "数据源：同花顺资金流向 / 新浪行情 / ExchangeRate-API | 仅供市场结构观察，不构成投资建议"}],
     })
 
     card = {
