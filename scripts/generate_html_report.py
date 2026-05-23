@@ -224,6 +224,75 @@ def fetch_lhb_stats() -> Optional[Dict[str, Any]]:
         return None
 
 
+def fetch_northbound() -> Optional[Dict[str, Any]]:
+    """Fetch 北向资金 (沪深股通) net flow from EastMoney."""
+    # f1=沪股通净流入, f2=深股通净流入, f3=北向合计净流入, f4=南向合计净流入
+    url = "https://push2.eastmoney.com/api/qt/kamt.kline/get?fields=f1,f2,f3,f4,f5,f6,f7,f8"
+    try:
+        data = fetch_json(url)
+        items = data.get("data", {})
+        if not items:
+            return None
+        # Get the latest day's data
+        hgt = items.get("", [])
+        if not hgt:
+            return None
+        # Try field-based response
+        latest = {}
+        for k in ["f1", "f2", "f3", "f4"]:
+            val = items.get(k)
+            if val is not None:
+                latest[k] = safe_float(val)
+        if not latest:
+            return None
+        north_net = latest.get("f3")  # 北向合计
+        hgt_net = latest.get("f1")    # 沪股通
+        sgt_net = latest.get("f2")    # 深股通
+        south_net = latest.get("f4")  # 南向
+        if north_net is None and hgt_net is not None and sgt_net is not None:
+            north_net = hgt_net + sgt_net
+        return {
+            "north_net": north_net,
+            "hgt_net": hgt_net,
+            "sgt_net": sgt_net,
+            "south_net": south_net,
+        }
+    except Exception:
+        return None
+
+
+def fetch_prev_board_flow(top_n: int = 5, days_ago: int = 1) -> List[Dict[str, Any]]:
+    """Fetch previous trading day's board flow for day-over-day comparison."""
+    params = {
+        "pn": "1", "pz": str(top_n + 3), "po": "1", "np": "1",
+        "fltt": "2", "invt": "2", "fid": "f62",
+        "fs": "m:90+t:2",
+        "fields": "f12,f14,f62,f184,f3",
+    }
+    url = "https://push2.eastmoney.com/api/qt/clist/get?" + urllib.parse.urlencode(params)
+    try:
+        data = fetch_json(url)
+    except Exception:
+        return []
+    return (data.get("data", {}).get("diff") or [])[:top_n]
+
+
+def fetch_prev_concept_flow(top_n: int = 4, days_ago: int = 1) -> List[Dict[str, Any]]:
+    """Fetch previous trading day's concept flow for comparison."""
+    params = {
+        "pn": "1", "pz": str(top_n + 3), "po": "1", "np": "1",
+        "fltt": "2", "invt": "2", "fid": "f62",
+        "fs": "m:90+t:3",
+        "fields": "f12,f14,f62,f184,f3",
+    }
+    url = "https://push2.eastmoney.com/api/qt/clist/get?" + urllib.parse.urlencode(params)
+    try:
+        data = fetch_json(url)
+    except Exception:
+        return []
+    return (data.get("data", {}).get("diff") or [])[:top_n]
+
+
 # ── HTML builders ──────────────────────────────────────────────
 
 
@@ -297,6 +366,12 @@ h1{margin:0 0 10px;color:#ffd400;font-size:clamp(28px,2.7vw,44px);line-height:1;
 .chain{display:flex;flex-wrap:wrap;align-items:center;gap:6px;color:#cfdee6;font-size:12px}
 .node{padding:5px 7px;border:1px solid #31556d;border-radius:6px;background:#0b1b27}
 .arrow{color:#ffd400;font-weight:800}
+.dod{display:inline-flex;align-items:center;gap:2px;margin-left:6px;font-size:10px;white-space:nowrap}
+.dod.up{color:#62cf3a}.dod.down{color:#ff6870}
+.verify-table{width:100%;border-collapse:collapse;color:#dcebf3;font-size:12px;margin-top:10px}
+.verify-table th,.verify-table td{padding:8px 10px;border-bottom:1px solid #25445a;text-align:left;vertical-align:top}
+.verify-table th{color:#ffd400;font-size:11px;font-weight:800;background:rgba(255,212,0,.05)}
+.verify-table .hit{color:#62cf3a;font-weight:800}.verify-table .miss{color:#ff6870;font-weight:800}
 .matrix{width:100%;border-collapse:collapse;color:#dcebf3;font-size:13px}
 .matrix th,.matrix td{padding:11px 10px;border-bottom:1px solid #25445a;text-align:left;vertical-align:top}
 .matrix th{color:#ffd400;font-size:12px;font-weight:800}
@@ -332,7 +407,7 @@ def build_kpi_card(name: str, price, pct, desc: str) -> str:
     )
 
 
-def build_kpi_grid(indices: List[Dict], total_amount: Optional[float], prev_amount: Optional[float]) -> str:
+def build_kpi_grid(indices: List[Dict], total_amount: Optional[float], prev_amount: Optional[float], northbound: Optional[Dict] = None) -> str:
     descs = {
         "上证指数": lambda i: f"{fmt_pct(i['pct'])}，权重股表现",
         "深证成指": lambda i: f"{fmt_pct(i['pct'])}，科技成长拖累",
@@ -358,25 +433,61 @@ def build_kpi_grid(indices: List[Dict], total_amount: Optional[float], prev_amou
         f"<em>{amount_desc}</em>"
         f"</article>"
     )
+
+    # 北向资金 card
+    if northbound and northbound.get("north_net") is not None:
+        nb_val = northbound["north_net"]
+        nb_cls = "up" if nb_val > 0 else ("down" if nb_val < 0 else "flat")
+        nb_str = f"{nb_val/100_000_000:+.1f}亿"
+        nb_desc = []
+        if northbound.get("hgt_net") is not None:
+            nb_desc.append(f"沪股通{northbound['hgt_net']/100_000_000:+.1f}亿")
+        if northbound.get("sgt_net") is not None:
+            nb_desc.append(f"深股通{northbound['sgt_net']/100_000_000:+.1f}亿")
+        cards += (
+            f'<article class="card kpi">'
+            f"<small>北向资金净流入</small>"
+            f'<strong class="{nb_cls}">{nb_str}</strong>'
+            f"<em>{'，'.join(nb_desc) if nb_desc else '沪深股通合计'}</em>"
+            f"</article>"
+        )
     return f'<div class="grid kpi-grid">{cards}</div>'
 
 
-def build_hbar(name: str, value: float, max_val: float, is_out: bool = False) -> str:
+def build_hbar(name: str, value: float, max_val: float, is_out: bool = False, prev_val: Optional[float] = None) -> str:
     pct = (abs(value) / max_val * 100) if max_val > 0 else 0
     cls = "hbar out" if is_out else "hbar"
     val_yi = value / 100_000_000
     val_str = f"{val_yi:+.0f}亿" if value != 0 else "0亿"
-    return f'<div class="hbar-row"><span>{name}</span><div class="track"><div class="{cls}" style="width:{pct:.1f}%"></div></div><span class="value">{val_str}</span></div>'
+    # Day-over-day indicator
+    dod_html = ""
+    if prev_val is not None and prev_val != 0:
+        diff = value - prev_val
+        if abs(diff) > 1:
+            diff_yi = diff / 100_000_000
+            dod_cls = "up" if diff > 0 else "down"
+            dod_arrow = "↑" if diff > 0 else ("↓" if diff < 0 else "→")
+            dod_html = f'<span class="dod {dod_cls}">{dod_arrow}{abs(diff_yi):.0f}亿</span>'
+    return f'<div class="hbar-row"><span>{name}</span><div class="track"><div class="{cls}" style="width:{pct:.1f}%"></div></div><span class="value">{val_str}{dod_html}</span></div>'
 
 
-def build_signal_panel(boards_in: List[Dict], boards_out: List[Dict], concepts: List[Dict], indices: List[Dict]) -> str:
+def build_signal_panel(boards_in: List[Dict], boards_out: List[Dict], concepts: List[Dict], indices: List[Dict], prev_data: Optional[Dict] = None) -> str:
     # Sector inflows
+    # Build prev-day lookup for comparison
+    prev_in_map = {}
+    prev_out_map = {}
+    if prev_data:
+        for p in prev_data.get("inflows", []):
+            prev_in_map[p.get("name", "")] = p.get("val", 0)
+        for p in prev_data.get("outflows", []):
+            prev_out_map[p.get("name", "")] = p.get("val", 0)
+
     in_max = max((abs(safe_float(b.get("f62")) or 0) for b in boards_in), default=1)
-    in_bars = "".join(build_hbar(b.get("f14", "?"), safe_float(b.get("f62")) or 0, in_max) for b in boards_in)
+    in_bars = "".join(build_hbar(b.get("f14", "?"), safe_float(b.get("f62")) or 0, in_max, prev_val=prev_in_map.get(b.get("f14", ""))) for b in boards_in)
 
     # Sector outflows
     out_max = max((abs(safe_float(b.get("f62")) or 0) for b in boards_out), default=1)
-    out_bars = "".join(build_hbar(b.get("f14", "?"), safe_float(b.get("f62")) or 0, out_max, is_out=True) for b in boards_out)
+    out_bars = "".join(build_hbar(b.get("f14", "?"), safe_float(b.get("f62")) or 0, out_max, is_out=True, prev_val=prev_out_map.get(b.get("f14", ""))) for b in boards_out)
 
     # Total market flow
     total_flow = sum(safe_float(b.get("f62")) or 0 for b in boards_in) + sum(safe_float(b.get("f62")) or 0 for b in boards_out)
@@ -501,8 +612,23 @@ def build_capital_verification(indices: List[Dict], boards_in: List[Dict], board
 def build_theme_cards(boards_in: List[Dict], boards_out: List[Dict], concepts: List[Dict], indices: List[Dict]) -> str:
     cards = ""
 
-    # Build cards based on top concepts
-    for c in concepts[:3]:
+    # Top inflow sector as primary positive signal
+    if boards_in:
+        b = boards_in[0]
+        name = b.get("f14", "?")
+        val = safe_float(b.get("f62")) or 0
+        val_yi = val / 100_000_000
+        pct = safe_float(b.get("f3"))
+        pct_str = fmt_pct(pct) if pct is not None else ""
+        cards += f"""
+<article class="theme-card" data-kind="positive">
+  <div class="theme-head"><h3>{name}行业净流入{val_yi:.0f}亿</h3><span class="tag positive">资金信号</span></div>
+  <p>主力净流入{val_yi:.0f}亿{pct_str}，成为当日最强吸金方向。关注该板块是事件驱动（一日游）还是趋势驱动（可持续），以及次日资金是否继续加码。</p>
+  <div class="chain"><span class="node">主力加仓</span><span class="arrow">-></span><span class="node">{name}</span><span class="arrow">-></span><span class="node">趋势确认</span></div>
+</article>"""
+
+    # Top 2 concepts with richer data
+    for c in concepts[:2]:
         name = c.get("f14", "?")
         val = safe_float(c.get("f62")) or 0
         val_yi = val / 100_000_000
@@ -510,9 +636,9 @@ def build_theme_cards(boards_in: List[Dict], boards_out: List[Dict], concepts: L
         pct_str = fmt_pct(pct) if pct is not None else ""
         cards += f"""
 <article class="theme-card" data-kind="positive">
-  <div class="theme-head"><h3>{name}资金净流入</h3><span class="tag positive">资金信号</span></div>
-  <p>主力资金净流入{val_yi:.0f}亿{pct_str}，成为当日资金聚焦方向。关注次日开盘板块内高辨识度标的的延续性以及板块扩散效应。</p>
-  <div class="chain"><span class="node">资金流入</span><span class="arrow">-></span><span class="node">{name}</span><span class="arrow">-></span><span class="node">板块活跃</span></div>
+  <div class="theme-head"><h3>{name}资金净流入</h3><span class="tag positive">概念亮点</span></div>
+  <p>主力净流入{val_yi:.0f}亿{pct_str}，概念板块中资金集中度突出。关注概念内高辨识度标的的连板情况以及是否向上下游扩散。</p>
+  <div class="chain"><span class="node">概念聚焦</span><span class="arrow">-></span><span class="node">{name}</span><span class="arrow">-></span><span class="node">扩散效应</span></div>
 </article>"""
 
     # Top outflow as negative signal
@@ -523,39 +649,42 @@ def build_theme_cards(boards_in: List[Dict], boards_out: List[Dict], concepts: L
         val_yi = -val / 100_000_000
         cards += f"""
 <article class="theme-card" data-kind="negative">
-  <div class="theme-head"><h3>{name}遭集中抛售</h3><span class="tag negative">资金流出</span></div>
-  <p>主力资金净流出{val_yi:.0f}亿，为当日全市场最大净流出板块。关注后续是否出现企稳信号、前期拥挤度风险是否得到有效释放。</p>
-  <div class="chain"><span class="node">资金兑现</span><span class="arrow">-></span><span class="node">{name}</span><span class="arrow">-></span><span class="node">避险观望</span></div>
+  <div class="theme-head"><h3>{name}遭资金流出</h3><span class="tag negative">资金流出</span></div>
+  <p>主力净流出{val_yi:.0f}亿，为当日全市场最大净流出板块。后续需关注是否出现止跌企稳信号，前期拥挤度风险是否有效释放。</p>
+  <div class="chain"><span class="node">资金兑现</span><span class="arrow">-></span><span class="node">{name}</span><span class="arrow">-></span><span class="node">等待企稳</span></div>
 </article>"""
 
-    # Fill remaining with market observations
-    remaining = 6 - len(concepts[:3]) - (1 if boards_out else 0)
+    # Fill remaining with richer market observations
+    remaining = 6 - (1 if boards_in else 0) - len(concepts[:2]) - (1 if boards_out else 0)
     for i in range(remaining):
         if i == 0 and indices:
+            best_idx = max(indices[:4], key=lambda x: x.get("pct") or -999)
             idx = indices[0]
             cards += f"""
 <article class="theme-card" data-kind="watch">
   <div class="theme-head"><h3>{idx['name']}收盘{fmt_pct(idx['pct'])}</h3><span class="tag watch">市场基准</span></div>
-  <p>三大指数集体收跌/收涨，成交量维持高位。市场整体呈现结构性行情特征，指数表现难以完全反映板块间的剧烈分化。</p>
-  <div class="chain"><span class="node">指数波动</span><span class="arrow">-></span><span class="node">板块分化</span><span class="arrow">-></span><span class="node">结构行情</span></div>
+  <p>三大指数中{best_idx['name']}涨幅最大（{fmt_pct(best_idx['pct'])}）。赚钱效应是否扩散至全市场、涨停家数是否增加，是判断情绪能否延续的关键。</p>
+  <div class="chain"><span class="node">指数表现</span><span class="arrow">-></span><span class="node">赚钱效应</span><span class="arrow">-></span><span class="node">情绪判断</span></div>
 </article>"""
         elif i == 1:
+            total_amt = sum(idx["amount"] for idx in indices[:2] if idx.get("amount")) if indices else None
+            amt_yi = total_amt / 1_000_000_000_000 if total_amt else None
+            amt_label = f"约{amt_yi:.2f}万亿" if amt_yi else "高位"
             cards += f"""
 <article class="theme-card" data-kind="watch">
-  <div class="theme-head"><h3>量能维持</h3><span class="tag watch">继续观察</span></div>
-  <p>全市场成交维持相对高位，但结构分化明显。次日关注：成交是否仍维持在3万亿以上、赚钱广度是否修复、涨停家数是否增加。</p>
-  <div class="chain"><span class="node">量能维持</span><span class="arrow">-></span><span class="node">结构分化</span><span class="arrow">-></span><span class="node">方向选择</span></div>
+  <div class="theme-head"><h3>成交{amt_label}</h3><span class="tag watch">量能观察</span></div>
+  <p>关注成交能否维持在当前量级附近。若放量配合主线扩散，行情级别提升；若缩量+主线一日游，则回归结构性轮动。</p>
+  <div class="chain"><span class="node">量能</span><span class="arrow">-></span><span class="node">主线持续性</span><span class="arrow">-></span><span class="node">仓位决策</span></div>
 </article>"""
         else:
-            cards += f"""
+            cards += """
 <article class="theme-card" data-kind="neutral">
-  <div class="theme-head"><h3>外部联动</h3><span class="tag neutral">跟踪观察</span></div>
-  <p>关注隔夜外盘表现、商品期货走势以及汇率变化对次日开盘情绪的传导效应。外部变量可能在开盘15分钟内集中反映。</p>
-  <div class="chain"><span class="node">外部变量</span><span class="arrow">-></span><span class="node">开盘情绪</span><span class="arrow">-></span><span class="node">日内方向</span></div>
+  <div class="theme-head"><h3>外部联动因子</h3><span class="tag neutral">跟踪观察</span></div>
+  <p>关注隔夜美股（尤其纳斯达克/费城半导体）、商品期货及离岸人民币汇率，这些变量可能在次日开盘15分钟内通过北向资金传导至A股。</p>
+  <div class="chain"><span class="node">外盘</span><span class="arrow">-></span><span class="node">北向</span><span class="arrow">-></span><span class="node">A股开盘</span></div>
 </article>"""
 
     return f'<div class="theme-grid">{cards}</div>'
-
 
 def build_checklist(boards_in: List[Dict], boards_out: List[Dict]) -> str:
     top_in = boards_in[0].get("f14", "?") if boards_in else "—"
@@ -596,10 +725,69 @@ def build_source_section(extra_note: str = "") -> str:
     <li>东方财富行情中心 — 指数实时数据</li>
     <li>东方财富Choice — 行业板块资金流向</li>
     <li>东方财富Choice — 概念板块资金流向</li>
+    <li>东方财富Choice — 北向资金（沪深股通）</li>
     <li>Yahoo Finance — 全球市场数据</li>
   </ul>
   {extra}
   <p>注：主力资金数据来源为东方财富Choice公开披露口径，可能与Wind/终端口径存在差异。所有内容只用于市场结构观察，不构成买入、卖出、持有、目标价、仓位比例或收益承诺。</p>
+</div>"""
+
+
+def build_prediction_verification(indices: List[Dict], boards_in: List[Dict], boards_out: List[Dict], concepts: List[Dict]) -> str:
+    """Build a premarket→close prediction verification table for aftermarket mode."""
+    top_in = boards_in[0].get("f14", "?") if boards_in else "—"
+    top_out = boards_out[0].get("f14", "?") if boards_out else "—"
+    top_concept = concepts[0].get("f14", "?") if concepts else "—"
+
+    has_up = any((idx.get("pct") or 0) > 0 for idx in indices[:3])
+    has_down = any((idx.get("pct") or 0) < 0 for idx in indices[:3])
+
+    index_direction = "集体收涨" if has_up and not has_down else ("集体收跌" if has_down and not has_up else "涨跌互现")
+
+    return f"""
+<div class="grid two">
+  <article class="card panel">
+    <div class="chart-title">盘前→收盘验证 <span>预测命中率追踪</span></div>
+    <table class="verify-table">
+      <thead><tr><th>验证项</th><th>盘前预测</th><th>收盘实际</th><th>命中</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>指数方向</td>
+          <td>关注隔夜外盘指引</td>
+          <td>{index_direction}</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>资金主线</td>
+          <td>关注前日强势板块延续性</td>
+          <td>{top_in}净流入居前</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>概念热度</td>
+          <td>关注前日概念扩散效应</td>
+          <td>{top_concept}资金聚焦</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td>风险方向</td>
+          <td>警惕前日弱势板块继续承压</td>
+          <td>{top_out}净流出居前</td>
+          <td>—</td>
+        </tr>
+      </tbody>
+    </table>
+  </article>
+  <article class="card panel">
+    <div class="chart-title">验证规则 <span>客观标准</span></div>
+    <ul class="mini-list">
+      <li><b>指数方向</b><span>盘前判断的涨跌方向与收盘实际一致即为命中。</span></li>
+      <li><b>资金主线</b><span>盘前关注的强势板块实际为当日净流入TOP3即为命中。</span></li>
+      <li><b>概念热度</b><span>盘前提及的概念板块实际净流入且涨幅>0即为命中。</span></li>
+      <li><b>风险方向</b><span>盘前提示的风险板块实际净流出即为命中。</span></li>
+      <li><b>注意</b><span>本区块需结合前次盘前版的预测内容进行手工标注命中/未命中。</span></li>
+    </ul>
+  </article>
 </div>"""
 
 
@@ -615,7 +803,7 @@ MODE_TITLES = {
 }
 
 
-def generate_html(indices: List[Dict], boards_in: List[Dict], boards_out: List[Dict], concepts: List[Dict], lhb: Optional[Dict], mode: str = "aftermarket", date_override: Optional[str] = None, runtime_note: str = "") -> str:
+def generate_html(indices: List[Dict], boards_in: List[Dict], boards_out: List[Dict], concepts: List[Dict], lhb: Optional[Dict], northbound: Optional[Dict] = None, prev_data: Optional[Dict] = None, mode: str = "aftermarket", date_override: Optional[str] = None, runtime_note: str = "") -> str:
     now = cn_now()
     if date_override:
         # Accept "2026-05-15" → format
@@ -644,13 +832,25 @@ def generate_html(indices: List[Dict], boards_in: List[Dict], boards_out: List[D
 
     # Sum 上证+深证 amounts as total market turnover proxy
     total_amt = sum(idx["amount"] for idx in indices[:2] if idx.get("amount")) if indices else None
-    kpi_grid = build_kpi_grid(indices, total_amt, None)
-    signal_panel = build_signal_panel(boards_in, boards_out, concepts, indices)
+    kpi_grid = build_kpi_grid(indices, total_amt, None, northbound)
+    signal_panel = build_signal_panel(boards_in, boards_out, concepts, indices, prev_data)
     condition_panel = build_condition_panel(indices, boards_in, boards_out)
     capital_verification = build_capital_verification(indices, boards_in, boards_out, concepts, lhb)
     theme_cards = build_theme_cards(boards_in, boards_out, concepts, indices)
     checklist = build_checklist(boards_in, boards_out)
     source_section = build_source_section(runtime_note)
+
+    # Prediction verification (aftermarket mode only)
+    pred_verification = ""
+    if mode == "aftermarket":
+        pred_verification = f"""
+    <section class="section" id="verification">
+      <div class="section-title">
+        <h2>盘前预测验证</h2>
+        <span>盘前判断 vs 收盘实际</span>
+      </div>
+      {build_prediction_verification(indices, boards_in, boards_out, concepts)}
+    </section>"""
 
     return f"""<!doctype html>
 <html lang="zh-CN">
@@ -667,8 +867,8 @@ def generate_html(indices: List[Dict], boards_in: List[Dict], boards_out: List[D
       <h1>{title}</h1>
       <p>区间：{date_str} {mode_label}（{slot_time}版）。{summary}</p>
       <div class="toolbar" role="group" aria-label="雷达模式切换">
-        <button class="mode-button active" data-mode="signal" type="button">强信号样式</button>
-        <button class="mode-button" data-mode="condition" type="button">观察条件样式</button>
+        <button class="mode-button active" data-mode="dashboard" type="button">看板模式</button>
+        <button class="mode-button" data-mode="review" type="button">验证清单模式</button>
       </div>
     </div>
     <div class="status-pill"><span class="pulse"></span>已于{slot_time}自动生成</div>
@@ -682,11 +882,12 @@ def generate_html(indices: List[Dict], boards_in: List[Dict], boards_out: List[D
     {kpi_grid}
   </section>
 
-  <section class="section mode-panel" data-mode-panel="signal">
+  <section class="section mode-panel" data-mode-panel="dashboard">
     {signal_panel}
   </section>
 
-  <section class="section mode-panel" data-mode-panel="condition" hidden>
+  <section class="section mode-panel" data-mode-panel="review" hidden>
+    {pred_verification}
     {condition_panel}
   </section>
 
@@ -775,16 +976,39 @@ def main() -> None:
     boards_out = fetch_board_outflow(5)
     concepts = fetch_concept_flow(4)
     lhb = fetch_lhb_stats()
+    northbound = fetch_northbound()
+
+    # Load previous day's data for comparison
+    prev_data_path = os.path.join(os.path.dirname(args.output) or ".", ".prev_radar_data.json")
+    prev_data = {}
+    if os.path.exists(prev_data_path):
+        try:
+            with open(prev_data_path, "r", encoding="utf-8") as f:
+                prev_data = json.load(f)
+        except Exception:
+            pass
 
     note = ""
     if all(idx.get("pct") is None for idx in indices):
         note = "本机网络/DNS异常导致无法拉取实时行情接口；页面已生成但关键数值将显示为“--”，请恢复网络后重跑生成。"
-    html = generate_html(indices, boards_in, boards_out, concepts, lhb, mode=args.mode, date_override=args.date, runtime_note=note)
+    html = generate_html(indices, boards_in, boards_out, concepts, lhb, northbound, prev_data, mode=args.mode, date_override=args.date, runtime_note=note)
 
     os.makedirs(os.path.dirname(args.output) or ".", exist_ok=True)
     with open(args.output, "w", encoding="utf-8") as f:
         f.write(html)
     print(f"Report saved to {args.output} ({os.path.getsize(args.output)} bytes)")
+
+    # Save current data for next run's day-over-day comparison
+    current_data = {
+        "inflows": [{"name": b.get("f14", ""), "val": safe_float(b.get("f62")) or 0} for b in boards_in],
+        "outflows": [{"name": b.get("f14", ""), "val": safe_float(b.get("f62")) or 0} for b in boards_out],
+        "concepts": [{"name": c.get("f14", ""), "val": safe_float(c.get("f62")) or 0} for c in concepts],
+    }
+    try:
+        with open(prev_data_path, "w", encoding="utf-8") as f:
+            json.dump(current_data, f, ensure_ascii=False)
+    except Exception:
+        pass
 
 
 if __name__ == "__main__":

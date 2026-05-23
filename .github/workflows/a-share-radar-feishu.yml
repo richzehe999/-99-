@@ -87,3 +87,28 @@ jobs:
             DATE_ARG="--date \"${{ steps.mode.outputs.date }}\""
           fi
           python3 scripts/feishu_radar_notify.py --mode ${{ steps.mode.outputs.value }} $DATE_ARG
+
+      - name: 告警：工作流执行失败
+        if: failure()
+        env:
+          FEISHU_WEBHOOK_URL: ${{ secrets.FEISHU_WEBHOOK_URL }}
+        run: |
+          MODE="${{ steps.mode.outputs.value }}"
+          TIMESTAMP=$(TZ='Asia/Shanghai' date '+%Y-%m-%d %H:%M')
+          curl -s -X POST "$FEISHU_WEBHOOK_URL" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"msg_type\": \"interactive\",
+              \"card\": {
+                \"config\": {\"wide_screen_mode\": true},
+                \"header\": {
+                  \"title\": {\"tag\": \"plain_text\", \"content\": \"⚠️ A股雷达推送失败\",
+                  \"template\": \"red\"
+                },
+                \"elements\": [
+                  {\"tag\": \"div\", \"text\": {\"tag\": \"lark_md\", \"content\": \"**模式**：${MODE}\n**时间**：${TIMESTAMP}\n**仓库**：${{ github.repository }}\n**运行ID**：${{ github.run_id }}\n\n请检查 [GitHub Actions](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) 日志排查原因。\"}},
+                  {\"tag\": \"hr\"},
+                  {\"tag\": \"note\", \"elements\": [{\"tag\": \"plain_text\", \"content\": \"A-share radar 自动告警 | 数据源或脚本异常\"}]}
+                ]
+              }
+            }"
