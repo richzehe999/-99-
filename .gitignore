@@ -22,3 +22,4 @@ hotstock_quant_skill/.venv-*/
 
 # Local/generated outputs
 outputs/
+.prev_radar_data.json

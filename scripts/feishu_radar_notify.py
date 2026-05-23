@@ -162,47 +162,64 @@ def fetch_a_share_indices() -> List[Dict[str, Any]]:
 
 
 def fetch_board_flow(top_n: int = 5) -> List[Dict[str, Any]]:
+    """Fetch sector inflow from EastMoney API (unified with generate_html_report.py)."""
+    params = {
+        "pn": "1", "pz": str(top_n + 3), "po": "1", "np": "1",
+        "fltt": "2", "invt": "2", "fid": "f62",
+        "fs": "m:90+t:2",
+        "fields": "f12,f14,f62,f184,f3",
+    }
+    url = "https://push2.eastmoney.com/api/qt/clist/get?" + urllib.parse.urlencode(params)
     try:
-        import akshare as ak
-        df = ak.stock_fund_flow_concept()
-        if df is None or df.empty:
-            return []
-        df = df.sort_values("净额", ascending=False)
-        results = []
-        for _, row in df.head(top_n).iterrows():
-            name = str(row.get("行业", ""))
-            net_yi = safe_float(row.get("净额"))
-            pct = safe_float(row.get("行业-涨跌幅"))
-            results.append({
-                "f14": name,
-                "f62": net_yi * 100_000_000 if net_yi else None,
-                "f3": pct,
-            })
-        return results
+        data = fetch_json(url)
     except Exception:
         return []
+    return (data.get("data", {}).get("diff") or [])[:top_n]
 
 
 def fetch_board_outflow(top_n: int = 5) -> List[Dict[str, Any]]:
+    """Fetch sector outflow from EastMoney API (unified with generate_html_report.py)."""
+    params = {
+        "pn": "1", "pz": str(top_n + 3), "po": "0", "np": "1",
+        "fltt": "2", "invt": "2", "fid": "f62",
+        "fs": "m:90+t:2",
+        "fields": "f12,f14,f62,f184,f3",
+    }
+    url = "https://push2.eastmoney.com/api/qt/clist/get?" + urllib.parse.urlencode(params)
     try:
-        import akshare as ak
-        df = ak.stock_fund_flow_concept()
-        if df is None or df.empty:
-            return []
-        df = df.sort_values("净额", ascending=True)
-        results = []
-        for _, row in df.head(top_n).iterrows():
-            name = str(row.get("行业", ""))
-            net_yi = safe_float(row.get("净额"))
-            pct = safe_float(row.get("行业-涨跌幅"))
-            results.append({
-                "f14": name,
-                "f62": net_yi * 100_000_000 if net_yi else None,
-                "f3": pct,
-            })
-        return results
+        data = fetch_json(url)
     except Exception:
         return []
+    return (data.get("data", {}).get("diff") or [])[:top_n]
+
+
+def fetch_northbound() -> Optional[Dict[str, Any]]:
+    """Fetch 北向资金 from EastMoney."""
+    url = "https://push2.eastmoney.com/api/qt/kamt.kline/get?fields=f1,f2,f3,f4"
+    try:
+        data = fetch_json(url)
+        items = data.get("data", {})
+        if not items:
+            return None
+        latest = {}
+        for k in ["f1", "f2", "f3", "f4"]:
+            val = items.get(k)
+            if val is not None:
+                latest[k] = safe_float(val)
+        if not latest:
+            return None
+        north_net = latest.get("f3")
+        hgt_net = latest.get("f1")
+        sgt_net = latest.get("f2")
+        if north_net is None and hgt_net is not None and sgt_net is not None:
+            north_net = hgt_net + sgt_net
+        return {
+            "north_net": north_net,
+            "hgt_net": hgt_net,
+            "sgt_net": sgt_net,
+        }
+    except Exception:
+        return None
 
 
 def fetch_global_quotes() -> List[Dict[str, Any]]:
@@ -304,36 +321,113 @@ def index_field(idx: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
-def build_kpi_section(indices: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+def build_kpi_section(indices: List[Dict[str, Any]], northbound: Optional[Dict] = None) -> List[Dict[str, Any]]:
     if not indices:
         return [{"tag": "div", "text": {"tag": "lark_md", "content": "数据获取失败"}}]
 
-    index_md = "  ".join(
-        f"{idx['name']} {idx['price'] if idx['price'] else '--'} ({fmt_pct(idx['pct'])})"
-        for idx in indices[:5]
-    )
-    return [
-        {"tag": "div", "text": {"tag": "lark_md", "content": f"**市场核心**\n{index_md}"}},
-    ]
+    # Left column: indices KPI
+    index_items = []
+    for idx in indices[:5]:
+        pct_val = idx.get("pct")
+        emoji = "🟢" if (pct_val or 0) > 0 else ("🔴" if (pct_val or 0) < 0 else "➖")
+        index_items.append({
+            "tag": "div",
+            "text": {
+                "tag": "lark_md",
+                "content": f"{emoji} **{idx['name']}**\n{idx['price'] if idx['price'] else '--'}（{fmt_pct(pct_val)}）"
+            }
+        })
+
+    # Right column: northbound + turnover
+    right_items = []
+    if northbound and northbound.get("north_net") is not None:
+        nb_val = northbound["north_net"]
+        nb_emoji = "🟢" if nb_val > 0 else ("🔴" if nb_val < 0 else "➖")
+        nb_text = f"{nb_emoji} **北向资金** {nb_val/100_000_000:+.1f}亿"
+        right_items.append({"tag": "div", "text": {"tag": "lark_md", "content": nb_text}})
+
+    total_amt = sum(idx["amount"] for idx in indices[:2] if idx.get("amount")) if indices else None
+    if total_amt:
+        amt_yi = total_amt / 1_000_000_000_000
+        right_items.append({"tag": "div", "text": {"tag": "lark_md", "content": f"📊 **成交额** {amt_yi:.2f}万亿"}})
+
+    return [{
+        "tag": "column_set",
+        "flex_mode": "bisect",
+        "background_style": "default",
+        "columns": [
+            {
+                "tag": "column",
+                "width": "weighted",
+                "weight": 1,
+                "vertical_align": "top",
+                "elements": index_items
+            },
+            {
+                "tag": "column",
+                "width": "weighted",
+                "weight": 1,
+                "vertical_align": "top",
+                "elements": right_items
+            }
+        ]
+    }]
 
 
 def build_board_section(boards_in: List[Dict[str, Any]], boards_out: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    lines = []
+    # Left: Inflow TOP5
+    in_items = []
     if boards_in:
-        inflows = " ".join(
-            f"{b.get('f14','?')}{fmt_amount(safe_float(b.get('f62')))}"
-            for b in boards_in[:5]
-        )
-        lines.append(f"**净流入** {inflows}")
+        for b in boards_in[:5]:
+            name = b.get("f14", "?")
+            val = safe_float(b.get("f62")) or 0
+            val_yi = val / 100_000_000
+            emoji = "🟢" if val > 0 else "🔴"
+            pct = safe_float(b.get("f3"))
+            pct_str = f"（{fmt_pct(pct)}）" if pct is not None else ""
+            in_items.append({
+                "tag": "div",
+                "text": {"tag": "lark_md", "content": f"{emoji} **{name}** +{val_yi:.0f}亿{pct_str}"}
+            })
+    else:
+        in_items.append({"tag": "div", "text": {"tag": "lark_md", "content": "数据暂缺"}})
+
+    # Right: Outflow TOP5
+    out_items = []
     if boards_out:
-        outflows = " ".join(
-            f"{b.get('f14','?')}{fmt_amount(safe_float(b.get('f62')))}"
-            for b in boards_out[:5]
-        )
-        lines.append(f"**净流出** {outflows}")
-    if not lines:
-        lines.append("板块资金接口暂不可用")
-    return [{"tag": "div", "text": {"tag": "lark_md", "content": "\n".join(lines)}}]
+        for b in boards_out[:5]:
+            name = b.get("f14", "?")
+            val = safe_float(b.get("f62")) or 0
+            val_yi = -val / 100_000_000 if val < 0 else -val / 100_000_000
+            emoji = "🔴" if val < 0 else "🔵"
+            out_items.append({
+                "tag": "div",
+                "text": {"tag": "lark_md", "content": f"{emoji} **{name}** {val/100_000_000:+.0f}亿"}
+            })
+    else:
+        out_items.append({"tag": "div", "text": {"tag": "lark_md", "content": "数据暂缺"}})
+
+    return [{
+        "tag": "column_set",
+        "flex_mode": "bisect",
+        "background_style": "default",
+        "columns": [
+            {
+                "tag": "column",
+                "width": "weighted",
+                "weight": 1,
+                "vertical_align": "top",
+                "elements": [{"tag": "div", "text": {"tag": "lark_md", "content": "**📈 资金净流入 TOP**"}}] + in_items
+            },
+            {
+                "tag": "column",
+                "width": "weighted",
+                "weight": 1,
+                "vertical_align": "top",
+                "elements": [{"tag": "div", "text": {"tag": "lark_md", "content": "**📉 资金净流出 TOP**"}}] + out_items
+            }
+        ]
+    }]
 
 
 def build_global_section(quotes: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
@@ -370,7 +464,7 @@ def build_followup(mode: str) -> List[Dict[str, Any]]:
     ]
 
 
-def build_card(mode: str, indices: List[Dict[str, Any]], boards_in: List[Dict[str, Any]], boards_out: List[Dict[str, Any]], globals_: List[Dict[str, Any]], date_override: Optional[str] = None) -> str:
+def build_card(mode: str, indices: List[Dict[str, Any]], boards_in: List[Dict[str, Any]], boards_out: List[Dict[str, Any]], globals_: List[Dict[str, Any]], northbound: Optional[Dict] = None, date_override: Optional[str] = None) -> str:
     info = MODE_INFO[mode]
     now = cn_now()
     if date_override:
@@ -395,7 +489,7 @@ def build_card(mode: str, indices: List[Dict[str, Any]], boards_in: List[Dict[st
     elements.append({"tag": "hr"})
 
     # KPI
-    elements.extend(build_kpi_section(indices))
+    elements.extend(build_kpi_section(indices, northbound))
 
     elements.append({"tag": "hr"})
 
@@ -483,7 +577,9 @@ def main() -> None:
     if not globals_:
         errors.append("外部变量接口不可用")
 
-    payload = build_card(args.mode, indices, boards_in, boards_out, globals_, date_override=args.date)
+    northbound = fetch_northbound()
+
+    payload = build_card(args.mode, indices, boards_in, boards_out, globals_, northbound, date_override=args.date)
     send_feishu(args.webhook_url, payload)
 
     now = cn_now().strftime("%H:%M")
